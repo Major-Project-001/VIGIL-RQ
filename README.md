@@ -30,6 +30,12 @@ flowchart LR
     B --> C["⚙️ Decision Logic"]
     C --> D["🖥️ Display / Console"]
     C -.->|future| E["🔌 FPGA → Motors"]
+
+    style A fill:#1e3a5f,stroke:#4a90d9,color:#fff
+    style B fill:#2d1b4e,stroke:#8b5cf6,color:#fff
+    style C fill:#1b3d2f,stroke:#34d399,color:#fff
+    style D fill:#1a1a2e,stroke:#e0e0e0,color:#fff
+    style E fill:#4a1e1e,stroke:#f87171,color:#fff
 ```
 
 The codebase follows a strict **separation-of-concerns** pattern to keep each layer independently testable and swappable:
@@ -67,6 +73,16 @@ graph TD
     decision --> settings
     display --> settings
     pose --> model
+
+    style main fill:#1e3a5f,stroke:#4a90d9,color:#fff
+    style pose fill:#2d1b4e,stroke:#8b5cf6,color:#fff
+    style hand fill:#2d1b4e,stroke:#8b5cf6,color:#fff
+    style decision fill:#1b3d2f,stroke:#34d399,color:#fff
+    style display fill:#1a1a2e,stroke:#e0e0e0,color:#fff
+    style settings fill:#4a3a1e,stroke:#fbbf24,color:#fff
+    style model fill:#4a1e1e,stroke:#f87171,color:#fff
+    style basic fill:#1a1a2e,stroke:#e0e0e0,color:#fff
+    style reqs fill:#1a1a2e,stroke:#e0e0e0,color:#fff
 ```
 
 ---
@@ -151,10 +167,16 @@ The main loop ties everything together:
 
 ```mermaid
 flowchart LR
-    A["Capture Frame"] --> B["Detect Pose"]
-    B --> C["Extract Nose"]
-    C --> D["Decide Direction"]
-    D --> E["Draw & Display"]
+    A["📷 Capture Frame"] --> B["🦴 Detect Pose"]
+    B --> C["👃 Extract Nose"]
+    C --> D["🧭 Decide Direction"]
+    D --> E["🎨 Draw & Display"]
+
+    style A fill:#1e3a5f,stroke:#4a90d9,color:#fff
+    style B fill:#2d1b4e,stroke:#8b5cf6,color:#fff
+    style C fill:#2d1b4e,stroke:#8b5cf6,color:#fff
+    style D fill:#1b3d2f,stroke:#34d399,color:#fff
+    style E fill:#1a1a2e,stroke:#e0e0e0,color:#fff
 ```
 
 ---
