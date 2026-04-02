@@ -24,36 +24,49 @@ VIGIL-RQ (**Vi**sion-**G**uided **I**ntelligent **L**ocomotion for **R**obotic *
 
 ## 🏗️ Architecture
 
-```
-Camera → Vision (MediaPipe) → Decision Logic → Display / Console
-                                    ↓
-                          (future) FPGA → Motors
+```mermaid
+flowchart LR
+    A["📷 Camera"] --> B["🧠 Vision (MediaPipe)"]
+    B --> C["⚙️ Decision Logic"]
+    C --> D["🖥️ Display / Console"]
+    C -.->|future| E["🔌 FPGA → Motors"]
 ```
 
 The codebase follows a strict **separation-of-concerns** pattern to keep each layer independently testable and swappable:
 
-```
-VIGIL-RQ/
-│
-├── main.py                    # Pipeline orchestrator
-│
-├── vision/
-│   ├── pose_detector.py       # MediaPipe Pose Landmarker wrapper
-│   └── hand_detector.py       # Hand tracking (placeholder for future use)
-│
-├── logic/
-│   └── decision.py            # Landmark coordinates → directional commands
-│
-├── utils/
-│   └── display.py             # Skeleton drawing, text overlay, window management
-│
-├── config/
-│   └── settings.py            # Thresholds, camera params, UI constants
-│
-├── pose_landmarker_lite.task   # MediaPipe model binary
-├── basic.py                    # Minimal single-file prototype (reference)
-├── requirements.txt
-└── README.md
+```mermaid
+graph TD
+    subgraph VIGIL-RQ
+        main["main.py — Pipeline orchestrator"]
+
+        subgraph vision["vision/"]
+            pose["pose_detector.py — MediaPipe Pose Landmarker wrapper"]
+            hand["hand_detector.py — Hand tracking (future)"]
+        end
+
+        subgraph logic["logic/"]
+            decision["decision.py — Coordinates → Commands"]
+        end
+
+        subgraph utils["utils/"]
+            display["display.py — Skeleton drawing, overlays, window"]
+        end
+
+        subgraph config["config/"]
+            settings["settings.py — Thresholds, camera, UI constants"]
+        end
+
+        model["pose_landmarker_lite.task — Model binary"]
+        basic["basic.py — Minimal prototype (reference)"]
+        reqs["requirements.txt"]
+    end
+
+    main --> pose
+    main --> decision
+    main --> display
+    decision --> settings
+    display --> settings
+    pose --> model
 ```
 
 ---
@@ -136,8 +149,12 @@ Pure function. Takes a normalized nose x-coordinate and returns `"LEFT"`, `"RIGH
 
 The main loop ties everything together:
 
-```
-Capture Frame → Detect Pose → Extract Nose → Decide Direction → Draw & Display
+```mermaid
+flowchart LR
+    A["Capture Frame"] --> B["Detect Pose"]
+    B --> C["Extract Nose"]
+    C --> D["Decide Direction"]
+    D --> E["Draw & Display"]
 ```
 
 ---
@@ -156,11 +173,16 @@ This vision module is the first stage of a full robotics pipeline:
 
 ## 🧠 System Context
 
-```
-┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
-│   Webcam     │────▶│  Vision      │────▶│  Decision    │────▶│  FPGA        │
-│   (Laptop)   │     │  (MediaPipe) │     │  (Logic)     │     │  (Motors)    │
-└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
+```mermaid
+flowchart LR
+    A["📷 Webcam\n(Laptop)"] -->|video frames| B["🧠 Vision\n(MediaPipe)"]
+    B -->|landmarks| C["⚙️ Decision\n(Logic)"]
+    C -->|commands| D["🔌 FPGA\n(Motors)"]
+
+    style A fill:#1e3a5f,stroke:#4a90d9,color:#fff
+    style B fill:#2d1b4e,stroke:#8b5cf6,color:#fff
+    style C fill:#1b3d2f,stroke:#34d399,color:#fff
+    style D fill:#4a1e1e,stroke:#f87171,color:#fff
 ```
 
 - **Vision** runs on a laptop/PC for compute.
