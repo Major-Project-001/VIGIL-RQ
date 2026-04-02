@@ -41,48 +41,41 @@ flowchart LR
 The codebase follows a strict **separation-of-concerns** pattern to keep each layer independently testable and swappable:
 
 ```mermaid
-graph TD
-    subgraph VIGIL-RQ
-        main["main.py — Pipeline orchestrator"]
+flowchart LR
+    main["🚀 main.py\nPipeline orchestrator"]
 
-        subgraph vision["vision/"]
-            pose["pose_detector.py — MediaPipe Pose Landmarker wrapper"]
-            hand["hand_detector.py — Hand tracking (future)"]
-        end
+    main ==>|"processes\nframes"| pose["🟣 pose_detector.py\nMediaPipe Pose wrapper"]
+    main ==>|"gets\ncommand"| decision["🟢 decision.py\nCoordinates → Commands"]
+    main ==>|"renders\noutput"| display["🎨 display.py\nSkeleton + overlays"]
 
-        subgraph logic["logic/"]
-            decision["decision.py — Coordinates → Commands"]
-        end
+    pose ==>|"loads"| model["📦 pose_landmarker_lite.task\nModel binary"]
+    decision ==>|"reads"| settings["⚙️ settings.py\nThresholds + camera config"]
+    display ==>|"reads"| settings
 
-        subgraph utils["utils/"]
-            display["display.py — Skeleton drawing, overlays, window"]
-        end
+    main -.->|"future"| hand["✋ hand_detector.py\nHand tracking (stub)"]
 
-        subgraph config["config/"]
-            settings["settings.py — Thresholds, camera, UI constants"]
-        end
+    basic["📝 basic.py\nMinimal prototype"] -.->|"reference\nfor"| main
+    reqs["📋 requirements.txt"] -.->|"installs\ndeps for"| main
 
-        model["pose_landmarker_lite.task — Model binary"]
-        basic["basic.py — Minimal prototype (reference)"]
-        reqs["requirements.txt"]
-    end
+    style main fill:#0d47a1,stroke:#42a5f5,stroke-width:3px,color:#fff
+    style pose fill:#4a148c,stroke:#ce93d8,stroke-width:3px,color:#fff
+    style hand fill:#4a148c,stroke:#ce93d8,stroke-width:2px,color:#fff
+    style decision fill:#1b5e20,stroke:#81c784,stroke-width:3px,color:#fff
+    style display fill:#bf360c,stroke:#ff8a65,stroke-width:3px,color:#fff
+    style settings fill:#e65100,stroke:#ffb74d,stroke-width:3px,color:#fff
+    style model fill:#b71c1c,stroke:#ef9a9a,stroke-width:3px,color:#fff
+    style basic fill:#37474f,stroke:#90a4ae,stroke-width:2px,color:#fff
+    style reqs fill:#37474f,stroke:#90a4ae,stroke-width:2px,color:#fff
 
-    main --> pose
-    main --> decision
-    main --> display
-    decision --> settings
-    display --> settings
-    pose --> model
-
-    style main fill:#1e3a5f,stroke:#4a90d9,color:#fff
-    style pose fill:#2d1b4e,stroke:#8b5cf6,color:#fff
-    style hand fill:#2d1b4e,stroke:#8b5cf6,color:#fff
-    style decision fill:#1b3d2f,stroke:#34d399,color:#fff
-    style display fill:#1a1a2e,stroke:#e0e0e0,color:#fff
-    style settings fill:#4a3a1e,stroke:#fbbf24,color:#fff
-    style model fill:#4a1e1e,stroke:#f87171,color:#fff
-    style basic fill:#1a1a2e,stroke:#e0e0e0,color:#fff
-    style reqs fill:#1a1a2e,stroke:#e0e0e0,color:#fff
+    linkStyle 0 stroke:#42a5f5,stroke-width:3px
+    linkStyle 1 stroke:#81c784,stroke-width:3px
+    linkStyle 2 stroke:#ff8a65,stroke-width:3px
+    linkStyle 3 stroke:#ce93d8,stroke-width:3px
+    linkStyle 4 stroke:#ffb74d,stroke-width:3px
+    linkStyle 5 stroke:#ffb74d,stroke-width:3px
+    linkStyle 6 stroke:#ce93d8,stroke-width:2px
+    linkStyle 7 stroke:#90a4ae,stroke-width:2px
+    linkStyle 8 stroke:#90a4ae,stroke-width:2px
 ```
 
 ---
