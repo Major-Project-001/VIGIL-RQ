@@ -1,0 +1,17 @@
+# VIGIL-RQ – Python Dependencies
+# ================================
+# Core scientific stack
+numpy>=1.24.0
+
+# Computer vision (optional but recommended – falls back to mock mode without it)
+# opencv-python>=4.8.0      # full build (includes GUI)
+# opencv-python-headless>=4.8.0  # headless server build (no GUI)
+
+# Optional: Hungarian assignment for the multi-object tracker
+scipy>=1.11.0
+
+# Serial communication with servo driver board (optional – simulation mode if absent)
+pyserial>=3.5
+
+# Testing
+pytest>=7.4.0
