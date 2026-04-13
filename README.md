@@ -5,130 +5,167 @@
   <img src="https://img.shields.io/badge/Version-2.1.0-blue?style=for-the-badge&logo=github" alt="Version">
   <img src="https://img.shields.io/badge/Simulation-PyBullet-FF6F00?style=for-the-badge&logo=python" alt="PyBullet">
   <img src="https://img.shields.io/badge/Vision-MediaPipe-00C853?style=for-the-badge&logo=google" alt="MediaPipe">
-  <img src="https://img.shields.io/badge/License-MIT-F44336?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/Hardware-ESP32--FPGA-blue?style=for-the-badge" alt="Hardware">
 </p>
 
 <p align="center">
-  <img src="docs/images/blender_assembly.png" width="800" alt="VIGIL-RQ Blender Assembly">
+  <img src="docs/images/blender_assembly.png" width="900" alt="VIGIL-RQ Blender Assembly">
   <br>
-  <i>The physical assembly structure with highlighted servo-link mappings.</i>
+  <i><b>System Blueprint:</b> Full mechanical assembly and electronic routing diagram.</i>
 </p>
 
 ---
 
-## 🌟 The Vision
+## 🌩️ Project Mission: Perception to Locomotion
 
-**VIGIL-RQ** represents the synthesis of high-level human perception and low-level robotic precision. By leveraging **MediaPipe** for real-time operator tracking and **PyBullet** for high-fidelity physics simulation, this project provides a robust foundation for building autonomous quadruped robots that can "see" their operators and navigate complex environments.
+VIGIL-RQ is a state-of-the-art software/hardware stack designed to give quadruped robots the ability to perceive and respond to their operator's intent in real-time. By combining depth-aware pose estimation with a custom-engineered physics simulation, we achieve high-precision autonomous walking within a safe digital twin before physical deployment.
 
-### 🚀 Evolution Roadmap
+---
+
+## 🗺️ Execution Roadmap
 
 ```mermaid
-graph TD
-    %% Node Definitions
-    P1[("<b>PHASE 1: THE EYES</b><br/><i>Vision Module</i>")]
-    P2[("<b>PHASE 2: THE BODY</b><br/><i>Simulation & Rigging</i>")]
-    P3[("<b>PHASE 3: THE BRAIN</b><br/><i>AI & DRL Training</i>")]
-    
-    %% Connections
-    P1 ==> P2
-    P2 ==> P3
-
-    %% Decoration
-    style P1 fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b
-    style P2 fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100
-    style P3 fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c
+gantt
+    title VIGIL-RQ Development Lifecycle
+    dateFormat  YYYY-MM-DD
+    section Phase 1: Vision
+    MediaPipe Implementation    :done, p1, 2026-03-01, 2026-03-15
+    Coordinate Vectorization   :done, p2, 2026-03-16, 2026-03-25
+    section Phase 2: Simulation
+    Blender Mesh Rigging       :done, p3, 2026-03-26, 2026-04-05
+    Link-Local STL Pipeline    :done, p4, 2026-04-06, 2026-04-10
+    URDF Assembly & Control API:active, p5, 2026-04-11, 2row
+    section Phase 3: Intelligence
+    OpenAI Gym Environment     :p6, 2026-04-20, 15d
+    PPO Policy Training        :p7, after p6, 20d
+    Hardware Sim-to-Real       :p8, after p7, 30d
 ```
 
 ---
 
-## 🛠️ Technical Deep-Dive
+## 🛠️ Technical Specifications
 
-### 1. 👁️ Vision Processing Pipeline
-The perception engine runs at **30+ FPS**, converting raw pixels into actionable navigation vectors.
+### 👁️ Perception Layer: The Vision Stack
+The vision module operates as a high-speed data stream, processing webcam frames to extract semantic landmarks.
 
-*   **Logic**: Tracks the **Nose landmark** centroid.
-*   **Thresholding**:
-    | Region | Normalized X | Command | Color Code |
-    | :--- | :--- | :--- | :--- |
-    | Left | `< 0.4` | `TURN_LEFT` | 🔴 |
-    | Center | `0.4 - 0.6` | `MOVE_FORWARD` | 🟢 |
-    | Right | `> 0.6` | `TURN_RIGHT` | 🔵 |
+<details>
+<summary><b>▶ Click to expand Vision Pipeline Logic</b></summary>
 
-### 2. 🐕 Advanced Rigging & Simulation
-The digital twin utilizes a **Link-Local Transformation Pipeline** to ensure physics stability.
+```mermaid
+sequenceDiagram
+    participant C as 📷 Camera
+    participant D as 🦴 Pose Detector
+    participant L as ⚙️ Decision Logic
+    participant A as 🐕 Motor API
 
-<p align="center">
-  <img src="docs/images/pybullet_sim.png" width="80%"/>
-  <br>
-  <i>PyBullet real-time simulation with 12-DOF joint control.</i>
-</p>
+    C->>D: Stream Frame (BGR)
+    D->>D: Extract 33 Keypoints
+    D->>L: Send NoseX Vector (0-1)
+    alt NoseX < 0.4
+        L->>A: Command: TURN_LEFT
+    else NoseX > 0.6
+        L->>A: Command: TURN_RIGHT
+    else
+        L->>A: Command: STAY_CENTER
+    end
+```
+</details>
 
-#### **Mechanical Hierarchy**
-| Link | Components | Axis of Rotation |
-| :--- | :--- | :--- |
-| **BASE** | Multi-chassis, Hip housings, Hip servo bodies | Fixed |
-| **HIP** | Hip gear, Knee servo body, Thigh frame | **Y-Axis** (Splay) |
-| **THIGH** | Upper leg components | **X-Axis** (Swing) |
-| **CALF** | Lower leg, Foot, Servo horn | **X-Axis** (Knee) |
+### 🐕 Locomotion Stack: The Digital Twin
+Our simulation uses a proprietary **Link-Local Recenter** algorithm. This ensures that every mesh rotates around its physical pivot point `(0,0,0)` in the local coordinate system of its parent link.
 
-### 3. ⚙️ Robotic Control API (`motor_api.py`)
-Our modular controller allows for seamless integration with high-level scripts.
+#### **Joint & Servo Specs**
+| Servo Model | Max Torque | Speed (60°) | Operating Volts | Max Angle |
+| :--- | :--- | :--- | :--- | :--- |
+| **DS3218MG (20KG)** | 21 kg·cm | 0.14 sec | 5.0V - 6.8V | ±135° |
+
+#### **DOF Mapping (12 Degrees of Freedom)**
+| Joint ID | Physical Component | Range (Rad) | Axis |
+| :---: | :--- | :---: | :---: |
+| **0** | Hip (Abduction) | -0.78 to 0.78 | Y (Green) |
+| **1** | Thigh (Swing) | -1.57 to 1.57 | X (Red) |
+| **2** | Knee (Knee) | -2.70 to 0.50 | X (Red) |
+
+---
+
+## 🏗️ Hardware Bill of Materials (Projected)
+
+- **Main Board**: ESP32 / Arduino Mega + FPGA for Servo PWM timing.
+- **Actuators**: 12x DS3218MG Digital Coreless Servos.
+- **Sensor Suite**: MPU-6050 (IMU), HC-SR04 (Ultrasonic), Raspberry Pi Camera.
+- **Power**: 7.4V 2200mAh LiPo battery.
+
+---
+
+## ⚙️ Control API Reference
+
+The `QuadrupedController` class is the heart of the project. It abstracts complex PyBullet physics into simple, pythonic commands.
 
 ```python
-# Create the controller
-ctrl = QuadrupedController(render=True)
+# 1. Initialize with gravity and GUI
+ctrl = QuadrupedController(render=True, spawn_height=0.45)
 
-# Smoothly transition to a pose
-ctrl.stand()
-ctrl.set_all_legs(hip=0, thigh=0.4, knee=-0.8)
+# 2. Query IMU (Roll, Pitch, Yaw)
+imu_data = ctrl.get_imu()
+if imu_data['rpy'][1] > 0.5:
+    print("Warning: Pitch angle high!")
 
-# Read simulated IMU data
-imu = ctrl.get_imu()
-print(f"Robot Height: {imu['height']:.2f}m")
+# 3. Dynamic Batch Control
+ctrl.set_joint_angles({
+    "fl_hip_joint": 0.2, 
+    "fr_hip_joint": -0.2
+})
 ```
 
 ---
 
-## 📊 Locomotion Presets
+## 🔌 Master Architecture Flow
+```mermaid
+flowchart TB
+    %% Nodes
+    Cam["📷 Input: Camera Feed"]
+    Vision["🧠 Neural Inference: MediaPipe"]
+    Logic["⚙️ Decision Kernel"]
+    API["🐕 Control Interface: Motor API"]
+    Sim["🌍 Physics Server: PyBullet"]
+    State["📊 State Feedback: IMU/Encoders"]
 
-Our 12-DOF system comes with pre-calibrated poses that serve as the building blocks for gait development:
+    %% Connections
+    Cam ==> Vision
+    Vision ==> Logic
+    Logic -.->|Direction Vector| API
+    API ==> Sim
+    Sim ==> State
+    State ==> API
+    
+    %% Styles
+    classDef hardware fill:#0d47a1,stroke:#42a5f5,color:#fff
+    classDef software fill:#2e7d32,stroke:#81c784,color:#fff
+    classDef alert fill:#c62828,stroke:#ef9a9a,color:#fff
 
-| Pose | Thigh Angle (avg) | Knee Angle (avg) | Status |
-| :--- | :--- | :--- | :--- |
-| **STAND** | `0.0` | `0.0` | ✅ Active |
-| **SIT** | `0.5` | `-1.2` | ✅ Active |
-| **REST** | `0.8` | `-1.8` | ✅ Active |
-| **TROT** | Dynamic (Sine) | Dynamic (Sine) | 🚶 Working |
+    class Cam,Sim,State hardware
+    class Vision,Logic,API software
+```
 
 ---
 
-## 🔜 Future: The DRL Frontier
-Phase 3 focuses on **Deep Reinforcement Learning** to achieve natural, adaptive locomotion on uneven terrain.
+## ⚡ Execution
 
-*   **Policy Algorithm**: PPO (Proximal Policy Optimization).
-*   **Action Space**: Continuous target angles for 12 servos.
-*   **Reward Function**: `Forward progression` + `Gait Stability` - `Energy usage`.
-
----
-
-## ⚡ Setup & Launch
-
+### **Module 1: Manual Rigging Test**
+Test the joint limits and assembly orientation:
 ```bash
-# 1. Clone & Install
-git clone https://github.com/Major-Project-001/VIGIL-RQ.git
-cd VIGIL-RQ
-pip install -r requirements.txt
-
-# 2. Manual Joint Test
 python quadruped/scripts/joint_control.py
+```
 
-# 3. Running the Walk Demo
+### **Module 2: Gait Demonstration**
+Initiates a 4-leg alternating trot gait with real-time stability reporting:
+```bash
 python quadruped/scripts/walk_demo.py
 ```
 
 ---
 <p align="center">
-  Developed with ❤️ for the Major Project in Robotics.
+  <b>VIGIL-RQ</b> — Version 2.1.0 (Stable)
   <br>
-  <b>VIGIL-RQ 🦾 2026</b>
+  <i>"Vision in sight, Locomotion in stride."</i>
 </p>
