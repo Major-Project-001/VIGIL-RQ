@@ -1,0 +1,1162 @@
+[
+  {
+    "name": "29KG_Servo_DS3218MG",
+    "stl": "29KG_Servo_DS3218MG.stl",
+    "parent": null,
+    "location": [
+      -0.075328,
+      -0.074949,
+      0.239303
+    ],
+    "rotation": [
+      -8e-06,
+      -1.587061,
+      8e-06
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.001",
+    "stl": "29KG_Servo_DS3218MG_001.stl",
+    "parent": null,
+    "location": [
+      -0.058033,
+      -0.09434,
+      0.322279
+    ],
+    "rotation": [
+      -1.553783,
+      -3.141248,
+      1.555063
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.002",
+    "stl": "29KG_Servo_DS3218MG_002.stl",
+    "parent": null,
+    "location": [
+      -0.046636,
+      -0.019879,
+      0.342593
+    ],
+    "rotation": [
+      -7.852552,
+      0.011553,
+      3.148098
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.003",
+    "stl": "29KG_Servo_DS3218MG_003.stl",
+    "parent": null,
+    "location": [
+      0.122752,
+      -0.074949,
+      0.239303
+    ],
+    "rotation": [
+      -8e-06,
+      -4.696124,
+      -8e-06
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.004",
+    "stl": "29KG_Servo_DS3218MG_004.stl",
+    "parent": null,
+    "location": [
+      0.105457,
+      -0.09434,
+      0.322279
+    ],
+    "rotation": [
+      -1.553783,
+      -3.141937,
+      -1.555063
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.005",
+    "stl": "29KG_Servo_DS3218MG_005.stl",
+    "parent": null,
+    "location": [
+      0.09406,
+      -0.019879,
+      0.342593
+    ],
+    "rotation": [
+      -7.852552,
+      -0.011553,
+      3.135087
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.006",
+    "stl": "29KG_Servo_DS3218MG_006.stl",
+    "parent": null,
+    "location": [
+      -0.075328,
+      0.256905,
+      0.239303
+    ],
+    "rotation": [
+      -8e-06,
+      -1.587061,
+      8e-06
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.007",
+    "stl": "29KG_Servo_DS3218MG_007.stl",
+    "parent": null,
+    "location": [
+      -0.058033,
+      0.237514,
+      0.322279
+    ],
+    "rotation": [
+      -1.553783,
+      -3.141248,
+      1.555063
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.008",
+    "stl": "29KG_Servo_DS3218MG_008.stl",
+    "parent": null,
+    "location": [
+      -0.046636,
+      0.311975,
+      0.342593
+    ],
+    "rotation": [
+      -7.852552,
+      0.011553,
+      3.148098
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.009",
+    "stl": "29KG_Servo_DS3218MG_009.stl",
+    "parent": null,
+    "location": [
+      0.122752,
+      0.256905,
+      0.239303
+    ],
+    "rotation": [
+      -8e-06,
+      -4.696124,
+      -8e-06
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.010",
+    "stl": "29KG_Servo_DS3218MG_010.stl",
+    "parent": null,
+    "location": [
+      0.105457,
+      0.237514,
+      0.322279
+    ],
+    "rotation": [
+      -1.553783,
+      -3.141937,
+      -1.555063
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "29KG_Servo_DS3218MG.011",
+    "stl": "29KG_Servo_DS3218MG_011.stl",
+    "parent": null,
+    "location": [
+      0.09406,
+      0.311975,
+      0.342593
+    ],
+    "rotation": [
+      -7.852552,
+      -0.011553,
+      3.135087
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_1",
+    "stl": "hip_1.stl",
+    "parent": null,
+    "location": [
+      -0.042693,
+      -0.086743,
+      0.331983
+    ],
+    "rotation": [
+      -0.049056,
+      1.570805,
+      -0.049056
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_1.001",
+    "stl": "hip_1_001.stl",
+    "parent": null,
+    "location": [
+      0.090117,
+      -0.086743,
+      0.331983
+    ],
+    "rotation": [
+      -0.049056,
+      4.71238,
+      0.049056
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_1.002",
+    "stl": "hip_1_002.stl",
+    "parent": null,
+    "location": [
+      -0.042693,
+      0.245111,
+      0.331983
+    ],
+    "rotation": [
+      -0.049056,
+      1.570805,
+      -0.049056
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_1.003",
+    "stl": "hip_1_003.stl",
+    "parent": null,
+    "location": [
+      0.090117,
+      0.245111,
+      0.331983
+    ],
+    "rotation": [
+      -0.049056,
+      4.71238,
+      0.049056
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_cup",
+    "stl": "hip_cup.stl",
+    "parent": null,
+    "location": [
+      -0.067359,
+      -0.118465,
+      0.331726
+    ],
+    "rotation": [
+      0.0,
+      -0.0,
+      0.0
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_cup.001",
+    "stl": "hip_cup_001.stl",
+    "parent": null,
+    "location": [
+      -0.067359,
+      0.213389,
+      0.331726
+    ],
+    "rotation": [
+      0.0,
+      -0.0,
+      0.0
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_servo_gear",
+    "stl": "hip_servo_gear.stl",
+    "parent": null,
+    "location": [
+      -0.017476,
+      -0.058659,
+      0.333154
+    ],
+    "rotation": [
+      -6.27294,
+      -0.224383,
+      0.000671
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_servo_gear.001",
+    "stl": "hip_servo_gear_001.stl",
+    "parent": null,
+    "location": [
+      0.064899,
+      -0.058659,
+      0.333154
+    ],
+    "rotation": [
+      -6.27294,
+      0.224383,
+      -0.000671
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_servo_gear.002",
+    "stl": "hip_servo_gear_002.stl",
+    "parent": null,
+    "location": [
+      -0.017476,
+      0.273195,
+      0.333154
+    ],
+    "rotation": [
+      -6.27294,
+      -0.224383,
+      0.000671
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "hip_servo_gear.003",
+    "stl": "hip_servo_gear_003.stl",
+    "parent": null,
+    "location": [
+      0.0649,
+      0.273195,
+      0.333154
+    ],
+    "rotation": [
+      -6.27294,
+      0.224383,
+      -0.000671
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "horizontal_x4",
+    "stl": "horizontal_x4.stl",
+    "parent": null,
+    "location": [
+      0.004005,
+      0.048218,
+      0.331462
+    ],
+    "rotation": [
+      0.002792,
+      -1.570726,
+      -0.002792
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "horizontal_x4.001",
+    "stl": "horizontal_x4_001.stl",
+    "parent": null,
+    "location": [
+      0.004005,
+      0.048218,
+      0.330905
+    ],
+    "rotation": [
+      -0.002792,
+      1.570726,
+      -0.002792
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      -0.001
+    ]
+  },
+  {
+    "name": "horizontal_x4.002",
+    "stl": "horizontal_x4_002.stl",
+    "parent": null,
+    "location": [
+      0.004005,
+      0.136536,
+      0.331462
+    ],
+    "rotation": [
+      -0.002792,
+      -1.570726,
+      0.002792
+    ],
+    "scale": [
+      0.001,
+      -0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "horizontal_x4.003",
+    "stl": "horizontal_x4_003.stl",
+    "parent": null,
+    "location": [
+      0.004005,
+      0.136536,
+      0.330905
+    ],
+    "rotation": [
+      0.002792,
+      -4.71246,
+      0.002792
+    ],
+    "scale": [
+      0.001,
+      -0.001,
+      -0.001
+    ]
+  },
+  {
+    "name": "legs_middle_x2",
+    "stl": "legs_middle_x2.stl",
+    "parent": null,
+    "location": [
+      -0.021016,
+      0.038846,
+      0.331677
+    ],
+    "rotation": [
+      0.0,
+      1.570795,
+      0.0
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "legs_middle_x2.001",
+    "stl": "legs_middle_x2_001.stl",
+    "parent": null,
+    "location": [
+      -0.021016,
+      0.3707,
+      0.331677
+    ],
+    "rotation": [
+      0.0,
+      1.570795,
+      0.0
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "RR__foot",
+    "stl": "RR__foot.stl",
+    "parent": "RR_foot_joint",
+    "location": [
+      -0.0027,
+      -0.051615,
+      0.023213
+    ],
+    "rotation": [
+      1.580451,
+      0.568888,
+      -1.475934
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__foot.001",
+    "stl": "RR__foot_001.stl",
+    "parent": "RR_foot_joint",
+    "location": [
+      0.284124,
+      -0.051615,
+      0.023213
+    ],
+    "rotation": [
+      1.580451,
+      -0.568888,
+      1.475934
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__foot.002",
+    "stl": "RR__foot_002.stl",
+    "parent": "RR_foot_joint",
+    "location": [
+      -0.0027,
+      0.280239,
+      0.023213
+    ],
+    "rotation": [
+      1.580451,
+      0.568888,
+      -1.475934
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__foot.003",
+    "stl": "RR__foot_003.stl",
+    "parent": "RR_foot_joint",
+    "location": [
+      0.284124,
+      0.280239,
+      0.023213
+    ],
+    "rotation": [
+      1.580451,
+      -0.568888,
+      1.475934
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__hip_2",
+    "stl": "RR__hip_2.stl",
+    "parent": "RR_hip_joint",
+    "location": [
+      0.080716,
+      0.028099,
+      -0.118238
+    ],
+    "rotation": [
+      6.436215,
+      -4.702118,
+      0.153535
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__hip_2.001",
+    "stl": "RR__hip_2_001.stl",
+    "parent": "RR_hip_joint",
+    "location": [
+      0.200708,
+      0.028099,
+      -0.118238
+    ],
+    "rotation": [
+      6.436215,
+      -1.581067,
+      -0.153535
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__hip_2.002",
+    "stl": "RR__hip_2_002.stl",
+    "parent": "RR_hip_joint",
+    "location": [
+      0.080716,
+      0.359953,
+      -0.118238
+    ],
+    "rotation": [
+      6.436215,
+      -4.702118,
+      0.153535
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__hip_2.003",
+    "stl": "RR__hip_2_003.stl",
+    "parent": "RR_hip_joint",
+    "location": [
+      0.200708,
+      0.359953,
+      -0.118238
+    ],
+    "rotation": [
+      6.436215,
+      -1.581067,
+      -0.153535
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg",
+    "stl": "RR__lower_leg.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      -0.003391,
+      -0.013306,
+      -0.072462
+    ],
+    "rotation": [
+      14.211396,
+      0.951214,
+      1.703207
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg.001",
+    "stl": "RR__lower_leg_001.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      0.284814,
+      -0.013306,
+      -0.072462
+    ],
+    "rotation": [
+      14.211396,
+      -0.951214,
+      4.579979
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg.002",
+    "stl": "RR__lower_leg_002.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      -0.003391,
+      0.318548,
+      -0.072462
+    ],
+    "rotation": [
+      14.211396,
+      0.951214,
+      1.703207
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg.003",
+    "stl": "RR__lower_leg_003.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      0.284814,
+      0.318548,
+      -0.072462
+    ],
+    "rotation": [
+      14.211396,
+      -0.951214,
+      4.579979
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg_servo_horn_x2",
+    "stl": "RR__lower_leg_servo_horn_x2.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      -0.006952,
+      0.002764,
+      0.000666
+    ],
+    "rotation": [
+      1.608746,
+      0.94424,
+      1.634936
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg_servo_horn_x2.001",
+    "stl": "RR__lower_leg_servo_horn_x2_001.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      0.003331,
+      0.002764,
+      0.000446
+    ],
+    "rotation": [
+      1.608746,
+      0.94424,
+      1.634936
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg_servo_horn_x2.002",
+    "stl": "RR__lower_leg_servo_horn_x2_002.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      0.288376,
+      0.002764,
+      0.000666
+    ],
+    "rotation": [
+      1.608746,
+      -0.944239,
+      4.64825
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg_servo_horn_x2.003",
+    "stl": "RR__lower_leg_servo_horn_x2_003.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      0.278093,
+      0.002764,
+      0.000446
+    ],
+    "rotation": [
+      1.608746,
+      -0.944239,
+      4.64825
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg_servo_horn_x2.004",
+    "stl": "RR__lower_leg_servo_horn_x2_004.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      -0.006952,
+      0.334618,
+      0.000666
+    ],
+    "rotation": [
+      1.608746,
+      0.94424,
+      1.634936
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg_servo_horn_x2.005",
+    "stl": "RR__lower_leg_servo_horn_x2_005.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      0.003331,
+      0.334618,
+      0.000446
+    ],
+    "rotation": [
+      1.608746,
+      0.94424,
+      1.634936
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg_servo_horn_x2.006",
+    "stl": "RR__lower_leg_servo_horn_x2_006.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      0.288376,
+      0.334618,
+      0.000666
+    ],
+    "rotation": [
+      1.608746,
+      -0.944239,
+      4.64825
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__lower_leg_servo_horn_x2.007",
+    "stl": "RR__lower_leg_servo_horn_x2_007.stl",
+    "parent": "RR_knee_joint",
+    "location": [
+      0.278093,
+      0.334618,
+      0.000446
+    ],
+    "rotation": [
+      1.608746,
+      -0.944239,
+      4.64825
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__servo_frame_1",
+    "stl": "RR__servo_frame_1.stl",
+    "parent": "RR_thigh_joint",
+    "location": [
+      0.057432,
+      -0.014458,
+      -0.027535
+    ],
+    "rotation": [
+      -2.903838,
+      -4.715057,
+      3.366004
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__servo_frame_1.001",
+    "stl": "RR__servo_frame_1_001.stl",
+    "parent": "RR_thigh_joint",
+    "location": [
+      0.223992,
+      -0.014458,
+      -0.027535
+    ],
+    "rotation": [
+      -2.903838,
+      -7.851314,
+      2.917181
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__servo_frame_1.002",
+    "stl": "RR__servo_frame_1_002.stl",
+    "parent": "RR_thigh_joint",
+    "location": [
+      0.057432,
+      0.317396,
+      -0.027535
+    ],
+    "rotation": [
+      -2.903838,
+      -4.715057,
+      3.366004
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__servo_frame_1.003",
+    "stl": "RR__servo_frame_1_003.stl",
+    "parent": "RR_thigh_joint",
+    "location": [
+      0.223992,
+      0.317396,
+      -0.027535
+    ],
+    "rotation": [
+      -2.903838,
+      -7.851314,
+      2.917181
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__upper_leg_x2",
+    "stl": "RR__upper_leg_x2.stl",
+    "parent": "RR_thigh_joint",
+    "location": [
+      0.031746,
+      0.003027,
+      -0.086486
+    ],
+    "rotation": [
+      -1.56941,
+      0.003355,
+      -7.854953
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__upper_leg_x2.001",
+    "stl": "RR__upper_leg_x2_001.stl",
+    "parent": "RR_thigh_joint",
+    "location": [
+      0.249678,
+      0.003027,
+      -0.086486
+    ],
+    "rotation": [
+      -1.56941,
+      -0.003355,
+      -10.994603
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__upper_leg_x2.002",
+    "stl": "RR__upper_leg_x2_002.stl",
+    "parent": "RR_thigh_joint",
+    "location": [
+      0.031746,
+      0.334881,
+      -0.086486
+    ],
+    "rotation": [
+      -1.56941,
+      0.003355,
+      -7.854953
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "RR__upper_leg_x2.003",
+    "stl": "RR__upper_leg_x2_003.stl",
+    "parent": "RR_thigh_joint",
+    "location": [
+      0.249678,
+      0.334881,
+      -0.086486
+    ],
+    "rotation": [
+      -1.56941,
+      -0.003355,
+      -10.994603
+    ],
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ]
+  },
+  {
+    "name": "side_x2",
+    "stl": "side_x2.stl",
+    "parent": null,
+    "location": [
+      -0.000208,
+      0.048099,
+      0.331346
+    ],
+    "rotation": [
+      -0.0,
+      -1.570795,
+      0.0
+    ],
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ]
+  },
+  {
+    "name": "side_x2.001",
+    "stl": "side_x2_001.stl",
+    "parent": null,
+    "location": [
+      0.04774,
+      0.048099,
+      0.331346
+    ],
+    "rotation": [
+      -0.0,
+      1.570795,
+      0.0
+    ],
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ]
+  }
+]

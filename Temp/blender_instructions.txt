@@ -1,0 +1,17 @@
+Blender should be open with all the meshes loaded. Here's your workflow:
+
+In Blender:
+Select a mesh (click on it in the 3D viewport)
+Rotate: Press R then X/Y/Z to rotate around a specific axis
+Move: Press G then X/Y/Z to move along an axis
+The Empties (arrows) represent joints — don't move them, only adjust the mesh children
+When done aligning:
+Go to the Scripting tab (top bar in Blender)
+Click Open → navigate to D:\Desktop\kutta\quadruped\scripts\blender_export.py
+Click Run Script (▶ button)
+Come back here and tell me — I'll regenerate the URDF from the exported transforms
+Tips:
+Press Numpad 1 for front view, 3 for side view, 7 for top view
+The Outliner (top-right panel) shows the hierarchy: BASE → FL_hip_joint → FL_thigh_joint → ...
+Right-click a mesh → Set Origin → Origin to Geometry if needed
+Is Blender open and showing the meshes? If it didn't load properly or you see errors, let me know and I'll troubleshoot.

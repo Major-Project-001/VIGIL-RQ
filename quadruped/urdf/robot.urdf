@@ -1,0 +1,411 @@
+<?xml version="1.0"?>
+<robot name="quadruped">
+  <link name="base">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/horizontal_x4.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/horizontal_x4_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/horizontal_x4_002.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/horizontal_x4_003.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/side_x2.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/side_x2_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/legs_middle_x2.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/legs_middle_x2_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_002.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_005.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_008.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_011.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_1.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_1_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_1_002.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_1_003.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_cup.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_cup_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__hip_2.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__hip_2_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__hip_2_002.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__hip_2_003.stl"/></geometry>
+    </visual>
+    <collision><geometry><box size="0.30 0.40 0.08"/></geometry></collision>
+    <inertial><mass value="2.5"/><inertia ixx="0.008" ixy="0" ixz="0" iyy="0.015" iyz="0" izz="0.020"/></inertial>
+  </link>
+
+  <!-- FL LEG -->
+  <link name="fl_hip">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_010.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_servo_gear_003.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__servo_frame_1_003.stl"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.05"/><geometry><cylinder radius="0.03" length="0.10"/></geometry></collision>
+    <inertial><mass value="0.30"/><origin xyz="0 0 -0.05"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.00005"/></inertial>
+  </link>
+  <joint name="fl_hip_joint" type="revolute">
+    <parent link="base"/><child link="fl_hip"/>
+    <origin xyz="0.0412 0.1660 -0.1168"/><axis xyz="0 1 0"/>
+    <limit lower="-0.78" upper="0.78" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="fl_thigh">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_009.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__upper_leg_x2_003.stl"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.06"/><geometry><box size="0.025 0.02 0.12"/></geometry></collision>
+    <inertial><mass value="0.15"/><origin xyz="0 0 -0.06"/><inertia ixx="0.0003" ixy="0" ixz="0" iyy="0.0003" iyz="0" izz="0.00003"/></inertial>
+  </link>
+  <joint name="fl_thigh_joint" type="revolute">
+    <parent link="fl_hip"/><child link="fl_thigh"/>
+    <origin xyz="0.0689 -0.0165 -0.0014"/><axis xyz="1 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="fl_calf">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__foot_003.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_003.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_servo_horn_x2_006.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_servo_horn_x2_007.stl"/></geometry>
+    </visual>
+    <collision><geometry><sphere radius="0.018"/></geometry></collision>
+    <inertial><mass value="0.08"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/></inertial>
+  </link>
+  <joint name="fl_knee_joint" type="revolute">
+    <parent link="fl_thigh"/><child link="fl_calf"/>
+    <origin xyz="0.0172 0.0075 -0.1144"/><axis xyz="1 0 0"/>
+    <limit lower="-2.70" upper="0.5" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="fl_foot">
+    <collision><geometry><sphere radius="0.015"/></geometry></collision>
+    <inertial><mass value="0.05"/><inertia ixx="0.00005" ixy="0" ixz="0" iyy="0.00005" iyz="0" izz="0.00005"/></inertial>
+  </link>
+  <joint name="fl_foot_joint" type="fixed">
+    <parent link="fl_calf"/><child link="fl_foot"/>
+    <origin xyz="0.0162 -0.0557 -0.1398"/>
+  </joint>
+
+  <!-- FR LEG -->
+  <link name="fr_hip">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_004.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_servo_gear_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__servo_frame_1_001.stl"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.05"/><geometry><cylinder radius="0.03" length="0.10"/></geometry></collision>
+    <inertial><mass value="0.30"/><origin xyz="0 0 -0.05"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.00005"/></inertial>
+  </link>
+  <joint name="fr_hip_joint" type="revolute">
+    <parent link="base"/><child link="fr_hip"/>
+    <origin xyz="0.0412 -0.1659 -0.1168"/><axis xyz="0 1 0"/>
+    <limit lower="-0.78" upper="0.78" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="fr_thigh">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_003.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__upper_leg_x2_001.stl"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.06"/><geometry><box size="0.025 0.02 0.12"/></geometry></collision>
+    <inertial><mass value="0.15"/><origin xyz="0 0 -0.06"/><inertia ixx="0.0003" ixy="0" ixz="0" iyy="0.0003" iyz="0" izz="0.00003"/></inertial>
+  </link>
+  <joint name="fr_thigh_joint" type="revolute">
+    <parent link="fr_hip"/><child link="fr_thigh"/>
+    <origin xyz="0.0689 -0.0164 -0.0014"/><axis xyz="1 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="fr_calf">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__foot_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_servo_horn_x2_002.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_servo_horn_x2_003.stl"/></geometry>
+    </visual>
+    <collision><geometry><sphere radius="0.018"/></geometry></collision>
+    <inertial><mass value="0.08"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/></inertial>
+  </link>
+  <joint name="fr_knee_joint" type="revolute">
+    <parent link="fr_thigh"/><child link="fr_calf"/>
+    <origin xyz="0.0172 0.0075 -0.1144"/><axis xyz="1 0 0"/>
+    <limit lower="-2.70" upper="0.5" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="fr_foot">
+    <collision><geometry><sphere radius="0.015"/></geometry></collision>
+    <inertial><mass value="0.05"/><inertia ixx="0.00005" ixy="0" ixz="0" iyy="0.00005" iyz="0" izz="0.00005"/></inertial>
+  </link>
+  <joint name="fr_foot_joint" type="fixed">
+    <parent link="fr_calf"/><child link="fr_foot"/>
+    <origin xyz="0.0162 -0.0558 -0.1398"/>
+  </joint>
+
+  <!-- RL LEG -->
+  <link name="rl_hip">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_007.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_servo_gear_002.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__servo_frame_1_002.stl"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.05"/><geometry><cylinder radius="0.03" length="0.10"/></geometry></collision>
+    <inertial><mass value="0.30"/><origin xyz="0 0 -0.05"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.00005"/></inertial>
+  </link>
+  <joint name="rl_hip_joint" type="revolute">
+    <parent link="base"/><child link="rl_hip"/>
+    <origin xyz="-0.0412 0.1660 -0.1168"/><axis xyz="0 1 0"/>
+    <limit lower="-0.78" upper="0.78" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="rl_thigh">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_006.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__upper_leg_x2_002.stl"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.06"/><geometry><box size="0.025 0.02 0.12"/></geometry></collision>
+    <inertial><mass value="0.15"/><origin xyz="0 0 -0.06"/><inertia ixx="0.0003" ixy="0" ixz="0" iyy="0.0003" iyz="0" izz="0.00003"/></inertial>
+  </link>
+  <joint name="rl_thigh_joint" type="revolute">
+    <parent link="rl_hip"/><child link="rl_thigh"/>
+    <origin xyz="-0.0689 -0.0165 -0.0014"/><axis xyz="1 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="rl_calf">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__foot_002.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_002.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_servo_horn_x2_004.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_servo_horn_x2_005.stl"/></geometry>
+    </visual>
+    <collision><geometry><sphere radius="0.018"/></geometry></collision>
+    <inertial><mass value="0.08"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/></inertial>
+  </link>
+  <joint name="rl_knee_joint" type="revolute">
+    <parent link="rl_thigh"/><child link="rl_calf"/>
+    <origin xyz="-0.0171 0.0075 -0.1144"/><axis xyz="1 0 0"/>
+    <limit lower="-2.70" upper="0.5" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="rl_foot">
+    <collision><geometry><sphere radius="0.015"/></geometry></collision>
+    <inertial><mass value="0.05"/><inertia ixx="0.00005" ixy="0" ixz="0" iyy="0.00005" iyz="0" izz="0.00005"/></inertial>
+  </link>
+  <joint name="rl_foot_joint" type="fixed">
+    <parent link="rl_calf"/><child link="rl_foot"/>
+    <origin xyz="-0.0162 -0.0557 -0.1398"/>
+  </joint>
+
+  <!-- RR LEG -->
+  <link name="rr_hip">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG_001.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/hip_servo_gear.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__servo_frame_1.stl"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.05"/><geometry><cylinder radius="0.03" length="0.10"/></geometry></collision>
+    <inertial><mass value="0.30"/><origin xyz="0 0 -0.05"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.00005"/></inertial>
+  </link>
+  <joint name="rr_hip_joint" type="revolute">
+    <parent link="base"/><child link="rr_hip"/>
+    <origin xyz="-0.0412 -0.1659 -0.1168"/><axis xyz="0 1 0"/>
+    <limit lower="-0.78" upper="0.78" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="rr_thigh">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/29KG_Servo_DS3218MG.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__upper_leg_x2.stl"/></geometry>
+    </visual>
+    <collision><origin xyz="0 0 -0.06"/><geometry><box size="0.025 0.02 0.12"/></geometry></collision>
+    <inertial><mass value="0.15"/><origin xyz="0 0 -0.06"/><inertia ixx="0.0003" ixy="0" ixz="0" iyy="0.0003" iyz="0" izz="0.00003"/></inertial>
+  </link>
+  <joint name="rr_thigh_joint" type="revolute">
+    <parent link="rr_hip"/><child link="rr_thigh"/>
+    <origin xyz="-0.0689 -0.0164 -0.0014"/><axis xyz="1 0 0"/>
+    <limit lower="-1.57" upper="1.57" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="rr_calf">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__foot.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_servo_horn_x2.stl"/></geometry>
+    </visual>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry><mesh filename="meshes_local/RR__lower_leg_servo_horn_x2_001.stl"/></geometry>
+    </visual>
+    <collision><geometry><sphere radius="0.018"/></geometry></collision>
+    <inertial><mass value="0.08"/><inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.0001" iyz="0" izz="0.0001"/></inertial>
+  </link>
+  <joint name="rr_knee_joint" type="revolute">
+    <parent link="rr_thigh"/><child link="rr_calf"/>
+    <origin xyz="-0.0171 0.0075 -0.1144"/><axis xyz="1 0 0"/>
+    <limit lower="-2.70" upper="0.5" effort="20" velocity="5"/>
+    <dynamics damping="0.5" friction="0.2"/>
+  </joint>
+
+  <link name="rr_foot">
+    <collision><geometry><sphere radius="0.015"/></geometry></collision>
+    <inertial><mass value="0.05"/><inertia ixx="0.00005" ixy="0" ixz="0" iyy="0.00005" iyz="0" izz="0.00005"/></inertial>
+  </link>
+  <joint name="rr_foot_joint" type="fixed">
+    <parent link="rr_calf"/><child link="rr_foot"/>
+    <origin xyz="-0.0162 -0.0558 -0.1398"/>
+  </joint>
+</robot>

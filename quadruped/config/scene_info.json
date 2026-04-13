@@ -1,0 +1,1983 @@
+{
+  "29KG_Servo_DS3218MG": {
+    "type": "MESH",
+    "location": [
+      -0.075328,
+      -0.074949,
+      0.239303
+    ],
+    "rotation_euler": [
+      -8e-06,
+      -1.587061,
+      8e-06
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.001": {
+    "type": "MESH",
+    "location": [
+      -0.058033,
+      -0.09434,
+      0.322279
+    ],
+    "rotation_euler": [
+      -1.553783,
+      -3.141248,
+      1.555063
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.002": {
+    "type": "MESH",
+    "location": [
+      -0.046636,
+      -0.019879,
+      0.342593
+    ],
+    "rotation_euler": [
+      -7.852552,
+      0.011553,
+      3.148098
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.003": {
+    "type": "MESH",
+    "location": [
+      0.122752,
+      -0.074949,
+      0.239303
+    ],
+    "rotation_euler": [
+      -8e-06,
+      -4.696124,
+      -8e-06
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.004": {
+    "type": "MESH",
+    "location": [
+      0.105457,
+      -0.09434,
+      0.322279
+    ],
+    "rotation_euler": [
+      -1.553783,
+      -3.141937,
+      -1.555063
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.005": {
+    "type": "MESH",
+    "location": [
+      0.09406,
+      -0.019879,
+      0.342593
+    ],
+    "rotation_euler": [
+      -7.852552,
+      -0.011553,
+      3.135087
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.006": {
+    "type": "MESH",
+    "location": [
+      -0.075328,
+      0.256905,
+      0.239303
+    ],
+    "rotation_euler": [
+      -8e-06,
+      -1.587061,
+      8e-06
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.007": {
+    "type": "MESH",
+    "location": [
+      -0.058033,
+      0.237514,
+      0.322279
+    ],
+    "rotation_euler": [
+      -1.553783,
+      -3.141248,
+      1.555063
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.008": {
+    "type": "MESH",
+    "location": [
+      -0.046636,
+      0.311975,
+      0.342593
+    ],
+    "rotation_euler": [
+      -7.852552,
+      0.011553,
+      3.148098
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.009": {
+    "type": "MESH",
+    "location": [
+      0.122752,
+      0.256905,
+      0.239303
+    ],
+    "rotation_euler": [
+      -8e-06,
+      -4.696124,
+      -8e-06
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.010": {
+    "type": "MESH",
+    "location": [
+      0.105457,
+      0.237514,
+      0.322279
+    ],
+    "rotation_euler": [
+      -1.553783,
+      -3.141937,
+      -1.555063
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "29KG_Servo_DS3218MG.011": {
+    "type": "MESH",
+    "location": [
+      0.09406,
+      0.311975,
+      0.342593
+    ],
+    "rotation_euler": [
+      -7.852552,
+      -0.011553,
+      3.135087
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 2199,
+    "dimensions": [
+      55.5,
+      20.0,
+      45.0
+    ]
+  },
+  "BASE": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      0.45
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": null,
+    "children": [
+      "FL_hip_joint",
+      "FR_hip_joint",
+      "RL_hip_joint",
+      "RR_hip_joint"
+    ]
+  },
+  "FL_foot_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.15
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "FL_knee_joint",
+    "children": []
+  },
+  "FL_hip_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.117,
+      0.068,
+      0.0
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "BASE",
+    "children": [
+      "FL_thigh_joint"
+    ]
+  },
+  "FL_knee_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.15
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "FL_thigh_joint",
+    "children": [
+      "FL_foot_joint"
+    ]
+  },
+  "FL_thigh_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.09
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "FL_hip_joint",
+    "children": [
+      "FL_knee_joint"
+    ]
+  },
+  "FR_foot_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.15
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "FR_knee_joint",
+    "children": []
+  },
+  "FR_hip_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.117,
+      -0.068,
+      0.0
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "BASE",
+    "children": [
+      "FR_thigh_joint"
+    ]
+  },
+  "FR_knee_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.15
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "FR_thigh_joint",
+    "children": [
+      "FR_foot_joint"
+    ]
+  },
+  "FR_thigh_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.09
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "FR_hip_joint",
+    "children": [
+      "FR_knee_joint"
+    ]
+  },
+  "RL_foot_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.15
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RL_knee_joint",
+    "children": []
+  },
+  "RL_hip_joint": {
+    "type": "EMPTY",
+    "location": [
+      -0.117,
+      0.068,
+      0.0
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "BASE",
+    "children": [
+      "RL_thigh_joint"
+    ]
+  },
+  "RL_knee_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.15
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RL_thigh_joint",
+    "children": [
+      "RL_foot_joint"
+    ]
+  },
+  "RL_thigh_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.09
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RL_hip_joint",
+    "children": [
+      "RL_knee_joint"
+    ]
+  },
+  "RR__foot": {
+    "type": "MESH",
+    "location": [
+      -0.0027,
+      -0.051615,
+      0.023213
+    ],
+    "rotation_euler": [
+      1.580451,
+      0.568888,
+      -1.475934
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_foot_joint",
+    "children": [],
+    "vertex_count": 3675,
+    "dimensions": [
+      36.5,
+      30.7,
+      28.4
+    ]
+  },
+  "RR__foot.001": {
+    "type": "MESH",
+    "location": [
+      0.284124,
+      -0.051615,
+      0.023213
+    ],
+    "rotation_euler": [
+      1.580451,
+      -0.568888,
+      1.475934
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_foot_joint",
+    "children": [],
+    "vertex_count": 3675,
+    "dimensions": [
+      36.5,
+      30.7,
+      28.4
+    ]
+  },
+  "RR__foot.002": {
+    "type": "MESH",
+    "location": [
+      -0.0027,
+      0.280239,
+      0.023213
+    ],
+    "rotation_euler": [
+      1.580451,
+      0.568888,
+      -1.475934
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_foot_joint",
+    "children": [],
+    "vertex_count": 3675,
+    "dimensions": [
+      36.5,
+      30.7,
+      28.4
+    ]
+  },
+  "RR__foot.003": {
+    "type": "MESH",
+    "location": [
+      0.284124,
+      0.280239,
+      0.023213
+    ],
+    "rotation_euler": [
+      1.580451,
+      -0.568888,
+      1.475934
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_foot_joint",
+    "children": [],
+    "vertex_count": 3675,
+    "dimensions": [
+      36.5,
+      30.7,
+      28.4
+    ]
+  },
+  "RR__hip_2": {
+    "type": "MESH",
+    "location": [
+      0.080716,
+      0.028099,
+      -0.118238
+    ],
+    "rotation_euler": [
+      6.436215,
+      -4.702118,
+      0.153535
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_hip_joint",
+    "children": [],
+    "vertex_count": 1007,
+    "dimensions": [
+      45.8,
+      22.0,
+      77.2
+    ]
+  },
+  "RR__hip_2.001": {
+    "type": "MESH",
+    "location": [
+      0.200708,
+      0.028099,
+      -0.118238
+    ],
+    "rotation_euler": [
+      6.436215,
+      -1.581067,
+      -0.153535
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_hip_joint",
+    "children": [],
+    "vertex_count": 1007,
+    "dimensions": [
+      45.8,
+      22.0,
+      77.2
+    ]
+  },
+  "RR__hip_2.002": {
+    "type": "MESH",
+    "location": [
+      0.080716,
+      0.359953,
+      -0.118238
+    ],
+    "rotation_euler": [
+      6.436215,
+      -4.702118,
+      0.153535
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_hip_joint",
+    "children": [],
+    "vertex_count": 1007,
+    "dimensions": [
+      45.8,
+      22.0,
+      77.2
+    ]
+  },
+  "RR__hip_2.003": {
+    "type": "MESH",
+    "location": [
+      0.200708,
+      0.359953,
+      -0.118238
+    ],
+    "rotation_euler": [
+      6.436215,
+      -1.581067,
+      -0.153535
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_hip_joint",
+    "children": [],
+    "vertex_count": 1007,
+    "dimensions": [
+      45.8,
+      22.0,
+      77.2
+    ]
+  },
+  "RR__lower_leg": {
+    "type": "MESH",
+    "location": [
+      -0.003391,
+      -0.013306,
+      -0.072462
+    ],
+    "rotation_euler": [
+      14.211396,
+      0.951214,
+      1.703207
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1473,
+    "dimensions": [
+      66.5,
+      152.1,
+      19.7
+    ]
+  },
+  "RR__lower_leg.001": {
+    "type": "MESH",
+    "location": [
+      0.284814,
+      -0.013306,
+      -0.072462
+    ],
+    "rotation_euler": [
+      14.211396,
+      -0.951214,
+      4.579979
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1473,
+    "dimensions": [
+      66.5,
+      152.1,
+      19.7
+    ]
+  },
+  "RR__lower_leg.002": {
+    "type": "MESH",
+    "location": [
+      -0.003391,
+      0.318548,
+      -0.072462
+    ],
+    "rotation_euler": [
+      14.211396,
+      0.951214,
+      1.703207
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1473,
+    "dimensions": [
+      66.5,
+      152.1,
+      19.7
+    ]
+  },
+  "RR__lower_leg.003": {
+    "type": "MESH",
+    "location": [
+      0.284814,
+      0.318548,
+      -0.072462
+    ],
+    "rotation_euler": [
+      14.211396,
+      -0.951214,
+      4.579979
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1473,
+    "dimensions": [
+      66.5,
+      152.1,
+      19.7
+    ]
+  },
+  "RR__lower_leg_servo_horn_x2": {
+    "type": "MESH",
+    "location": [
+      -0.006952,
+      0.002764,
+      0.000666
+    ],
+    "rotation_euler": [
+      1.608746,
+      0.94424,
+      1.634936
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1423,
+    "dimensions": [
+      46.5,
+      47.2,
+      10.0
+    ]
+  },
+  "RR__lower_leg_servo_horn_x2.001": {
+    "type": "MESH",
+    "location": [
+      0.003331,
+      0.002764,
+      0.000446
+    ],
+    "rotation_euler": [
+      1.608746,
+      0.94424,
+      1.634936
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1423,
+    "dimensions": [
+      46.5,
+      47.2,
+      10.0
+    ]
+  },
+  "RR__lower_leg_servo_horn_x2.002": {
+    "type": "MESH",
+    "location": [
+      0.288376,
+      0.002764,
+      0.000666
+    ],
+    "rotation_euler": [
+      1.608746,
+      -0.944239,
+      4.64825
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1423,
+    "dimensions": [
+      46.5,
+      47.2,
+      10.0
+    ]
+  },
+  "RR__lower_leg_servo_horn_x2.003": {
+    "type": "MESH",
+    "location": [
+      0.278093,
+      0.002764,
+      0.000446
+    ],
+    "rotation_euler": [
+      1.608746,
+      -0.944239,
+      4.64825
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1423,
+    "dimensions": [
+      46.5,
+      47.2,
+      10.0
+    ]
+  },
+  "RR__lower_leg_servo_horn_x2.004": {
+    "type": "MESH",
+    "location": [
+      -0.006952,
+      0.334618,
+      0.000666
+    ],
+    "rotation_euler": [
+      1.608746,
+      0.94424,
+      1.634936
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1423,
+    "dimensions": [
+      46.5,
+      47.2,
+      10.0
+    ]
+  },
+  "RR__lower_leg_servo_horn_x2.005": {
+    "type": "MESH",
+    "location": [
+      0.003331,
+      0.334618,
+      0.000446
+    ],
+    "rotation_euler": [
+      1.608746,
+      0.94424,
+      1.634936
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1423,
+    "dimensions": [
+      46.5,
+      47.2,
+      10.0
+    ]
+  },
+  "RR__lower_leg_servo_horn_x2.006": {
+    "type": "MESH",
+    "location": [
+      0.288376,
+      0.334618,
+      0.000666
+    ],
+    "rotation_euler": [
+      1.608746,
+      -0.944239,
+      4.64825
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1423,
+    "dimensions": [
+      46.5,
+      47.2,
+      10.0
+    ]
+  },
+  "RR__lower_leg_servo_horn_x2.007": {
+    "type": "MESH",
+    "location": [
+      0.278093,
+      0.334618,
+      0.000446
+    ],
+    "rotation_euler": [
+      1.608746,
+      -0.944239,
+      4.64825
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [],
+    "vertex_count": 1423,
+    "dimensions": [
+      46.5,
+      47.2,
+      10.0
+    ]
+  },
+  "RR__servo_frame_1": {
+    "type": "MESH",
+    "location": [
+      0.057432,
+      -0.014458,
+      -0.027535
+    ],
+    "rotation_euler": [
+      -2.903838,
+      -4.715057,
+      3.366004
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [],
+    "vertex_count": 1158,
+    "dimensions": [
+      66.8,
+      60.2,
+      52.3
+    ]
+  },
+  "RR__servo_frame_1.001": {
+    "type": "MESH",
+    "location": [
+      0.223992,
+      -0.014458,
+      -0.027535
+    ],
+    "rotation_euler": [
+      -2.903838,
+      -7.851314,
+      2.917181
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [],
+    "vertex_count": 1158,
+    "dimensions": [
+      66.8,
+      60.2,
+      52.3
+    ]
+  },
+  "RR__servo_frame_1.002": {
+    "type": "MESH",
+    "location": [
+      0.057432,
+      0.317396,
+      -0.027535
+    ],
+    "rotation_euler": [
+      -2.903838,
+      -4.715057,
+      3.366004
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [],
+    "vertex_count": 1158,
+    "dimensions": [
+      66.8,
+      60.2,
+      52.3
+    ]
+  },
+  "RR__servo_frame_1.003": {
+    "type": "MESH",
+    "location": [
+      0.223992,
+      0.317396,
+      -0.027535
+    ],
+    "rotation_euler": [
+      -2.903838,
+      -7.851314,
+      2.917181
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [],
+    "vertex_count": 1158,
+    "dimensions": [
+      66.8,
+      60.2,
+      52.3
+    ]
+  },
+  "RR__upper_leg_x2": {
+    "type": "MESH",
+    "location": [
+      0.031746,
+      0.003027,
+      -0.086486
+    ],
+    "rotation_euler": [
+      -1.56941,
+      0.003355,
+      -7.854953
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [],
+    "vertex_count": 1563,
+    "dimensions": [
+      33.7,
+      150.8,
+      30.4
+    ]
+  },
+  "RR__upper_leg_x2.001": {
+    "type": "MESH",
+    "location": [
+      0.249678,
+      0.003027,
+      -0.086486
+    ],
+    "rotation_euler": [
+      -1.56941,
+      -0.003355,
+      -10.994603
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [],
+    "vertex_count": 1563,
+    "dimensions": [
+      33.7,
+      150.8,
+      30.4
+    ]
+  },
+  "RR__upper_leg_x2.002": {
+    "type": "MESH",
+    "location": [
+      0.031746,
+      0.334881,
+      -0.086486
+    ],
+    "rotation_euler": [
+      -1.56941,
+      0.003355,
+      -7.854953
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [],
+    "vertex_count": 1563,
+    "dimensions": [
+      33.7,
+      150.8,
+      30.4
+    ]
+  },
+  "RR__upper_leg_x2.003": {
+    "type": "MESH",
+    "location": [
+      0.249678,
+      0.334881,
+      -0.086486
+    ],
+    "rotation_euler": [
+      -1.56941,
+      -0.003355,
+      -10.994603
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [],
+    "vertex_count": 1563,
+    "dimensions": [
+      33.7,
+      150.8,
+      30.4
+    ]
+  },
+  "RR_foot_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.15
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_knee_joint",
+    "children": [
+      "RR__foot",
+      "RR__foot.001",
+      "RR__foot.002",
+      "RR__foot.003"
+    ]
+  },
+  "RR_hip_joint": {
+    "type": "EMPTY",
+    "location": [
+      -0.117,
+      -0.068,
+      0.0
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "BASE",
+    "children": [
+      "RR__hip_2",
+      "RR__hip_2.001",
+      "RR__hip_2.002",
+      "RR__hip_2.003",
+      "RR_thigh_joint"
+    ]
+  },
+  "RR_knee_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.15
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_thigh_joint",
+    "children": [
+      "RR__lower_leg",
+      "RR__lower_leg.001",
+      "RR__lower_leg.002",
+      "RR__lower_leg.003",
+      "RR__lower_leg_servo_horn_x2",
+      "RR__lower_leg_servo_horn_x2.001",
+      "RR__lower_leg_servo_horn_x2.002",
+      "RR__lower_leg_servo_horn_x2.003",
+      "RR__lower_leg_servo_horn_x2.004",
+      "RR__lower_leg_servo_horn_x2.005",
+      "RR__lower_leg_servo_horn_x2.006",
+      "RR__lower_leg_servo_horn_x2.007",
+      "RR_foot_joint"
+    ]
+  },
+  "RR_thigh_joint": {
+    "type": "EMPTY",
+    "location": [
+      0.0,
+      0.0,
+      -0.09
+    ],
+    "rotation_euler": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "parent": "RR_hip_joint",
+    "children": [
+      "RR__servo_frame_1",
+      "RR__servo_frame_1.001",
+      "RR__servo_frame_1.002",
+      "RR__servo_frame_1.003",
+      "RR__upper_leg_x2",
+      "RR__upper_leg_x2.001",
+      "RR__upper_leg_x2.002",
+      "RR__upper_leg_x2.003",
+      "RR_knee_joint"
+    ]
+  },
+  "hip_1": {
+    "type": "MESH",
+    "location": [
+      -0.042693,
+      -0.086743,
+      0.331983
+    ],
+    "rotation_euler": [
+      -0.049056,
+      1.570805,
+      -0.049056
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1120,
+    "dimensions": [
+      45.8,
+      70.7,
+      90.1
+    ]
+  },
+  "hip_1.001": {
+    "type": "MESH",
+    "location": [
+      0.090117,
+      -0.086743,
+      0.331983
+    ],
+    "rotation_euler": [
+      -0.049056,
+      4.71238,
+      0.049056
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1120,
+    "dimensions": [
+      45.8,
+      70.7,
+      90.1
+    ]
+  },
+  "hip_1.002": {
+    "type": "MESH",
+    "location": [
+      -0.042693,
+      0.245111,
+      0.331983
+    ],
+    "rotation_euler": [
+      -0.049056,
+      1.570805,
+      -0.049056
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1120,
+    "dimensions": [
+      45.8,
+      70.7,
+      90.1
+    ]
+  },
+  "hip_1.003": {
+    "type": "MESH",
+    "location": [
+      0.090117,
+      0.245111,
+      0.331983
+    ],
+    "rotation_euler": [
+      -0.049056,
+      4.71238,
+      0.049056
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1120,
+    "dimensions": [
+      45.8,
+      70.7,
+      90.1
+    ]
+  },
+  "hip_cup": {
+    "type": "MESH",
+    "location": [
+      -0.067359,
+      -0.118465,
+      0.331726
+    ],
+    "rotation_euler": [
+      0.0,
+      -0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 705,
+    "dimensions": [
+      21.7,
+      9.7,
+      21.7
+    ]
+  },
+  "hip_cup.001": {
+    "type": "MESH",
+    "location": [
+      -0.067359,
+      0.213389,
+      0.331726
+    ],
+    "rotation_euler": [
+      0.0,
+      -0.0,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 705,
+    "dimensions": [
+      21.7,
+      9.7,
+      21.7
+    ]
+  },
+  "hip_servo_gear": {
+    "type": "MESH",
+    "location": [
+      -0.017476,
+      -0.058659,
+      0.333154
+    ],
+    "rotation_euler": [
+      -6.27294,
+      -0.224383,
+      0.000671
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1914,
+    "dimensions": [
+      36.0,
+      12.4,
+      36.0
+    ]
+  },
+  "hip_servo_gear.001": {
+    "type": "MESH",
+    "location": [
+      0.064899,
+      -0.058659,
+      0.333154
+    ],
+    "rotation_euler": [
+      -6.27294,
+      0.224383,
+      -0.000671
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1914,
+    "dimensions": [
+      36.0,
+      12.4,
+      36.0
+    ]
+  },
+  "hip_servo_gear.002": {
+    "type": "MESH",
+    "location": [
+      -0.017476,
+      0.273195,
+      0.333154
+    ],
+    "rotation_euler": [
+      -6.27294,
+      -0.224383,
+      0.000671
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1914,
+    "dimensions": [
+      36.0,
+      12.4,
+      36.0
+    ]
+  },
+  "hip_servo_gear.003": {
+    "type": "MESH",
+    "location": [
+      0.0649,
+      0.273195,
+      0.333154
+    ],
+    "rotation_euler": [
+      -6.27294,
+      0.224383,
+      -0.000671
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1914,
+    "dimensions": [
+      36.0,
+      12.4,
+      36.0
+    ]
+  },
+  "horizontal_x4": {
+    "type": "MESH",
+    "location": [
+      0.004005,
+      0.048218,
+      0.331462
+    ],
+    "rotation_euler": [
+      0.002792,
+      -1.570726,
+      -0.002792
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1356,
+    "dimensions": [
+      7.7,
+      134.9,
+      80.1
+    ]
+  },
+  "horizontal_x4.001": {
+    "type": "MESH",
+    "location": [
+      0.004005,
+      0.048218,
+      0.330905
+    ],
+    "rotation_euler": [
+      -0.002792,
+      1.570726,
+      -0.002792
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      -0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1356,
+    "dimensions": [
+      7.7,
+      134.9,
+      80.1
+    ]
+  },
+  "horizontal_x4.002": {
+    "type": "MESH",
+    "location": [
+      0.004005,
+      0.136536,
+      0.331462
+    ],
+    "rotation_euler": [
+      -0.002792,
+      -1.570726,
+      0.002792
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      -0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1356,
+    "dimensions": [
+      7.7,
+      134.9,
+      80.1
+    ]
+  },
+  "horizontal_x4.003": {
+    "type": "MESH",
+    "location": [
+      0.004005,
+      0.136536,
+      0.330905
+    ],
+    "rotation_euler": [
+      0.002792,
+      -4.71246,
+      0.002792
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      -0.001,
+      -0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 1356,
+    "dimensions": [
+      7.7,
+      134.9,
+      80.1
+    ]
+  },
+  "legs_middle_x2": {
+    "type": "MESH",
+    "location": [
+      -0.021016,
+      0.038846,
+      0.331677
+    ],
+    "rotation_euler": [
+      0.0,
+      1.570795,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 615,
+    "dimensions": [
+      45.8,
+      80.3,
+      40.0
+    ]
+  },
+  "legs_middle_x2.001": {
+    "type": "MESH",
+    "location": [
+      -0.021016,
+      0.3707,
+      0.331677
+    ],
+    "rotation_euler": [
+      0.0,
+      1.570795,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 615,
+    "dimensions": [
+      45.8,
+      80.3,
+      40.0
+    ]
+  },
+  "side_x2": {
+    "type": "MESH",
+    "location": [
+      -0.000208,
+      0.048099,
+      0.331346
+    ],
+    "rotation_euler": [
+      -0.0,
+      -1.570795,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 992,
+    "dimensions": [
+      55.9,
+      234.1,
+      5.9
+    ]
+  },
+  "side_x2.001": {
+    "type": "MESH",
+    "location": [
+      0.04774,
+      0.048099,
+      0.331346
+    ],
+    "rotation_euler": [
+      -0.0,
+      1.570795,
+      0.0
+    ],
+    "rotation_mode": "XYZ",
+    "scale": [
+      -0.001,
+      0.001,
+      0.001
+    ],
+    "parent": null,
+    "children": [],
+    "vertex_count": 992,
+    "dimensions": [
+      55.9,
+      234.1,
+      5.9
+    ]
+  }
+}
