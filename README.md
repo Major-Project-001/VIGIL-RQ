@@ -1,127 +1,125 @@
 # 🦾 VIGIL-RQ
-### **Vi**sion-**G**uided **I**ntelligent **L**ocomotion for **R**obotic **Q**uadrupeds
+### **V**ision-**G**uided **I**ntelligent **L**ocomotion for **R**obotic **Q**uadrupeds
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Simulation: PyBullet](https://img.shields.io/badge/Simulation-PyBullet-orange.svg)](https://pybullet.org/)
-[![Vision: MediaPipe](https://img.shields.io/badge/Vision-MediaPipe-green.svg)](https://mediapipe.dev/)
-
-VIGIL-RQ is a cutting-edge robotics platform integrating **Real-time Computer Vision**, **High-Fidelity Physics Simulation**, and **Modular Locomotion Intelligence**. Our mission is to bridge the gap between high-level perception and low-level robotic control.
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge" alt="Status Active">
+  <img src="https://img.shields.io/badge/Hardware-Quadruped-blue?style=for-the-badge" alt="Hardware Quadruped">
+  <img src="https://img.shields.io/badge/Phase-2--Rigging-orange?style=for-the-badge" alt="Phase 2">
+</p>
 
 ---
 
-## 🗺️ Project Roadmap: Past, Present & Future
+## 📖 Overview
+
+VIGIL-RQ is an advanced robotics research project aimed at creating a fully autonomous, vision-aware quadruped robot. The project integrates state-of-the-art **Computer Vision** for operator tracking with a high-fidelity **PyBullet Simulation** environment. 
+
+This repository serves as the central hub for the vision modules, simulation rigging, and locomotion control APIs.
+
+---
+
+## 🗺️ Project Roadmap
 
 ```mermaid
-timeline
-    title VIGIL-RQ Evolution
-    section Phase 1: The Eyes (Past)
-        Vision Module : MediaPipe Integration
-        Pose Detection : 33-Keypoint skeleton tracking
-        Command Logic : Directional mapping (Left/Right/Center)
-    section Phase 2: The Body (Present)
-        3D Rigging : Blender to URDF Pipeline
-        Physics Engine : PyBullet Integration with Link-Local Meshes
-        Control API : Modular Motor Control System
-        Locomotion : Initial Sine-wave Trot Gait
-    section Phase 3: The Brain (Future)
-        RL Integration : OpenAI Gym Environment wrapper
-        AI Training : PPO/SAC Locomotion Policy
-        Bridge : Sim-to-Real hardware transfer
-        Hardware : FPGA-based Servo Controller Integration
+graph TD
+    subgraph "Phase 1: The Eyes (Complete)"
+        P1_1["MediaPipe Pose Integration"] --> P1_2["33-Keypoint skeleton tracking"]
+        P1_2 --> P1_3["Directional Logic (L/C/R)"]
+    end
+
+    subgraph "Phase 2: The Body (Current)"
+        P2_1["Blender 3D Rigging"] --> P2_2["URDF Generation Engine"]
+        P2_2 --> P2_3["Link-Local Mesh Optimization"]
+        P2_3 --> P2_4["Modular Motor API"]
+        P2_4 --> P2_5["Sine-wave Trot Gait"]
+    end
+
+    subgraph "Phase 3: The Brain (Future)"
+        P3_1["Gymnasium RL Wrapper"] --> P3_2["PPO/SAC Policy Training"]
+        P3_2 --> P3_3["Sim-to-Real Bridge"]
+        P3_3 --> P3_4["FPGA Hardware Integration"]
+    end
+
+    Phase 1 --> Phase 2
+    Phase 2 --> Phase 3
 ```
 
 ---
 
-## 🏗️ Core Pillars
+## 🛠️ Technical Deep-Dive
 
-### 1. 👁️ Vision Engine (`vision/`)
-The perception layer that tracks human operators and environment cues.
-*   **MediaPipe Pose**: High-precision tracking of 33 keypoints.
-*   **Directional Intelligence**: Smoothly maps human movement to robot commands.
-*   **Modular Design**: Easily swappable for YOLO or other detection frameworks.
+### 1. 👁️ Vision Module (`vision/`)
+Built on Google's **MediaPipe Pose Landmarker**, the vision system provides low-latency human tracking. 
+*   **Keypoint Extraction**: Uses the Nose landmark (Index 0) to determine operator position.
+*   **Threshold Logic**:
+    *   **X < 0.4**: `LEFT` command
+    *   **X > 0.6**: `RIGHT` command
+    *   **0.4 < X < 0.6**: `CENTER` command
+*   **Safety**: Designed to ignore background noise and prioritize the primary human operator.
 
-### 2. 🌍 Simulation & Rigging (`quadruped/`)
-A physics-true digital twin of the robot.
-*   **Blender-to-URDF Pipeline**: Automatic export and assembly of 3D components.
-*   **Link-Local Mesh Transformation**: Custom vertex-adjustment algorithm for stable, precise joint rotation.
-*   **Collision Geometry**: Hyper-accurate collision primitives for real-world interaction testing.
+### 2. 🐕 Simulation Engine & Rigging
+The simulation is powered by **PyBullet** and features a highly optimized URDF assembly.
+*   **Link-Local Transformation**: Unlike standard exports, our pipeline uses a custom algorithm to re-center STL vertices relative to their parent link origins. This eliminates "visual orbit" bugs and ensures physics and visuals are perfectly aligned at the joint pivot.
+*   **Mesh-to-Link Mapping**:
+    *   **Base**: Main chassis + Hip Servo housings.
+    *   **Hip**: Servo gear + Joint pivots (Sideways rotation, Y-axis).
+    *   **Thigh**: Upper leg assembly (Forward/Back rotation, X-axis).
+    *   **Calf**: Lower leg + Foot assembly (Knee lift, X-axis).
 
-### 3. ⚙️ Motor Intelligence (`scripts/`)
-The software bridge that drives the physical/simulated servos.
-*   **`motor_api.py`**: A clean, object-oriented API for joint and leg pose management.
-*   **Simulated IMU**: Real-time feedback on base orientation and linear/angular velocity.
-*   **Locomotion Demo**: Diagonal pair "Trot" gait for multi-DOF walking.
+### 3. ⚙️ Locomotion & Motor API (`motor_api.py`)
+Our modular API provides an industrial-grade interface for robot control:
+*   `set_joint_angles(dict)`: Direct motor index control.
+*   `set_leg_pose(leg, hip, thigh, knee)`: Per-leg geometric control.
+*   `get_imu()`: Returns 6-DOF data including Roll, Pitch, Yaw, and Linear/Angular Velocities.
+*   **Presets**: Built-in `stand()`, `sit()`, and `rest()` poses.
 
 ---
 
 ## 🔌 System Architecture
 
 ```mermaid
-flowchart TD
-    subgraph "Perception Layer (PC/Host)"
-        A["📷 Camera Stream"] --> B["🧠 Pose Detector (MediaPipe)"]
-        B --> C["🧭 Decision Logic"]
-    end
+flowchart LR
+    A["📷 Camera Stream"] ==> B["🧠 MediaPipe Pose"]
+    B ==> C["⚙️ Decision Logic"]
 
-    subgraph "Simulation Layer (PyBullet)"
-        D["🤖 URDF Robot Model"] --> E["⚙️ Motor API"]
-        E --> F["🐕 Physics Engine"]
-        F --> G["📊 Simulated IMU State"]
-        G --> E
+    subgraph "Locomotion Layer"
+        C -.->|"CMD: LEFT/RIGHT"| D["🐕 Motor API"]
+        D ==> E["🌍 PyBullet Physics"]
+        E ==> F["📊 IMU / State Feedback"]
+        F ==> D
     end
-
-    subgraph "Future Hardware (FPGA)"
-        H["🔌 FPGA Controller"] --> I["🦾 Physical Servos"]
-    end
-
-    C -.->|"Control Signals"| E
-    C -.->|"future"| H
 
     style A fill:#1e3a5f,stroke:#4a90d9,color:#fff
     style B fill:#2d1b4e,stroke:#8b5cf6,color:#fff
     style C fill:#1b3d2f,stroke:#34d399,color:#fff
-    style D fill:#4a1e1e,stroke:#f87171,color:#fff
-    style E fill:#e65100,stroke:#ffb74d,color:#fff
-    style F fill:#37474f,stroke:#90a4ae,color:#fff
-    style G fill:#0d47a1,stroke:#42a5f5,color:#fff
-    style H fill:#b71c1c,stroke:#ef9a9a,color:#fff
-    style I fill:#000000,stroke:#ffffff,color:#fff
+    style D fill:#e65100,stroke:#ffb74d,color:#fff
+    style E fill:#4a1e1e,stroke:#f87171,color:#fff
+    style F fill:#0d47a1,stroke:#42a5f5,color:#fff
 ```
 
 ---
 
-## ⚡ Quick Start
+## 🚀 Future Vision: Reinforcement Learning
 
-### 📦 Prerequisites
-- Python 3.10+
-- `pip install pybullet mediapipe opencv-python numpy`
-
-### 🎮 Manual Joint Control
-Check the rigging and joint limits:
-```bash
-python quadruped/scripts/joint_control.py
-```
-
-### 🚶 Walking Demo
-See the robot trot in simulation:
-```bash
-python quadruped/scripts/walk_demo.py
-```
-
-### 📸 Vision Module
-Run the human-tracking perception:
-```bash
-python main.py
-```
+The project is currently transitioning to **Deep Reinforcement Learning (DRL)**.
+*   **Environment**: We are wrapping the simulation in a `gymnasium.Env` interface.
+*   **Algorithm**: Utilizing **Proximal Policy Optimization (PPO)** to train gait stability.
+*   **Observation Space**: IMU data (Roll, Pitch, Accelerometer) + Joint Positions.
+*   **Action Space**: target joint angles for 12 servos.
 
 ---
 
-## 🚀 The Future: Deep RL & Physical Deployment
+## ⚡ Setup & Usage
 
-Currently, we are moving towards **Phase 3**, where the simulation will be used to train a **Deep Reinforcement Learning** policy for robust walking across uneven terrain. By wrapping our `Motor API` in a **Gymnasium Environment**, we can leverage algorithms like PPO to teach the robot to walk better than any human-coded sine wave.
+### ⚙️ Quick Installation
+```bash
+git clone https://github.com/Major-Project-001/VIGIL-RQ.git
+pip install pybullet mediapipe opencv-python numpy
+```
 
-**Next Stop:** Sim-to-Real.
+### 🏃 Running the Demos
+1.  **Manual Control**: `python quadruped/scripts/joint_control.py`
+2.  **Autonomous Trot**: `python quadruped/scripts/walk_demo.py`
+3.  **Vision Tracking**: `python main.py`
 
 ---
-> Developed as part of a Major Project in Robotics & Vision. 🦾
+> **Project VIGIL-RQ** | Major Project | Robotics & AI 🦾
