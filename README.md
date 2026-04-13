@@ -1,82 +1,30 @@
-# 🦾 VIGIL-RQ — Vision Module
+# 🦾 VIGIL-RQ — Quadruped Simulation & Rigging
 
-> **Real-time human pose perception for quadruped robot navigation**
+> **Physics-based simulation and programmatic motor control for the VIGIL-RQ quadruped robot.**
 
-VIGIL-RQ (**Vi**sion-**G**uided **I**ntelligent **L**ocomotion for **R**obotic **Q**uadrupeds) is the perception layer of a quadruped robotics platform. It uses a webcam and [MediaPipe Pose](https://ai.google.dev/edge/mediapipe/solutions/vision/pose_landmarker) to track a human operator's body in real time and convert their position into high-level directional commands (`LEFT`, `RIGHT`, `CENTER`) that will ultimately drive FPGA-based motor control.
-
----
-
-## 📸 What It Does
-
-1. **Captures** live video from a webcam via OpenCV.
-2. **Detects** 33 human pose landmarks using MediaPipe's Pose Landmarker (Tasks API).
-3. **Extracts** the nose keypoint's normalized x-coordinate (0.0 – 1.0).
-4. **Decides** a movement command based on configurable thresholds:
-   | Nose X Position | Command |
-   |---|---|
-   | `< 0.4` | `LEFT` |
-   | `> 0.6` | `RIGHT` |
-   | `0.4 – 0.6` | `CENTER` |
-5. **Displays** an annotated video feed with skeleton overlay and command text.
-6. **Logs** every decision to the console for debugging.
+This branch (`urdf`) contains the complete rigging and physics simulation environment for the VIGIL-RQ quadruped robot, built using PyBullet. It provides a reliable URDF transformation pipeline from Blender, an interactive joint control interface, a programmatic Python API for driving motors, and a working trot gait demonstration.
 
 ---
 
-## 🏗️ Architecture
+## 🚀 Key Features
 
-```mermaid
-flowchart LR
-    A["📷 Camera"] --> B["🧠 Vision (MediaPipe)"]
-    B --> C["⚙️ Decision Logic"]
-    C --> D["🖥️ Display / Console"]
-    C -.->|future| E["🔌 FPGA → Motors"]
+1. **Robust URDF Pipeline (`build_urdf.py`)**
+   - Dynamically builds the `robot.urdf` from a Blender `full.blend` export.
+   - Automatically transforms world-space STL vertices into **link-local** coordinate space. This guarantees stable, precise joint rotations without the visual mesh components "orbiting" out of bounds.
+   - Computes exact joint axis configurations (e.g. Y axis for Hip sideways splay, X axis for Thigh/Knee forward swing) and assigns accurate physical collision primitives/inertia.
 
-    style A fill:#1e3a5f,stroke:#4a90d9,color:#fff
-    style B fill:#2d1b4e,stroke:#8b5cf6,color:#fff
-    style C fill:#1b3d2f,stroke:#34d399,color:#fff
-    style D fill:#1a1a2e,stroke:#e0e0e0,color:#fff
-    style E fill:#4a1e1e,stroke:#f87171,color:#fff
-```
+2. **Interactive Simulation (`joint_control.py`)**
+   - Loads the assembled URDF into PyBullet.
+   - Exposes 12 real-time GUI sliders mapping directly to physical servos (3 per leg).
+   - Quick one-click UI presets for STAND and SIT poses.
 
-The codebase follows a strict **separation-of-concerns** pattern to keep each layer independently testable and swappable:
+3. **Motor API (`motor_api.py`)**
+   - High-level, modular control wrapper class (`QuadrupedController`) designed specifically for future integration with Reinforcement Learning (RL) frameworks.
+   - Handles batch joint assignments (`set_joint_angles`), leg-specific overrides (`set_leg_pose`), posture presets, and returns exact simulated states (simulated IMU readings, base velocities).
 
-```mermaid
-flowchart LR
-    main["🚀 main.py\nPipeline orchestrator"]
-
-    main ==>|"processes\nframes"| pose["🟣 pose_detector.py\nMediaPipe Pose wrapper"]
-    main ==>|"gets\ncommand"| decision["🟢 decision.py\nCoordinates → Commands"]
-    main ==>|"renders\noutput"| display["🎨 display.py\nSkeleton + overlays"]
-
-    pose ==>|"loads"| model["📦 pose_landmarker_lite.task\nModel binary"]
-    decision ==>|"reads"| settings["⚙️ settings.py\nThresholds + camera config"]
-    display ==>|"reads"| settings
-
-    main -.->|"future"| hand["✋ hand_detector.py\nHand tracking (stub)"]
-
-    basic["📝 basic.py\nMinimal prototype"] -.->|"reference\nfor"| main
-    reqs["📋 requirements.txt"] -.->|"installs\ndeps for"| main
-
-    style main fill:#0d47a1,stroke:#42a5f5,stroke-width:3px,color:#fff
-    style pose fill:#4a148c,stroke:#ce93d8,stroke-width:3px,color:#fff
-    style hand fill:#4a148c,stroke:#ce93d8,stroke-width:2px,color:#fff
-    style decision fill:#1b5e20,stroke:#81c784,stroke-width:3px,color:#fff
-    style display fill:#bf360c,stroke:#ff8a65,stroke-width:3px,color:#fff
-    style settings fill:#e65100,stroke:#ffb74d,stroke-width:3px,color:#fff
-    style model fill:#b71c1c,stroke:#ef9a9a,stroke-width:3px,color:#fff
-    style basic fill:#37474f,stroke:#90a4ae,stroke-width:2px,color:#fff
-    style reqs fill:#37474f,stroke:#90a4ae,stroke-width:2px,color:#fff
-
-    linkStyle 0 stroke:#42a5f5,stroke-width:3px
-    linkStyle 1 stroke:#81c784,stroke-width:3px
-    linkStyle 2 stroke:#ff8a65,stroke-width:3px
-    linkStyle 3 stroke:#ce93d8,stroke-width:3px
-    linkStyle 4 stroke:#ffb74d,stroke-width:3px
-    linkStyle 5 stroke:#ffb74d,stroke-width:3px
-    linkStyle 6 stroke:#ce93d8,stroke-width:2px
-    linkStyle 7 stroke:#90a4ae,stroke-width:2px
-    linkStyle 8 stroke:#90a4ae,stroke-width:2px
-```
+4. **Trot Demo (`walk_demo.py`)**
+   - A demonstration of the Motor API driving a sine-wave based trot gait.
+   - Integrates phases for stabilizing into gravity, trotting, and returning to a standing stance.
 
 ---
 
@@ -85,127 +33,68 @@ flowchart LR
 ### Prerequisites
 
 - Python 3.10+
-- A webcam connected to your machine
+- `pybullet` and `numpy` installed
 
 ### Installation
 
 ```bash
-# Clone the repository
+# Clone the repository and checkout the urdf branch
 git clone https://github.com/Major-Project-001/VIGIL-RQ.git
 cd VIGIL-RQ
+git checkout urdf
 
-# (Recommended) Create a virtual environment
-python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # macOS / Linux
-
-# Install dependencies
-pip install -r requirements.txt
+# Run standard dependencies
+pip install requirements.txt
+# Alternatively, ensure pybullet and numpy are installed:
+pip install pybullet numpy
 ```
 
-### Run
+### Try the Interactive Sliders
 
+To run the interactive UI for testing joints manually:
 ```bash
-python main.py
+python quadruped/scripts/joint_control.py
 ```
+*(You can use the sliders on the right-hand panel to test individual linkages.)*
 
-- A window titled **"Quadruped Vision Module"** will open showing the annotated camera feed.
-- Directional commands are printed to the console in real time.
-- Press **`q`** to quit.
+### Try the Walking Demo
 
-> **Note:** By default the camera index is set to `1`. If your webcam is not detected, change `CAMERA_INDEX` in `config/settings.py` to `0`.
-
----
-
-## 🔧 Configuration
-
-All tunable parameters live in [`config/settings.py`](config/settings.py):
-
-| Parameter | Default | Description |
-|---|---|---|
-| `LEFT_THRESHOLD` | `0.4` | Nose x below this → `LEFT` |
-| `RIGHT_THRESHOLD` | `0.6` | Nose x above this → `RIGHT` |
-| `CAMERA_INDEX` | `1` | OpenCV camera device index |
-| `FRAME_WIDTH` | `640` | Capture width in pixels |
-| `FRAME_HEIGHT` | `480` | Capture height in pixels |
-| `FONT_SCALE` | `1.0` | Overlay text size |
-| `FONT_THICKNESS` | `2` | Overlay text thickness |
-| `TEXT_COLOR` | `(0, 255, 0)` | Overlay text color (BGR green) |
-
----
-
-## 🧩 Module Details
-
-### `vision/pose_detector.py` — PoseDetector
-
-Wraps the **MediaPipe Tasks API** (not the legacy `mp.solutions` interface) for pose detection.
-
-- **`__init__(model_path)`** — Loads the `.task` model and creates a `PoseLandmarker` in `IMAGE` running mode.
-- **`process_frame(frame)`** — Accepts a BGR OpenCV frame, converts to RGB, and returns a `PoseLandmarkerResult`.
-- **`get_keypoint(detection_result, index)`** — Returns `(x, y)` normalized coordinates for a given landmark index, or `None` if not detected.
-
-### `logic/decision.py` — get_direction
-
-Pure function. Takes a normalized nose x-coordinate and returns `"LEFT"`, `"RIGHT"`, or `"CENTER"` based on the configured thresholds.
-
-### `utils/display.py` — Drawing Utilities
-
-- **`draw_landmarks(frame, results)`** — Renders a skeleton overlay (keypoints + connections) using raw OpenCV drawing, independent of MediaPipe's drawing utils.
-- **`overlay_direction(frame, direction)`** — Stamps the current command (`CMD: LEFT`, etc.) onto the frame.
-- **`show_frame(frame)`** — Displays the frame in the named OpenCV window.
-
-### `main.py` — Pipeline
-
-The main loop ties everything together:
-
-```mermaid
-flowchart LR
-    A["📷 Capture Frame"] --> B["🦴 Detect Pose"]
-    B --> C["👃 Extract Nose"]
-    C --> D["🧭 Decide Direction"]
-    D --> E["🎨 Draw & Display"]
-
-    style A fill:#1e3a5f,stroke:#4a90d9,color:#fff
-    style B fill:#2d1b4e,stroke:#8b5cf6,color:#fff
-    style C fill:#2d1b4e,stroke:#8b5cf6,color:#fff
-    style D fill:#1b3d2f,stroke:#34d399,color:#fff
-    style E fill:#1a1a2e,stroke:#e0e0e0,color:#fff
+To witness the API orchestrating an alternating diagonal trot gait:
+```bash
+python quadruped/scripts/walk_demo.py
 ```
 
 ---
 
-## 🔜 Roadmap
+## 🏗️ Architecture & Scripts
 
-This vision module is the first stage of a full robotics pipeline:
-
-- [ ] **YOLO Integration** — Object detection alongside (or replacing) pose tracking
-- [ ] **Hand Gesture Control** — Activate the `hand_detector.py` stub for gesture-based commands
-- [ ] **Serial / Socket Output** — Send commands to FPGA motor controller in real time
-- [ ] **Reinforcement Learning Bridge** — Feed perception data into a PPO locomotion policy
-- [ ] **Multi-person Tracking** — Track and follow a specific operator in crowded scenes
-
----
-
-## 🧠 System Context
-
-```mermaid
-flowchart LR
-    A["📷 Webcam\n(Laptop)"] -->|video frames| B["🧠 Vision\n(MediaPipe)"]
-    B -->|landmarks| C["⚙️ Decision\n(Logic)"]
-    C -->|commands| D["🔌 FPGA\n(Motors)"]
-
-    style A fill:#1e3a5f,stroke:#4a90d9,color:#fff
-    style B fill:#2d1b4e,stroke:#8b5cf6,color:#fff
-    style C fill:#1b3d2f,stroke:#34d399,color:#fff
-    style D fill:#4a1e1e,stroke:#f87171,color:#fff
+```text
+quadruped/
+├── 3D file/
+│   └── full.blend              ← Original 3D design source
+├── config/
+│   ├── scene_info.json         ← Exported hierarchy details
+│   └── export_manifest.json    ← File lists from Blender
+├── urdf/
+│   ├── robot.urdf              ← Final compiled simulation asset
+│   ├── meshes_export/          ← Raw, world-space STLs
+│   └── meshes_local/           ← Re-centered, link-local STLs
+└── scripts/
+    ├── blender_full_export.py  ← Script for Blender UI to output details
+    ├── build_urdf.py           ← Engine: Maps STLs -> link-local -> creates URDF
+    ├── joint_control.py        ← Sliders + PyBullet test GUI
+    ├── motor_api.py            ← Programmatic control bindings
+    └── walk_demo.py            ← Walking implementation 
 ```
 
-- **Vision** runs on a laptop/PC for compute.
-- **Decision logic** is lightweight and CPU-efficient by design.
-- **FPGA** receives commands and drives the quadruped's servos.
-
 ---
 
-## 📄 License
+## 🔜 Next Steps
 
-This project is part of an academic major project. Refer to your institution's guidelines for usage and distribution.
+The next stages of the simulation track involve moving towards autonomous walking patterns:
+- Wrap the `QuadrupedController` into an **OpenAI Gym (Gymnasium) Environment**.
+- Train robust locomotion policies using **Reinforcement Learning** (e.g., PPO/SAC).
+- Finalize the bridge for Sim-to-Real hardware transfer.
+
+---
+> **Note:** For the Vision/Pose tracking component of VIGIL-RQ, please refer to the `vision` or related branches.
