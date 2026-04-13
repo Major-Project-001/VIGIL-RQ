@@ -21,26 +21,26 @@ This repository serves as the central hub for the vision modules, simulation rig
 
 ```mermaid
 graph TD
-    subgraph "Phase 1: The Eyes (Complete)"
+    subgraph P1 ["Phase 1: The Eyes (Complete)"]
         P1_1["MediaPipe Pose Integration"] --> P1_2["33-Keypoint skeleton tracking"]
         P1_2 --> P1_3["Directional Logic (L/C/R)"]
     end
 
-    subgraph "Phase 2: The Body (Current)"
+    subgraph P2 ["Phase 2: The Body (Current)"]
         P2_1["Blender 3D Rigging"] --> P2_2["URDF Generation Engine"]
         P2_2 --> P2_3["Link-Local Mesh Optimization"]
         P2_3 --> P2_4["Modular Motor API"]
         P2_4 --> P2_5["Sine-wave Trot Gait"]
     end
 
-    subgraph "Phase 3: The Brain (Future)"
+    subgraph P3 ["Phase 3: The Brain (Future)"]
         P3_1["Gymnasium RL Wrapper"] --> P3_2["PPO/SAC Policy Training"]
         P3_2 --> P3_3["Sim-to-Real Bridge"]
         P3_3 --> P3_4["FPGA Hardware Integration"]
     end
 
-    Phase 1 --> Phase 2
-    Phase 2 --> Phase 3
+    P1 --> P2
+    P2 --> P3
 ```
 
 ---
