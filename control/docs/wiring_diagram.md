@@ -1,21 +1,35 @@
 # 🔌 VIGIL-RQ — Complete Wiring & Connection Diagram
 
 > Pin-level wiring reference for every electronic connection on the VIGIL-RQ quadruped robot.
-> All connection lines are colour-coded by signal type.
+> All nodes are color-coded by module, all connection lines are color-coded by signal type.
 
 ### 🎨 Wire Colour Legend
 
-| Colour | Meaning | Hex |
-|--------|---------|-----|
-| 🔴 Red | VCC / Power positive | `#ef4444` |
-| ⚫ Dark Grey | GND | `#475569` |
-| 🔵 Blue | SPI clock / I2C SCL | `#3b82f6` |
-| 🟢 Green | SPI MOSI / PWM signals | `#22c55e` |
-| 🟡 Yellow | SPI CS / Chip Select | `#eab308` |
-| 🟣 Purple | I2C SDA | `#a855f7` |
-| 🟠 Orange | Servo signal (5V PWM) | `#f97316` |
-| 🩷 Pink | Alert GPIO | `#ec4899` |
-| ⬜ Teal | Level-shifted signal | `#14b8a6` |
+| Line Colour | Meaning | Used On |
+|-------------|---------|---------|
+| 🔴 Red `━━` | VCC / Power positive | Battery, buck outputs, 3.3V, 5V rails |
+| ⚫ Grey `━━` | GND | All ground connections |
+| 🔵 Blue `━━` | SPI SCLK / I2C SCL | Clock signals |
+| 🟢 Green `━━` | SPI MOSI / PWM 3.3V | Data & PWM from FPGA |
+| 🟡 Yellow `━━` | SPI CS / Sense | Chip select, INA219 shunt |
+| 🟣 Purple `━━` | I2C SDA | Data bus |
+| 🟠 Orange `━━` | Servo signal 5V | Post-level-shift PWM to servos |
+| 🩷 Pink `━━` | Alert GPIO | Buzzer, RGB LED |
+| ⬜ Grey dashed `╌╌` | Config / tie | Address pin ties |
+
+### 🎨 Module Colour Legend
+
+| Module | Block | Pin (lighter) |
+|--------|-------|---------------|
+| Raspberry Pi 4B | `#3b82f6` 🟦 | `#93c5fd` |
+| Tang Nano 9K FPGA | `#22c55e` 🟩 | `#86efac` |
+| Level Shifters | `#14b8a6` 🟦 teal | `#5eead4` |
+| DS3218 Servos | `#f97316` 🟧 | `#fdba74` |
+| MPU6050 IMU | `#a855f7` 🟪 | `#d8b4fe` |
+| INA219 Power | `#eab308` 🟨 | `#fde047` |
+| Battery & Bucks | `#ef4444` 🟥 | `#fca5a5` |
+| Buzzer & RGB LED | `#ec4899` 🩷 | `#f9a8d4` |
+| GND / Bus | `#475569` ⬛ | `#94a3b8` |
 
 ---
 
@@ -24,69 +38,108 @@
 ```mermaid
 graph TB
     classDef rpi fill:#3b82f6,stroke:#1d4ed8,color:#fff,font-weight:bold
+    classDef rpiPin fill:#93c5fd,stroke:#3b82f6,color:#1e3a5f,font-size:11px
     classDef fpga fill:#22c55e,stroke:#15803d,color:#fff,font-weight:bold
+    classDef fpgaPin fill:#86efac,stroke:#22c55e,color:#14532d,font-size:11px
     classDef servo fill:#f97316,stroke:#c2410c,color:#fff,font-weight:bold
+    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12,font-size:11px
     classDef sensor fill:#a855f7,stroke:#7c3aed,color:#fff,font-weight:bold
+    classDef sensorPin fill:#d8b4fe,stroke:#a855f7,color:#3b0764,font-size:11px
     classDef power fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
-    classDef ls fill:#14b8a6,stroke:#0f766e,color:#fff,font-weight:bold
+    classDef powerPin fill:#fca5a5,stroke:#ef4444,color:#7f1d1d,font-size:11px
+    classDef levelshift fill:#14b8a6,stroke:#0f766e,color:#fff,font-weight:bold
+    classDef lsPin fill:#5eead4,stroke:#14b8a6,color:#134e4a,font-size:11px
     classDef alert fill:#ec4899,stroke:#be185d,color:#fff,font-weight:bold
+    classDef alertPin fill:#f9a8d4,stroke:#ec4899,color:#831843,font-size:11px
     classDef bus fill:#475569,stroke:#334155,color:#fff,font-weight:bold
     classDef inaC fill:#eab308,stroke:#ca8a04,color:#fff,font-weight:bold
 
-    BATT["🔋 18650 3S Battery<br/>11.1V"]:::power
-    BUCK_S["XL4015 Buck → 6.8V"]:::power
-    BUCK_L["LM2596 Buck → 5V"]:::power
-    RPI["🍓 Raspberry Pi 4B"]:::rpi
-    FPGA["🟢 Tang Nano 9K"]:::fpga
-    IMU["🟣 MPU6050 IMU"]:::sensor
-    INA["🟡 INA219"]:::inaC
-    BUZ["🔊 Buzzer"]:::alert
-    RGB["💡 RGB LED"]:::alert
-    LS["🔀 3× Level Shifters"]:::ls
-    SERVOS["🦿 12× DS3218 Servos"]:::servo
-    GND_BUS["⏚ Common GND Bus"]:::bus
+    subgraph POWER["⚡ POWER SYSTEM"]
+        BATT["🔋 18650 3S Battery<br/>11.1V nominal"]:::power
+        BMS["3S BMS<br/>10-20A"]:::powerPin
+        FUSE["15A Blade Fuse"]:::powerPin
+        TERM["Screw Terminal Block"]:::powerPin
+        D1["1N5822 Diode 1"]:::powerPin
+        D2["1N5822 Diode 2"]:::powerPin
+        BUCK_S["XL4015 Buck<br/>→ 6.8V Servo Rail"]:::power
+        BUCK_L["LM2596 Buck<br/>→ 5V Logic Rail"]:::power
+    end
 
-    BATT -->|"+11.1V"| BUCK_S
-    BATT -->|"+11.1V"| BUCK_L
-    BUCK_L -->|"5V USB-C"| RPI
-    BUCK_L -->|"5V USB-C"| FPGA
-    RPI -->|"SPI Bus"| FPGA
-    RPI -->|"I2C SDA+SCL"| IMU
-    RPI -->|"I2C SDA+SCL"| INA
-    RPI -->|"GPIO 18"| BUZ
-    RPI -->|"GPIO 17/27/22"| RGB
-    FPGA -->|"12× PWM 3.3V"| LS
-    LS -->|"12× PWM 5V"| SERVOS
-    BUCK_S -->|"6.8V Power"| SERVOS
-    INA -->|"Shunt Sense"| BUCK_S
-    BATT --> GND_BUS
-    RPI --> GND_BUS
-    FPGA --> GND_BUS
-    LS --> GND_BUS
-    SERVOS --> GND_BUS
-    IMU --> GND_BUS
-    INA --> GND_BUS
+    subgraph CTRL["🎮 CONTROLLERS"]
+        RPI["🍓 Raspberry Pi 4B<br/>4GB RAM"]:::rpi
+        FPGA_MAIN["🟢 Tang Nano 9K<br/>GW1NR-9C"]:::fpga
+    end
 
-    linkStyle 0 stroke:#ef4444,stroke-width:3px
-    linkStyle 1 stroke:#ef4444,stroke-width:3px
-    linkStyle 2 stroke:#ef4444,stroke-width:2px
-    linkStyle 3 stroke:#ef4444,stroke-width:2px
-    linkStyle 4 stroke:#3b82f6,stroke-width:3px
-    linkStyle 5 stroke:#a855f7,stroke-width:2px
-    linkStyle 6 stroke:#a855f7,stroke-width:2px
-    linkStyle 7 stroke:#ec4899,stroke-width:2px
-    linkStyle 8 stroke:#ec4899,stroke-width:2px
-    linkStyle 9 stroke:#22c55e,stroke-width:3px
-    linkStyle 10 stroke:#f97316,stroke-width:3px
-    linkStyle 11 stroke:#ef4444,stroke-width:3px
-    linkStyle 12 stroke:#eab308,stroke-width:2px
-    linkStyle 13 stroke:#475569,stroke-width:2px
-    linkStyle 14 stroke:#475569,stroke-width:2px
-    linkStyle 15 stroke:#475569,stroke-width:2px
-    linkStyle 16 stroke:#475569,stroke-width:2px
-    linkStyle 17 stroke:#475569,stroke-width:2px
-    linkStyle 18 stroke:#475569,stroke-width:2px
-    linkStyle 19 stroke:#475569,stroke-width:2px
+    subgraph SENSE["📡 SENSORS"]
+        IMU_MAIN["🟣 MPU6050/9250<br/>IMU"]:::sensor
+        INA_MAIN["🟡 INA219<br/>Power Monitor"]:::inaC
+    end
+
+    subgraph ALERTS["🔔 ALERTS"]
+        BUZ_MAIN["🔊 Buzzer"]:::alert
+        RGB_MAIN["💡 RGB LED"]:::alert
+    end
+
+    subgraph LS_ALL["🔀 LEVEL SHIFTERS"]
+        LS1_MAIN["LS1: Ch 0-3"]:::levelshift
+        LS2_MAIN["LS2: Ch 4-7"]:::levelshift
+        LS3_MAIN["LS3: Ch 8-11"]:::levelshift
+    end
+
+    subgraph SERVOS["🦿 12× DS3218 SERVOS"]
+        S_FL["FL Leg: Hip/Thigh/Knee"]:::servo
+        S_FR["FR Leg: Hip/Thigh/Knee"]:::servo
+        S_RL["RL Leg: Hip/Thigh/Knee"]:::servo
+        S_RR["RR Leg: Hip/Thigh/Knee"]:::servo
+    end
+
+    %% Power flow (links 0-8)
+    BATT -->|"+"| BMS
+    BMS -->|"+"| FUSE
+    FUSE --> TERM
+    TERM --> D1
+    D1 --> BUCK_S
+    TERM --> D2
+    D2 --> BUCK_L
+    BUCK_L -.->|"5V USB-C"| RPI
+    BUCK_L -.->|"5V USB-C"| FPGA_MAIN
+
+    %% Communication (links 9-13)
+    RPI ==>|"SPI Bus"| FPGA_MAIN
+    RPI -.->|"I2C Bus"| IMU_MAIN
+    RPI -.->|"I2C Bus"| INA_MAIN
+    RPI -->|"GPIO"| BUZ_MAIN
+    RPI -->|"GPIO PWM"| RGB_MAIN
+
+    %% PWM routing (links 14-22)
+    FPGA_MAIN ==>|"PWM 0-3"| LS1_MAIN
+    FPGA_MAIN ==>|"PWM 4-7"| LS2_MAIN
+    FPGA_MAIN ==>|"PWM 8-11"| LS3_MAIN
+    LS1_MAIN -->|"5V Signal"| S_FL
+    LS1_MAIN -->|"5V Signal"| S_FR
+    LS2_MAIN -->|"5V Signal"| S_FR
+    LS2_MAIN -->|"5V Signal"| S_RL
+    LS3_MAIN -->|"5V Signal"| S_RL
+    LS3_MAIN -->|"5V Signal"| S_RR
+
+    %% Servo power (links 23-26)
+    BUCK_S ==>|"6.8V"| S_FL
+    BUCK_S ==>|"6.8V"| S_FR
+    BUCK_S ==>|"6.8V"| S_RL
+    BUCK_S ==>|"6.8V"| S_RR
+
+    %% INA219 shunt (link 27)
+    INA_MAIN -.-|"Shunt Sense"| BUCK_S
+
+    linkStyle 0,1,2,3,4,5,6 stroke:#ef4444,stroke-width:2px
+    linkStyle 7,8 stroke:#ef4444,stroke-width:2px
+    linkStyle 9 stroke:#3b82f6,stroke-width:3px
+    linkStyle 10,11 stroke:#a855f7,stroke-width:2px
+    linkStyle 12,13 stroke:#ec4899,stroke-width:2px
+    linkStyle 14,15,16 stroke:#22c55e,stroke-width:3px
+    linkStyle 17,18,19,20,21,22 stroke:#f97316,stroke-width:2px
+    linkStyle 23,24,25,26 stroke:#ef4444,stroke-width:3px
+    linkStyle 27 stroke:#eab308,stroke-width:2px
 ```
 
 ---
@@ -99,107 +152,150 @@ graph LR
     classDef powerPin fill:#fca5a5,stroke:#ef4444,color:#7f1d1d
     classDef vcc fill:#22c55e,stroke:#15803d,color:#fff,font-weight:bold
     classDef gnd fill:#475569,stroke:#334155,color:#fff,font-weight:bold
-    classDef load fill:#93c5fd,stroke:#3b82f6,color:#1e3a5f
+    classDef rpiPin fill:#93c5fd,stroke:#3b82f6,color:#1e3a5f
+    classDef lsPin fill:#5eead4,stroke:#14b8a6,color:#134e4a
+    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
 
-    subgraph BATTERY["🔋 18650 3S PACK"]
-        BAT_POS["+ Positive 11.1V"]:::powerPin
+    subgraph BATTERY["🔋 18650 3S PACK — 11.1V"]
+        BAT_POS["+ Positive"]:::powerPin
         BAT_NEG["- Negative"]:::powerPin
     end
 
     subgraph BMS_BLOCK["🛡 3S BMS"]
-        BMS_IN["B+ In"]:::powerPin
-        BMS_OUT["P+ Out"]:::powerPin
+        BMS_BIN["B+ In"]:::powerPin
+        BMS_BMIN["B- In"]:::powerPin
+        BMS_POUT["P+ Out"]:::powerPin
+        BMS_NOUT["P- Out"]:::powerPin
     end
 
-    subgraph FUSE_BLOCK["⚡ 15A FUSE"]
-        FUSE_IN["In"]:::powerPin
-        FUSE_OUT["Out"]:::powerPin
+    subgraph FUSE_BLOCK["⚡ 15A INLINE FUSE"]
+        FUSE_IN["Fuse In"]:::powerPin
+        FUSE_OUT["Fuse Out"]:::powerPin
     end
 
-    subgraph TERMINAL["📦 TERMINAL BLOCK"]
-        T_V1["Out 1 → Servo Buck"]:::powerPin
-        T_V2["Out 2 → Logic Buck"]:::powerPin
+    subgraph TERMINAL["📦 SCREW TERMINAL BLOCK"]
+        T_VIN["+V In"]:::powerPin
+        T_GND["GND In"]:::powerPin
+        T_OUT1["+V Out 1"]:::powerPin
+        T_OUT2["+V Out 2"]:::powerPin
+        T_GND1["GND Out 1"]:::powerPin
+        T_GND2["GND Out 2"]:::powerPin
     end
 
-    subgraph SERVO_BUCK["⬇ XL4015 — 6.8V"]
+    subgraph DIODES["🔒 SCHOTTKY DIODES"]
+        D1_A["1N5822 #1 Anode"]:::powerPin
+        D1_K["1N5822 #1 Cathode"]:::powerPin
+        D2_A["1N5822 #2 Anode"]:::powerPin
+        D2_K["1N5822 #2 Cathode"]:::powerPin
+    end
+
+    subgraph BUCK_SERVO["⬇ XL4015 BUCK — 6.8V SERVO RAIL"]
         BS_VIN["VIN"]:::powerPin
+        BS_GND["GND"]:::powerPin
         BS_VOUT["VOUT 6.8V"]:::vcc
-        BS_GND["GND"]:::gnd
+        BS_GNDO["GND OUT"]:::gnd
     end
 
-    subgraph LOGIC_BUCK["⬇ LM2596 — 5V"]
+    subgraph BUCK_LOGIC["⬇ LM2596 BUCK — 5V LOGIC RAIL"]
         BL_VIN["VIN"]:::powerPin
+        BL_GND["GND"]:::powerPin
         BL_VOUT["VOUT 5V"]:::vcc
-        BL_GND["GND"]:::gnd
+        BL_GNDO["GND OUT"]:::gnd
     end
 
-    subgraph LOADS["📤 LOADS"]
-        RPI_PWR["RPi 4B USB-C"]:::load
-        FPGA_PWR["FPGA USB-C"]:::load
-        LS_PWR["Level Shifters HV"]:::load
-        SERVO_PWR["12× Servos"]:::load
+    subgraph COMMON_BUS["🔗 COMMON GROUND BUS"]
+        GND_BUS["⏚ COMMON GND"]:::gnd
     end
 
-    GND_STAR["⏚ COMMON GND"]:::gnd
+    subgraph LOADS["📤 POWER OUTPUTS"]
+        RPI_5V["RPi 4B — USB-C 5V"]:::rpiPin
+        FPGA_5V["Tang Nano 9K — USB-C 5V"]:::rpiPin
+        LS_HV["Level Shifters — HV 5V"]:::lsPin
+        SERVO_PWR["12× Servos — 6.8V Rail"]:::servoPin
+    end
 
-    BAT_POS -->|"14AWG"| BMS_IN
-    BMS_OUT -->|"14AWG"| FUSE_IN
-    FUSE_OUT -->|"14AWG"| T_V1
-    FUSE_OUT -->|"14AWG"| T_V2
-    T_V1 -->|"16AWG"| BS_VIN
-    T_V2 -->|"16AWG"| BL_VIN
-    BS_VOUT -->|"18AWG"| SERVO_PWR
-    BL_VOUT -->|"USB-C"| RPI_PWR
-    BL_VOUT -->|"USB-C"| FPGA_PWR
-    BL_VOUT -->|"22AWG"| LS_PWR
+    %% Battery → BMS (links 0-1)
+    BAT_POS -->|"🔴 14AWG"| BMS_BIN
+    BAT_NEG -->|"⚫ 14AWG"| BMS_BMIN
 
-    BAT_NEG --> GND_STAR
-    BS_GND --> GND_STAR
-    BL_GND --> GND_STAR
+    %% BMS → Fuse/GND (links 2-3)
+    BMS_POUT -->|"🔴 14AWG"| FUSE_IN
+    BMS_NOUT -->|"⚫ 14AWG"| GND_BUS
+
+    %% Fuse → Terminal (links 4-5)
+    FUSE_OUT -->|"🔴 14AWG"| T_VIN
+    GND_BUS -->|"⚫ 14AWG"| T_GND
+
+    %% Terminal → Diodes → Bucks (links 6-11)
+    T_OUT1 -->|"🔴 16AWG"| D1_A
+    D1_K -->|"🔴 16AWG"| BS_VIN
+    T_OUT2 -->|"🔴 16AWG"| D2_A
+    D2_K -->|"🔴 16AWG"| BL_VIN
+    T_GND1 -->|"⚫ 16AWG"| BS_GND
+    T_GND2 -->|"⚫ 16AWG"| BL_GND
+
+    %% Buck GND → common (links 12-13)
+    BS_GNDO --> GND_BUS
+    BL_GNDO --> GND_BUS
+
+    %% Buck outputs → loads (links 14-17)
+    BS_VOUT ==>|"🔴 18AWG × 6 pairs"| SERVO_PWR
+    BL_VOUT -->|"🔴 USB-C"| RPI_5V
+    BL_VOUT -->|"🔴 USB-C"| FPGA_5V
+    BL_VOUT -->|"🔴 22AWG"| LS_HV
 
     linkStyle 0 stroke:#ef4444,stroke-width:3px
-    linkStyle 1 stroke:#ef4444,stroke-width:3px
+    linkStyle 1 stroke:#475569,stroke-width:3px
     linkStyle 2 stroke:#ef4444,stroke-width:3px
-    linkStyle 3 stroke:#ef4444,stroke-width:3px
-    linkStyle 4 stroke:#ef4444,stroke-width:2px
-    linkStyle 5 stroke:#ef4444,stroke-width:2px
-    linkStyle 6 stroke:#ef4444,stroke-width:3px
-    linkStyle 7 stroke:#ef4444,stroke-width:2px
-    linkStyle 8 stroke:#ef4444,stroke-width:2px
-    linkStyle 9 stroke:#ef4444,stroke-width:2px
-    linkStyle 10 stroke:#475569,stroke-width:3px
-    linkStyle 11 stroke:#475569,stroke-width:2px
-    linkStyle 12 stroke:#475569,stroke-width:2px
+    linkStyle 3 stroke:#475569,stroke-width:3px
+    linkStyle 4 stroke:#ef4444,stroke-width:3px
+    linkStyle 5 stroke:#475569,stroke-width:3px
+    linkStyle 6,7,8,9 stroke:#ef4444,stroke-width:2px
+    linkStyle 10,11 stroke:#475569,stroke-width:2px
+    linkStyle 12,13 stroke:#475569,stroke-width:2px
+    linkStyle 14 stroke:#ef4444,stroke-width:3px
+    linkStyle 15,16,17 stroke:#ef4444,stroke-width:2px
 ```
 
 ---
 
-## 3. SPI Bus — Raspberry Pi ↔ Tang Nano 9K
+## 3. SPI Bus — Raspberry Pi ↔ Tang Nano 9K (Pin-Level)
 
 ```mermaid
 graph LR
     classDef rpiPin fill:#93c5fd,stroke:#3b82f6,color:#1e3a5f
     classDef fpgaPin fill:#86efac,stroke:#22c55e,color:#14532d
     classDef gnd fill:#475569,stroke:#334155,color:#fff
+    classDef vcc fill:#fbbf24,stroke:#d97706,color:#78350f
 
     subgraph RPI_SPI["🍓 RASPBERRY PI 4B — SPI0"]
-        R_SCLK["GPIO 11 · Pin 23<br/>SPI0_SCLK"]:::rpiPin
-        R_MOSI["GPIO 10 · Pin 19<br/>SPI0_MOSI"]:::rpiPin
-        R_CE0["GPIO 8 · Pin 24<br/>SPI0_CE0"]:::rpiPin
-        R_GND["GND · Pin 25"]:::gnd
+        RPI_SCLK["GPIO 11 · Pin 23<br/>SPI0_SCLK"]:::rpiPin
+        RPI_MOSI["GPIO 10 · Pin 19<br/>SPI0_MOSI"]:::rpiPin
+        RPI_MISO["GPIO 9 · Pin 21<br/>SPI0_MISO — NC"]:::rpiPin
+        RPI_CE0["GPIO 8 · Pin 24<br/>SPI0_CE0"]:::rpiPin
+        RPI_GND_SPI["GND · Pin 25"]:::gnd
+        RPI_3V3_SPI["3.3V · Pin 17"]:::vcc
     end
 
     subgraph FPGA_SPI["🟢 TANG NANO 9K — SPI SLAVE"]
-        F_SCLK["Pin 25<br/>spi_sclk"]:::fpgaPin
-        F_MOSI["Pin 26<br/>spi_mosi"]:::fpgaPin
-        F_CS["Pin 27<br/>spi_cs_n"]:::fpgaPin
-        F_GND["GND"]:::gnd
+        FPGA_SCLK["Pin 25<br/>spi_sclk"]:::fpgaPin
+        FPGA_MOSI["Pin 26<br/>spi_mosi"]:::fpgaPin
+        FPGA_CS["Pin 27<br/>spi_cs_n"]:::fpgaPin
+        FPGA_GND_SPI["GND<br/>Header GND"]:::gnd
     end
 
-    R_SCLK -->|"SCLK · 22AWG"| F_SCLK
-    R_MOSI -->|"MOSI · 22AWG"| F_MOSI
-    R_CE0 -->|"CS · 22AWG"| F_CS
-    R_GND -->|"GND · 22AWG"| F_GND
+    subgraph NOTES_SPI["📝 SPI NOTES"]
+        N1["Mode 0: CPOL=0 CPHA=0"]
+        N2["Clock: 1 MHz"]
+        N3["Both 3.3V logic — NO level shifter"]
+        N4["Frame: 3 bytes per servo command"]
+    end
+
+    %% SPI Signal connections (links 0-3)
+    RPI_SCLK ==>|"🔵 SCLK · 22AWG"| FPGA_SCLK
+    RPI_MOSI ==>|"🟢 MOSI · 22AWG"| FPGA_MOSI
+    RPI_CE0 ==>|"🟡 CS · 22AWG"| FPGA_CS
+    RPI_GND_SPI ---|"⚫ GND · 22AWG"| FPGA_GND_SPI
 
     linkStyle 0 stroke:#3b82f6,stroke-width:3px
     linkStyle 1 stroke:#22c55e,stroke-width:3px
@@ -208,14 +304,15 @@ graph LR
 
     style RPI_SPI fill:#1e3a5f,stroke:#3b82f6,color:#93c5fd
     style FPGA_SPI fill:#14532d,stroke:#22c55e,color:#86efac
+    style NOTES_SPI fill:#1e293b,stroke:#475569,color:#94a3b8
 ```
 
 > [!IMPORTANT]
-> Both RPi SPI0 and Tang Nano 9K run at **3.3V logic** — no level shifter needed on the SPI bus. SPI Mode 0 (CPOL=0, CPHA=0), Clock: 1 MHz, Frame: 3 bytes per servo command.
+> Both RPi 4B SPI0 and FPGA GPIO run at **3.3V** — **no level shifter is required** on the SPI bus. SPI MISO (GPIO 9) is reserved but not connected as the FPGA is receive-only.
 
 ---
 
-## 4. I2C Bus — Raspberry Pi ↔ IMU + INA219
+## 4. I2C Bus — Raspberry Pi ↔ IMU + INA219 (Pin-Level)
 
 ```mermaid
 graph LR
@@ -226,60 +323,82 @@ graph LR
     classDef vcc fill:#22c55e,stroke:#15803d,color:#fff
 
     subgraph RPI_I2C["🍓 RASPBERRY PI 4B — I2C1"]
-        R_SDA["GPIO 2 · Pin 3<br/>I2C1_SDA"]:::rpiPin
-        R_SCL["GPIO 3 · Pin 5<br/>I2C1_SCL"]:::rpiPin
-        R_3V3["3.3V · Pin 1"]:::vcc
-        R_GND_I["GND · Pin 9"]:::gnd
+        RPI_SDA["GPIO 2 · Pin 3<br/>I2C1_SDA"]:::rpiPin
+        RPI_SCL["GPIO 3 · Pin 5<br/>I2C1_SCL"]:::rpiPin
+        RPI_3V3_I2C["3.3V · Pin 1"]:::vcc
+        RPI_GND_I2C["GND · Pin 9"]:::gnd
     end
 
-    subgraph IMU_BLK["🟣 MPU6050 — Addr 0x68"]
-        I_SDA["SDA"]:::imuPin
-        I_SCL["SCL"]:::imuPin
-        I_VCC["VCC"]:::imuPin
-        I_GND["GND"]:::imuPin
-        I_AD0["AD0 → GND"]:::imuPin
+    subgraph IMU_BLOCK["🟣 MPU6050 / MPU9250 — 0x68"]
+        IMU_SDA["SDA"]:::imuPin
+        IMU_SCL["SCL"]:::imuPin
+        IMU_VCC["VCC"]:::imuPin
+        IMU_GND["GND"]:::imuPin
+        IMU_AD0["AD0 → GND<br/>Addr: 0x68"]:::imuPin
+        IMU_INT["INT — NC"]:::imuPin
     end
 
-    subgraph INA_BLK["🟡 INA219 — Addr 0x40"]
-        N_SDA["SDA"]:::inaPin
-        N_SCL["SCL"]:::inaPin
-        N_VCC["VCC"]:::inaPin
-        N_GND["GND"]:::inaPin
-        N_VP["VIN+"]:::inaPin
-        N_VN["VIN-"]:::inaPin
+    subgraph INA_BLOCK["🟡 INA219 — 0x40"]
+        INA_SDA["SDA"]:::inaPin
+        INA_SCL["SCL"]:::inaPin
+        INA_VCC["VCC"]:::inaPin
+        INA_GND["GND"]:::inaPin
+        INA_VINP["VIN+<br/>Servo rail +"]:::inaPin
+        INA_VINN["VIN-<br/>To servos"]:::inaPin
+        INA_A0["A0 → GND"]:::inaPin
+        INA_A1["A1 → GND"]:::inaPin
     end
 
-    R_SDA -->|"SDA"| I_SDA
-    R_SDA -->|"SDA"| N_SDA
-    R_SCL -->|"SCL"| I_SCL
-    R_SCL -->|"SCL"| N_SCL
-    R_3V3 -->|"3.3V"| I_VCC
-    R_3V3 -->|"3.3V"| N_VCC
-    R_GND_I -->|"GND"| I_GND
-    R_GND_I -->|"GND"| N_GND
-    I_AD0 -.->|"Tie low"| I_GND
+    subgraph I2C_BUS["🔗 SHARED I2C BUS"]
+        BUS_SDA["SDA Bus"]:::rpiPin
+        BUS_SCL["SCL Bus"]:::rpiPin
+    end
+
+    %% RPi → I2C bus (links 0-1)
+    RPI_SDA ===|"🟣 SDA · 22AWG"| BUS_SDA
+    RPI_SCL ===|"🔵 SCL · 22AWG"| BUS_SCL
+
+    %% I2C bus → IMU (links 2-3)
+    BUS_SDA ---|"🟣 SDA"| IMU_SDA
+    BUS_SCL ---|"🔵 SCL"| IMU_SCL
+
+    %% I2C bus → INA219 (links 4-5)
+    BUS_SDA ---|"🟣 SDA"| INA_SDA
+    BUS_SCL ---|"🔵 SCL"| INA_SCL
+
+    %% Power (links 6-9)
+    RPI_3V3_I2C -->|"🔴 3.3V"| IMU_VCC
+    RPI_3V3_I2C -->|"🔴 3.3V"| INA_VCC
+    RPI_GND_I2C -->|"⚫ GND"| IMU_GND
+    RPI_GND_I2C -->|"⚫ GND"| INA_GND
+
+    %% Address config (links 10-12)
+    IMU_AD0 -.-|"Tie to GND"| IMU_GND
+    INA_A0 -.-|"Tie to GND"| INA_GND
+    INA_A1 -.-|"Tie to GND"| INA_GND
 
     linkStyle 0 stroke:#a855f7,stroke-width:3px
-    linkStyle 1 stroke:#a855f7,stroke-width:3px
-    linkStyle 2 stroke:#3b82f6,stroke-width:3px
-    linkStyle 3 stroke:#3b82f6,stroke-width:3px
-    linkStyle 4 stroke:#ef4444,stroke-width:2px
-    linkStyle 5 stroke:#ef4444,stroke-width:2px
-    linkStyle 6 stroke:#475569,stroke-width:2px
-    linkStyle 7 stroke:#475569,stroke-width:2px
-    linkStyle 8 stroke:#475569,stroke-width:1px,stroke-dasharray:5
+    linkStyle 1 stroke:#3b82f6,stroke-width:3px
+    linkStyle 2 stroke:#a855f7,stroke-width:2px
+    linkStyle 3 stroke:#3b82f6,stroke-width:2px
+    linkStyle 4 stroke:#a855f7,stroke-width:2px
+    linkStyle 5 stroke:#3b82f6,stroke-width:2px
+    linkStyle 6,7 stroke:#ef4444,stroke-width:2px
+    linkStyle 8,9 stroke:#475569,stroke-width:2px
+    linkStyle 10,11,12 stroke:#94a3b8,stroke-width:1px,stroke-dasharray:5
 
     style RPI_I2C fill:#1e3a5f,stroke:#3b82f6,color:#93c5fd
-    style IMU_BLK fill:#3b0764,stroke:#a855f7,color:#d8b4fe
-    style INA_BLK fill:#713f12,stroke:#eab308,color:#fde047
+    style IMU_BLOCK fill:#3b0764,stroke:#a855f7,color:#d8b4fe
+    style INA_BLOCK fill:#713f12,stroke:#eab308,color:#fde047
+    style I2C_BUS fill:#1e293b,stroke:#475569,color:#94a3b8
 ```
 
 > [!NOTE]
-> **I2C pull-ups:** RPi 4B has built-in 1.8kΩ pull-ups. Most breakout boards add their own. If using bare ICs, add **4.7kΩ pull-ups to 3.3V** on SDA and SCL.
+> **I2C pull-ups:** The RPi 4B has built-in 1.8kΩ pull-ups on SDA/SCL. Most breakout boards add their own. If using bare ICs, add **4.7kΩ pull-ups to 3.3V** on both SDA and SCL.
 
 ---
 
-## 5. PWM — FPGA → Level Shifter 1 → Front Left + FR Hip
+## 5. PWM Outputs — FPGA → Level Shifters → Servos (All 12 Channels)
 
 ```mermaid
 graph LR
@@ -289,300 +408,299 @@ graph LR
     classDef vcc fill:#22c55e,stroke:#15803d,color:#fff
     classDef gnd fill:#475569,stroke:#334155,color:#fff
 
-    subgraph FPGA_LS1["🟢 FPGA — Channels 0-3"]
-        F28["Pin 28 · pwm 0"]:::fpgaPin
-        F29["Pin 29 · pwm 1"]:::fpgaPin
-        F30["Pin 30 · pwm 2"]:::fpgaPin
-        F31["Pin 31 · pwm 3"]:::fpgaPin
+    subgraph FPGA_PWM["🟢 TANG NANO 9K — PWM OUTPUTS"]
+        F0["Pin 28<br/>pwm_out 0"]:::fpgaPin
+        F1["Pin 29<br/>pwm_out 1"]:::fpgaPin
+        F2["Pin 30<br/>pwm_out 2"]:::fpgaPin
+        F3["Pin 31<br/>pwm_out 3"]:::fpgaPin
+        F4["Pin 32<br/>pwm_out 4"]:::fpgaPin
+        F5["Pin 33<br/>pwm_out 5"]:::fpgaPin
+        F6["Pin 34<br/>pwm_out 6"]:::fpgaPin
+        F7["Pin 35<br/>pwm_out 7"]:::fpgaPin
+        F8["Pin 40<br/>pwm_out 8"]:::fpgaPin
+        F9["Pin 41<br/>pwm_out 9"]:::fpgaPin
+        F10["Pin 42<br/>pwm_out 10"]:::fpgaPin
+        F11["Pin 48<br/>pwm_out 11"]:::fpgaPin
+        F_3V3["3.3V"]:::vcc
+        F_GND["GND"]:::gnd
     end
 
-    subgraph LS1_BLK["🔀 LEVEL SHIFTER 1"]
-        L1_LV["LV: 3.3V"]:::vcc
-        L1_HV["HV: 5V"]:::vcc
-        L1_GND["GND"]:::gnd
-        L1_A["LV1 → HV1"]:::lsPin
-        L1_B["LV2 → HV2"]:::lsPin
-        L1_C["LV3 → HV3"]:::lsPin
-        L1_D["LV4 → HV4"]:::lsPin
+    subgraph LS1["🔀 LEVEL SHIFTER 1"]
+        LS1_LV["LV: 3.3V"]:::lsPin
+        LS1_HV["HV: 5V"]:::lsPin
+        LS1_GND["GND"]:::gnd
+        LS1_A1["LV1 → HV1"]:::lsPin
+        LS1_A2["LV2 → HV2"]:::lsPin
+        LS1_A3["LV3 → HV3"]:::lsPin
+        LS1_A4["LV4 → HV4"]:::lsPin
     end
 
-    subgraph SRV_LS1["🦿 SERVOS"]
-        S0["DS3218 #0 · FL Hip"]:::servoPin
-        S1["DS3218 #1 · FL Thigh"]:::servoPin
-        S2["DS3218 #2 · FL Knee"]:::servoPin
-        S3["DS3218 #3 · FR Hip"]:::servoPin
+    subgraph LS2["🔀 LEVEL SHIFTER 2"]
+        LS2_LV["LV: 3.3V"]:::lsPin
+        LS2_HV["HV: 5V"]:::lsPin
+        LS2_GND["GND"]:::gnd
+        LS2_A1["LV1 → HV1"]:::lsPin
+        LS2_A2["LV2 → HV2"]:::lsPin
+        LS2_A3["LV3 → HV3"]:::lsPin
+        LS2_A4["LV4 → HV4"]:::lsPin
     end
 
-    F28 -->|"3.3V PWM"| L1_A
-    F29 -->|"3.3V PWM"| L1_B
-    F30 -->|"3.3V PWM"| L1_C
-    F31 -->|"3.3V PWM"| L1_D
-    L1_A -->|"5V Signal"| S0
-    L1_B -->|"5V Signal"| S1
-    L1_C -->|"5V Signal"| S2
-    L1_D -->|"5V Signal"| S3
-
-    linkStyle 0 stroke:#22c55e,stroke-width:2px
-    linkStyle 1 stroke:#22c55e,stroke-width:2px
-    linkStyle 2 stroke:#22c55e,stroke-width:2px
-    linkStyle 3 stroke:#22c55e,stroke-width:2px
-    linkStyle 4 stroke:#f97316,stroke-width:3px
-    linkStyle 5 stroke:#f97316,stroke-width:3px
-    linkStyle 6 stroke:#f97316,stroke-width:3px
-    linkStyle 7 stroke:#f97316,stroke-width:3px
-
-    style FPGA_LS1 fill:#14532d,stroke:#22c55e,color:#86efac
-    style LS1_BLK fill:#134e4a,stroke:#14b8a6,color:#5eead4
-    style SRV_LS1 fill:#7c2d12,stroke:#f97316,color:#fdba74
-```
-
-## 6. PWM — FPGA → Level Shifter 2 → FR Thigh/Knee + RL Hip/Thigh
-
-```mermaid
-graph LR
-    classDef fpgaPin fill:#86efac,stroke:#22c55e,color:#14532d
-    classDef lsPin fill:#5eead4,stroke:#14b8a6,color:#134e4a
-    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
-    classDef vcc fill:#22c55e,stroke:#15803d,color:#fff
-    classDef gnd fill:#475569,stroke:#334155,color:#fff
-
-    subgraph FPGA_LS2["🟢 FPGA — Channels 4-7"]
-        F32["Pin 32 · pwm 4"]:::fpgaPin
-        F33["Pin 33 · pwm 5"]:::fpgaPin
-        F34["Pin 34 · pwm 6"]:::fpgaPin
-        F35["Pin 35 · pwm 7"]:::fpgaPin
+    subgraph LS3["🔀 LEVEL SHIFTER 3"]
+        LS3_LV["LV: 3.3V"]:::lsPin
+        LS3_HV["HV: 5V"]:::lsPin
+        LS3_GND["GND"]:::gnd
+        LS3_A1["LV1 → HV1"]:::lsPin
+        LS3_A2["LV2 → HV2"]:::lsPin
+        LS3_A3["LV3 → HV3"]:::lsPin
+        LS3_A4["LV4 → HV4"]:::lsPin
     end
 
-    subgraph LS2_BLK["🔀 LEVEL SHIFTER 2"]
-        L2_LV["LV: 3.3V"]:::vcc
-        L2_HV["HV: 5V"]:::vcc
-        L2_GND["GND"]:::gnd
-        L2_A["LV1 → HV1"]:::lsPin
-        L2_B["LV2 → HV2"]:::lsPin
-        L2_C["LV3 → HV3"]:::lsPin
-        L2_D["LV4 → HV4"]:::lsPin
+    subgraph FL_LEG["🦿 FRONT LEFT LEG"]
+        FL_H["DS3218 #0<br/>FL Hip · Signal"]:::servoPin
+        FL_T["DS3218 #1<br/>FL Thigh · Signal"]:::servoPin
+        FL_K["DS3218 #2<br/>FL Knee · Signal"]:::servoPin
     end
 
-    subgraph SRV_LS2["🦿 SERVOS"]
-        S4["DS3218 #4 · FR Thigh"]:::servoPin
-        S5["DS3218 #5 · FR Knee"]:::servoPin
-        S6["DS3218 #6 · RL Hip"]:::servoPin
-        S7["DS3218 #7 · RL Thigh"]:::servoPin
+    subgraph FR_LEG["🦿 FRONT RIGHT LEG"]
+        FR_H["DS3218 #3<br/>FR Hip · Signal"]:::servoPin
+        FR_T["DS3218 #4<br/>FR Thigh · Signal"]:::servoPin
+        FR_K["DS3218 #5<br/>FR Knee · Signal"]:::servoPin
     end
 
-    F32 -->|"3.3V PWM"| L2_A
-    F33 -->|"3.3V PWM"| L2_B
-    F34 -->|"3.3V PWM"| L2_C
-    F35 -->|"3.3V PWM"| L2_D
-    L2_A -->|"5V Signal"| S4
-    L2_B -->|"5V Signal"| S5
-    L2_C -->|"5V Signal"| S6
-    L2_D -->|"5V Signal"| S7
-
-    linkStyle 0 stroke:#22c55e,stroke-width:2px
-    linkStyle 1 stroke:#22c55e,stroke-width:2px
-    linkStyle 2 stroke:#22c55e,stroke-width:2px
-    linkStyle 3 stroke:#22c55e,stroke-width:2px
-    linkStyle 4 stroke:#f97316,stroke-width:3px
-    linkStyle 5 stroke:#f97316,stroke-width:3px
-    linkStyle 6 stroke:#f97316,stroke-width:3px
-    linkStyle 7 stroke:#f97316,stroke-width:3px
-
-    style FPGA_LS2 fill:#14532d,stroke:#22c55e,color:#86efac
-    style LS2_BLK fill:#134e4a,stroke:#14b8a6,color:#5eead4
-    style SRV_LS2 fill:#7c2d12,stroke:#f97316,color:#fdba74
-```
-
-## 7. PWM — FPGA → Level Shifter 3 → RL Knee + RR Leg
-
-```mermaid
-graph LR
-    classDef fpgaPin fill:#86efac,stroke:#22c55e,color:#14532d
-    classDef lsPin fill:#5eead4,stroke:#14b8a6,color:#134e4a
-    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
-    classDef vcc fill:#22c55e,stroke:#15803d,color:#fff
-    classDef gnd fill:#475569,stroke:#334155,color:#fff
-
-    subgraph FPGA_LS3["🟢 FPGA — Channels 8-11"]
-        F40["Pin 40 · pwm 8"]:::fpgaPin
-        F41["Pin 41 · pwm 9"]:::fpgaPin
-        F42["Pin 42 · pwm 10"]:::fpgaPin
-        F48["Pin 48 · pwm 11"]:::fpgaPin
+    subgraph RL_LEG["🦿 REAR LEFT LEG"]
+        RL_H["DS3218 #6<br/>RL Hip · Signal"]:::servoPin
+        RL_T["DS3218 #7<br/>RL Thigh · Signal"]:::servoPin
+        RL_K["DS3218 #8<br/>RL Knee · Signal"]:::servoPin
     end
 
-    subgraph LS3_BLK["🔀 LEVEL SHIFTER 3"]
-        L3_LV["LV: 3.3V"]:::vcc
-        L3_HV["HV: 5V"]:::vcc
-        L3_GND["GND"]:::gnd
-        L3_A["LV1 → HV1"]:::lsPin
-        L3_B["LV2 → HV2"]:::lsPin
-        L3_C["LV3 → HV3"]:::lsPin
-        L3_D["LV4 → HV4"]:::lsPin
+    subgraph RR_LEG["🦿 REAR RIGHT LEG"]
+        RR_H["DS3218 #9<br/>RR Hip · Signal"]:::servoPin
+        RR_T["DS3218 #10<br/>RR Thigh · Signal"]:::servoPin
+        RR_K["DS3218 #11<br/>RR Knee · Signal"]:::servoPin
     end
 
-    subgraph SRV_LS3["🦿 SERVOS"]
-        S8["DS3218 #8 · RL Knee"]:::servoPin
-        S9["DS3218 #9 · RR Hip"]:::servoPin
-        S10["DS3218 #10 · RR Thigh"]:::servoPin
-        S11["DS3218 #11 · RR Knee"]:::servoPin
-    end
+    %% FPGA → LS1 Ch 0-3 (links 0-3)
+    F0 -->|"Ch0 3.3V"| LS1_A1
+    F1 -->|"Ch1 3.3V"| LS1_A2
+    F2 -->|"Ch2 3.3V"| LS1_A3
+    F3 -->|"Ch3 3.3V"| LS1_A4
 
-    F40 -->|"3.3V PWM"| L3_A
-    F41 -->|"3.3V PWM"| L3_B
-    F42 -->|"3.3V PWM"| L3_C
-    F48 -->|"3.3V PWM"| L3_D
-    L3_A -->|"5V Signal"| S8
-    L3_B -->|"5V Signal"| S9
-    L3_C -->|"5V Signal"| S10
-    L3_D -->|"5V Signal"| S11
+    %% FPGA → LS2 Ch 4-7 (links 4-7)
+    F4 -->|"Ch4 3.3V"| LS2_A1
+    F5 -->|"Ch5 3.3V"| LS2_A2
+    F6 -->|"Ch6 3.3V"| LS2_A3
+    F7 -->|"Ch7 3.3V"| LS2_A4
 
-    linkStyle 0 stroke:#22c55e,stroke-width:2px
-    linkStyle 1 stroke:#22c55e,stroke-width:2px
-    linkStyle 2 stroke:#22c55e,stroke-width:2px
-    linkStyle 3 stroke:#22c55e,stroke-width:2px
-    linkStyle 4 stroke:#f97316,stroke-width:3px
-    linkStyle 5 stroke:#f97316,stroke-width:3px
-    linkStyle 6 stroke:#f97316,stroke-width:3px
-    linkStyle 7 stroke:#f97316,stroke-width:3px
+    %% FPGA → LS3 Ch 8-11 (links 8-11)
+    F8 -->|"Ch8 3.3V"| LS3_A1
+    F9 -->|"Ch9 3.3V"| LS3_A2
+    F10 -->|"Ch10 3.3V"| LS3_A3
+    F11 -->|"Ch11 3.3V"| LS3_A4
 
-    style FPGA_LS3 fill:#14532d,stroke:#22c55e,color:#86efac
-    style LS3_BLK fill:#134e4a,stroke:#14b8a6,color:#5eead4
-    style SRV_LS3 fill:#7c2d12,stroke:#f97316,color:#fdba74
+    %% LS1 → Servos 5V (links 12-15)
+    LS1_A1 ==>|"5V Signal"| FL_H
+    LS1_A2 ==>|"5V Signal"| FL_T
+    LS1_A3 ==>|"5V Signal"| FL_K
+    LS1_A4 ==>|"5V Signal"| FR_H
+
+    %% LS2 → Servos 5V (links 16-19)
+    LS2_A1 ==>|"5V Signal"| FR_T
+    LS2_A2 ==>|"5V Signal"| FR_K
+    LS2_A3 ==>|"5V Signal"| RL_H
+    LS2_A4 ==>|"5V Signal"| RL_T
+
+    %% LS3 → Servos 5V (links 20-23)
+    LS3_A1 ==>|"5V Signal"| RL_K
+    LS3_A2 ==>|"5V Signal"| RR_H
+    LS3_A3 ==>|"5V Signal"| RR_T
+    LS3_A4 ==>|"5V Signal"| RR_K
+
+    %% Level shifter LV power (links 24-26)
+    F_3V3 -.->|"LV Ref"| LS1_LV
+    F_3V3 -.->|"LV Ref"| LS2_LV
+    F_3V3 -.->|"LV Ref"| LS3_LV
+
+    linkStyle 0,1,2,3,4,5,6,7,8,9,10,11 stroke:#22c55e,stroke-width:2px
+    linkStyle 12,13,14,15,16,17,18,19,20,21,22,23 stroke:#f97316,stroke-width:3px
+    linkStyle 24,25,26 stroke:#ef4444,stroke-width:1px
+
+    style FPGA_PWM fill:#14532d,stroke:#22c55e,color:#86efac
+    style LS1 fill:#134e4a,stroke:#14b8a6,color:#5eead4
+    style LS2 fill:#134e4a,stroke:#14b8a6,color:#5eead4
+    style LS3 fill:#134e4a,stroke:#14b8a6,color:#5eead4
+    style FL_LEG fill:#7c2d12,stroke:#f97316,color:#fdba74
+    style FR_LEG fill:#7c2d12,stroke:#f97316,color:#fdba74
+    style RL_LEG fill:#7c2d12,stroke:#f97316,color:#fdba74
+    style RR_LEG fill:#7c2d12,stroke:#f97316,color:#fdba74
 ```
 
 ---
 
-## 8. GPIO — Buzzer + RGB LED
+## 6. GPIO — Buzzer + RGB LED (Pin-Level)
 
 ```mermaid
 graph LR
     classDef rpiPin fill:#93c5fd,stroke:#3b82f6,color:#1e3a5f
     classDef alertPin fill:#f9a8d4,stroke:#ec4899,color:#831843
     classDef gnd fill:#475569,stroke:#334155,color:#fff
-    classDef res fill:#78716c,stroke:#57534e,color:#fff
+    classDef resistor fill:#78716c,stroke:#57534e,color:#fff
 
-    subgraph RPI_GPIO["🍓 RASPBERRY PI 4B"]
-        G18["GPIO 18 · Pin 12<br/>Buzzer PWM"]:::rpiPin
-        G17["GPIO 17 · Pin 11<br/>Red"]:::rpiPin
-        G27["GPIO 27 · Pin 13<br/>Green"]:::rpiPin
-        G22["GPIO 22 · Pin 15<br/>Blue"]:::rpiPin
-        GG["GND · Pin 14"]:::gnd
+    subgraph RPI_GPIO["🍓 RASPBERRY PI 4B — GPIO"]
+        RPI_GP18["GPIO 18 · Pin 12<br/>PWM0 — Buzzer"]:::rpiPin
+        RPI_GP17["GPIO 17 · Pin 11<br/>Red Channel"]:::rpiPin
+        RPI_GP27["GPIO 27 · Pin 13<br/>Green Channel"]:::rpiPin
+        RPI_GP22["GPIO 22 · Pin 15<br/>Blue Channel"]:::rpiPin
+        RPI_GNDG["GND · Pin 14"]:::gnd
     end
 
-    subgraph RESISTORS["🔧 220Ω RESISTORS"]
-        R1["R1 220Ω"]:::res
-        R2["R2 220Ω"]:::res
-        R3["R3 220Ω"]:::res
+    subgraph RESISTORS["🔧 CURRENT LIMITING"]
+        R1["220Ω R"]:::resistor
+        R2["220Ω G"]:::resistor
+        R3["220Ω B"]:::resistor
     end
 
-    subgraph BUZZER_B["🔊 ACTIVE BUZZER"]
-        BUZ_P["Signal +"]:::alertPin
-        BUZ_N["GND -"]:::alertPin
+    subgraph BUZZER_BLOCK["🔊 ACTIVE BUZZER"]
+        BUZ_SIG["Signal +"]:::alertPin
+        BUZ_GND["GND -"]:::alertPin
     end
 
-    subgraph RGB_B["💡 RGB LED — Common Cathode"]
+    subgraph RGB_BLOCK["💡 RGB LED — Common Cathode"]
         RGB_R["Red Anode"]:::alertPin
         RGB_G["Green Anode"]:::alertPin
-        RGB_BL["Blue Anode"]:::alertPin
-        RGB_K["Common Cathode"]:::alertPin
+        RGB_B["Blue Anode"]:::alertPin
+        RGB_GND["Common Cathode"]:::alertPin
     end
 
-    G18 -->|"PWM"| BUZ_P
-    BUZ_N -->|"GND"| GG
-    G17 -->|"PWM"| R1
-    R1 --> RGB_R
-    G27 -->|"PWM"| R2
-    R2 --> RGB_G
-    G22 -->|"PWM"| R3
-    R3 --> RGB_BL
-    RGB_K -->|"GND"| GG
+    %% Buzzer (links 0-1)
+    RPI_GP18 ==>|"🟠 PWM Signal"| BUZ_SIG
+    BUZ_GND -->|"⚫ GND"| RPI_GNDG
+
+    %% RGB LED via resistors (links 2-8)
+    RPI_GP17 -->|"🔴 PWM"| R1
+    R1 -->|" "| RGB_R
+    RPI_GP27 -->|"🟢 PWM"| R2
+    R2 -->|" "| RGB_G
+    RPI_GP22 -->|"🔵 PWM"| R3
+    R3 -->|" "| RGB_B
+    RGB_GND -->|"⚫ GND"| RPI_GNDG
 
     linkStyle 0 stroke:#ec4899,stroke-width:3px
     linkStyle 1 stroke:#475569,stroke-width:2px
-    linkStyle 2 stroke:#ef4444,stroke-width:2px
-    linkStyle 3 stroke:#ef4444,stroke-width:2px
-    linkStyle 4 stroke:#22c55e,stroke-width:2px
-    linkStyle 5 stroke:#22c55e,stroke-width:2px
-    linkStyle 6 stroke:#3b82f6,stroke-width:2px
-    linkStyle 7 stroke:#3b82f6,stroke-width:2px
+    linkStyle 2,3 stroke:#ef4444,stroke-width:2px
+    linkStyle 4,5 stroke:#22c55e,stroke-width:2px
+    linkStyle 6,7 stroke:#3b82f6,stroke-width:2px
     linkStyle 8 stroke:#475569,stroke-width:2px
 
     style RPI_GPIO fill:#1e3a5f,stroke:#3b82f6,color:#93c5fd
-    style BUZZER_B fill:#831843,stroke:#ec4899,color:#f9a8d4
-    style RGB_B fill:#831843,stroke:#ec4899,color:#f9a8d4
+    style BUZZER_BLOCK fill:#831843,stroke:#ec4899,color:#f9a8d4
+    style RGB_BLOCK fill:#831843,stroke:#ec4899,color:#f9a8d4
     style RESISTORS fill:#292524,stroke:#78716c,color:#d6d3d1
 ```
 
 ---
 
-## 9. Servo Power — 6.8V Rail to All 12 DS3218 Servos
+## 7. Servo Power Wiring — All 12 DS3218 (3 Wires Each)
 
 ```mermaid
-graph LR
-    classDef rail fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
-    classDef railGnd fill:#475569,stroke:#334155,color:#fff,font-weight:bold
+graph TB
     classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
+    classDef power fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
+    classDef gnd fill:#475569,stroke:#334155,color:#fff
 
-    RAIL_P["+6.8V Rail<br/>XL4015 Output"]:::rail
-    RAIL_G["GND Rail"]:::railGnd
-
-    subgraph FL["🦿 FRONT LEFT"]
-        FL0["FL Hip · Red wire"]:::servoPin
-        FL1["FL Thigh · Red wire"]:::servoPin
-        FL2["FL Knee · Red wire"]:::servoPin
-        FL0G["FL Hip · Brown wire"]:::servoPin
-        FL1G["FL Thigh · Brown wire"]:::servoPin
-        FL2G["FL Knee · Brown wire"]:::servoPin
+    subgraph SERVO_RAIL["⚡ XL4015 OUTPUT — 6.8V SERVO POWER RAIL"]
+        RAIL_POS["+ 6.8V Rail"]:::power
+        RAIL_GND["- GND Rail"]:::gnd
     end
 
-    subgraph FR["🦿 FRONT RIGHT"]
-        FR0["FR Hip · Red"]:::servoPin
-        FR1["FR Thigh · Red"]:::servoPin
-        FR2["FR Knee · Red"]:::servoPin
-        FR0G["FR Hip · Brown"]:::servoPin
-        FR1G["FR Thigh · Brown"]:::servoPin
-        FR2G["FR Knee · Brown"]:::servoPin
+    subgraph FRONT_LEFT["🦿 FRONT LEFT"]
+        FLH_PWR["FL Hip: 🔴 Red → +6.8V"]:::servoPin
+        FLH_GND["FL Hip: ⚫ Brown → GND"]:::servoPin
+        FLH_SIG["FL Hip: 🟠 Orange → LS1 HV1"]:::servoPin
+        FLT_PWR["FL Thigh: 🔴 Red → +6.8V"]:::servoPin
+        FLT_GND["FL Thigh: ⚫ Brown → GND"]:::servoPin
+        FLT_SIG["FL Thigh: 🟠 Orange → LS1 HV2"]:::servoPin
+        FLK_PWR["FL Knee: 🔴 Red → +6.8V"]:::servoPin
+        FLK_GND["FL Knee: ⚫ Brown → GND"]:::servoPin
+        FLK_SIG["FL Knee: 🟠 Orange → LS1 HV3"]:::servoPin
     end
 
-    subgraph RL["🦿 REAR LEFT"]
-        RL0["RL Hip · Red"]:::servoPin
-        RL1["RL Thigh · Red"]:::servoPin
-        RL2["RL Knee · Red"]:::servoPin
-        RL0G["RL Hip · Brown"]:::servoPin
-        RL1G["RL Thigh · Brown"]:::servoPin
-        RL2G["RL Knee · Brown"]:::servoPin
+    subgraph FRONT_RIGHT["🦿 FRONT RIGHT"]
+        FRH_PWR["FR Hip: 🔴 Red → +6.8V"]:::servoPin
+        FRH_GND["FR Hip: ⚫ Brown → GND"]:::servoPin
+        FRH_SIG["FR Hip: 🟠 Orange → LS1 HV4"]:::servoPin
+        FRT_PWR["FR Thigh: 🔴 Red → +6.8V"]:::servoPin
+        FRT_GND["FR Thigh: ⚫ Brown → GND"]:::servoPin
+        FRT_SIG["FR Thigh: 🟠 Orange → LS2 HV1"]:::servoPin
+        FRK_PWR["FR Knee: 🔴 Red → +6.8V"]:::servoPin
+        FRK_GND["FR Knee: ⚫ Brown → GND"]:::servoPin
+        FRK_SIG["FR Knee: 🟠 Orange → LS2 HV2"]:::servoPin
     end
 
-    subgraph RR["🦿 REAR RIGHT"]
-        RR0["RR Hip · Red"]:::servoPin
-        RR1["RR Thigh · Red"]:::servoPin
-        RR2["RR Knee · Red"]:::servoPin
-        RR0G["RR Hip · Brown"]:::servoPin
-        RR1G["RR Thigh · Brown"]:::servoPin
-        RR2G["RR Knee · Brown"]:::servoPin
+    subgraph REAR_LEFT["🦿 REAR LEFT"]
+        RLH_PWR["RL Hip: 🔴 Red → +6.8V"]:::servoPin
+        RLH_GND["RL Hip: ⚫ Brown → GND"]:::servoPin
+        RLH_SIG["RL Hip: 🟠 Orange → LS2 HV3"]:::servoPin
+        RLT_PWR["RL Thigh: 🔴 Red → +6.8V"]:::servoPin
+        RLT_GND["RL Thigh: ⚫ Brown → GND"]:::servoPin
+        RLT_SIG["RL Thigh: 🟠 Orange → LS2 HV4"]:::servoPin
+        RLK_PWR["RL Knee: 🔴 Red → +6.8V"]:::servoPin
+        RLK_GND["RL Knee: ⚫ Brown → GND"]:::servoPin
+        RLK_SIG["RL Knee: 🟠 Orange → LS3 HV1"]:::servoPin
     end
 
-    RAIL_P --> FL0 & FL1 & FL2
-    RAIL_P --> FR0 & FR1 & FR2
-    RAIL_P --> RL0 & RL1 & RL2
-    RAIL_P --> RR0 & RR1 & RR2
-    RAIL_G --> FL0G & FL1G & FL2G
-    RAIL_G --> FR0G & FR1G & FR2G
-    RAIL_G --> RL0G & RL1G & RL2G
-    RAIL_G --> RR0G & RR1G & RR2G
+    subgraph REAR_RIGHT["🦿 REAR RIGHT"]
+        RRH_PWR["RR Hip: 🔴 Red → +6.8V"]:::servoPin
+        RRH_GND["RR Hip: ⚫ Brown → GND"]:::servoPin
+        RRH_SIG["RR Hip: 🟠 Orange → LS3 HV2"]:::servoPin
+        RRT_PWR["RR Thigh: 🔴 Red → +6.8V"]:::servoPin
+        RRT_GND["RR Thigh: ⚫ Brown → GND"]:::servoPin
+        RRT_SIG["RR Thigh: 🟠 Orange → LS3 HV3"]:::servoPin
+        RRK_PWR["RR Knee: 🔴 Red → +6.8V"]:::servoPin
+        RRK_GND["RR Knee: ⚫ Brown → GND"]:::servoPin
+        RRK_SIG["RR Knee: 🟠 Orange → LS3 HV4"]:::servoPin
+    end
+
+    %% VCC connections (links 0-11)
+    RAIL_POS ==> FLH_PWR
+    RAIL_POS ==> FLT_PWR
+    RAIL_POS ==> FLK_PWR
+    RAIL_POS ==> FRH_PWR
+    RAIL_POS ==> FRT_PWR
+    RAIL_POS ==> FRK_PWR
+    RAIL_POS ==> RLH_PWR
+    RAIL_POS ==> RLT_PWR
+    RAIL_POS ==> RLK_PWR
+    RAIL_POS ==> RRH_PWR
+    RAIL_POS ==> RRT_PWR
+    RAIL_POS ==> RRK_PWR
+
+    %% GND connections (links 12-23)
+    RAIL_GND ==> FLH_GND
+    RAIL_GND ==> FLT_GND
+    RAIL_GND ==> FLK_GND
+    RAIL_GND ==> FRH_GND
+    RAIL_GND ==> FRT_GND
+    RAIL_GND ==> FRK_GND
+    RAIL_GND ==> RLH_GND
+    RAIL_GND ==> RLT_GND
+    RAIL_GND ==> RLK_GND
+    RAIL_GND ==> RRH_GND
+    RAIL_GND ==> RRT_GND
+    RAIL_GND ==> RRK_GND
 
     linkStyle 0,1,2,3,4,5,6,7,8,9,10,11 stroke:#ef4444,stroke-width:2px
     linkStyle 12,13,14,15,16,17,18,19,20,21,22,23 stroke:#475569,stroke-width:2px
 
-    style FL fill:#7c2d12,stroke:#f97316,color:#fdba74
-    style FR fill:#7c2d12,stroke:#f97316,color:#fdba74
-    style RL fill:#7c2d12,stroke:#f97316,color:#fdba74
-    style RR fill:#7c2d12,stroke:#f97316,color:#fdba74
+    style SERVO_RAIL fill:#7f1d1d,stroke:#ef4444,color:#fca5a5
+    style FRONT_LEFT fill:#7c2d12,stroke:#f97316,color:#fdba74
+    style FRONT_RIGHT fill:#7c2d12,stroke:#f97316,color:#fdba74
+    style REAR_LEFT fill:#7c2d12,stroke:#f97316,color:#fdba74
+    style REAR_RIGHT fill:#7c2d12,stroke:#f97316,color:#fdba74
 ```
 
 ---
 
-## 10. INA219 — Shunt Resistor Placement
+## 8. INA219 Power Sensing — Shunt Placement
 
 ```mermaid
 graph LR
@@ -590,29 +708,42 @@ graph LR
     classDef inaPin fill:#fde047,stroke:#eab308,color:#713f12
     classDef servo fill:#f97316,stroke:#c2410c,color:#fff,font-weight:bold
 
-    BUCK["+6.8V<br/>XL4015 Out"]:::power
-    VIN_P["INA219 VIN+"]:::inaPin
-    SHUNT["0.1Ω Shunt<br/>Resistor"]:::inaPin
-    VIN_N["INA219 VIN-"]:::inaPin
-    DIST["Servo Power<br/>Distribution"]:::servo
+    subgraph XL4015["⬇ XL4015 BUCK OUTPUT"]
+        BUCK_OUT["+6.8V Output"]:::power
+    end
 
-    BUCK -->|"+6.8V"| VIN_P
-    VIN_P --> SHUNT
-    SHUNT --> VIN_N
-    VIN_N -->|"To servos"| DIST
+    subgraph INA_SENSE["🟡 INA219 SHUNT PLACEMENT"]
+        INA_VINP["VIN+<br/>From buck output"]:::inaPin
+        SHUNT["0.1Ω Shunt Resistor<br/>Current sense"]:::inaPin
+        INA_VINN["VIN-<br/>To servo distribution"]:::inaPin
+    end
+
+    subgraph DIST["📦 SERVO DISTRIBUTION"]
+        SERVO_DIST["Servo Power<br/>Terminal Block"]:::servo
+    end
+
+    %% Shunt path (links 0-3)
+    BUCK_OUT ==>|"🔴 +6.8V"| INA_VINP
+    INA_VINP -->|"Through"| SHUNT
+    SHUNT -->|"Through"| INA_VINN
+    INA_VINN ==>|"🔴 +6.8V to servos"| SERVO_DIST
 
     linkStyle 0 stroke:#ef4444,stroke-width:3px
     linkStyle 1 stroke:#eab308,stroke-width:3px
     linkStyle 2 stroke:#eab308,stroke-width:3px
     linkStyle 3 stroke:#ef4444,stroke-width:3px
+
+    style XL4015 fill:#7f1d1d,stroke:#ef4444,color:#fca5a5
+    style INA_SENSE fill:#713f12,stroke:#eab308,color:#fde047
+    style DIST fill:#7c2d12,stroke:#f97316,color:#fdba74
 ```
 
 > [!TIP]
-> The 0.1Ω shunt is wired **in series** on the positive servo rail. The INA219 measures voltage drop across it to calculate total servo current. Place it between the XL4015 output and the servo distribution terminal.
+> The INA219 measures current by sensing the voltage drop across the 0.1Ω shunt resistor placed **in series** on the positive servo power rail. This monitors total current draw of all 12 servos simultaneously.
 
 ---
 
-## 11. Common Ground — Star Topology
+## 9. Common Ground Bus — Star Topology
 
 ```mermaid
 graph TB
@@ -626,97 +757,96 @@ graph TB
     classDef alertPin fill:#f9a8d4,stroke:#ec4899,color:#831843
     classDef powerPin fill:#fca5a5,stroke:#ef4444,color:#7f1d1d
 
-    GND_HUB["⏚ COMMON GROUND<br/>STAR POINT<br/>Terminal Block"]:::gnd
+    GND_STAR["⏚ COMMON GROUND<br/>Star Topology<br/>at Terminal Block"]:::gnd
 
     BAT_G["Battery -"]:::powerPin
     BUCKS_G["XL4015 GND"]:::powerPin
     BUCKL_G["LM2596 GND"]:::powerPin
-    RPI_G["RPi 4B GND<br/>Pin 6/9/14/20/25"]:::rpiPin
-    FPGA_G["Tang Nano 9K GND"]:::fpgaPin
+    RPI_G["RPi 4B GND<br/>Pin 6/9/14/20/25/30/34/39"]:::rpiPin
+    FPGA_G["Tang Nano 9K GND<br/>Header GND"]:::fpgaPin
     LS1_G["Level Shifter 1 GND"]:::lsPin
     LS2_G["Level Shifter 2 GND"]:::lsPin
     LS3_G["Level Shifter 3 GND"]:::lsPin
-    SRV_G["12× Servo Brown Wire"]:::servoPin
     IMU_G["MPU6050 GND"]:::imuPin
     INA_G["INA219 GND"]:::inaPin
     BUZ_G["Buzzer GND"]:::alertPin
     RGB_G["RGB LED Cathode"]:::alertPin
+    SERVO_G["12× Servo GND<br/>Brown wires"]:::servoPin
 
-    GND_HUB --- BAT_G
-    GND_HUB --- BUCKS_G
-    GND_HUB --- BUCKL_G
-    GND_HUB --- RPI_G
-    GND_HUB --- FPGA_G
-    GND_HUB --- LS1_G
-    GND_HUB --- LS2_G
-    GND_HUB --- LS3_G
-    GND_HUB --- SRV_G
-    GND_HUB --- IMU_G
-    GND_HUB --- INA_G
-    GND_HUB --- BUZ_G
-    GND_HUB --- RGB_G
+    %% Star connections (links 0-12)
+    GND_STAR --- BAT_G
+    GND_STAR --- BUCKS_G
+    GND_STAR --- BUCKL_G
+    GND_STAR --- RPI_G
+    GND_STAR --- FPGA_G
+    GND_STAR --- LS1_G
+    GND_STAR --- LS2_G
+    GND_STAR --- LS3_G
+    GND_STAR --- IMU_G
+    GND_STAR --- INA_G
+    GND_STAR --- BUZ_G
+    GND_STAR --- RGB_G
+    GND_STAR --- SERVO_G
 
-    linkStyle 0 stroke:#475569,stroke-width:3px
-    linkStyle 1 stroke:#475569,stroke-width:3px
-    linkStyle 2 stroke:#475569,stroke-width:3px
-    linkStyle 3 stroke:#475569,stroke-width:3px
-    linkStyle 4 stroke:#475569,stroke-width:3px
-    linkStyle 5 stroke:#475569,stroke-width:2px
-    linkStyle 6 stroke:#475569,stroke-width:2px
-    linkStyle 7 stroke:#475569,stroke-width:2px
-    linkStyle 8 stroke:#475569,stroke-width:3px
-    linkStyle 9 stroke:#475569,stroke-width:2px
-    linkStyle 10 stroke:#475569,stroke-width:2px
-    linkStyle 11 stroke:#475569,stroke-width:2px
-    linkStyle 12 stroke:#475569,stroke-width:2px
+    linkStyle 0,1,2 stroke:#475569,stroke-width:3px
+    linkStyle 3 stroke:#3b82f6,stroke-width:2px
+    linkStyle 4 stroke:#22c55e,stroke-width:2px
+    linkStyle 5,6,7 stroke:#14b8a6,stroke-width:2px
+    linkStyle 8 stroke:#a855f7,stroke-width:2px
+    linkStyle 9 stroke:#eab308,stroke-width:2px
+    linkStyle 10,11 stroke:#ec4899,stroke-width:2px
+    linkStyle 12 stroke:#f97316,stroke-width:3px
+
+    style GND_STAR fill:#1e293b,stroke:#94a3b8,color:#e2e8f0,stroke-width:3px
 ```
 
 > [!CAUTION]
-> **Ground loops cause servo jitter and SPI errors.** Use a **star ground topology** — all GND wires converge at a single point on the terminal block, not daisy-chained. Use **14 AWG** for main ground, **16 AWG** for buck GNDs, **22 AWG** for signal GNDs.
+> **Ground loops cause servo jitter and SPI errors.** Use a **star ground topology** — all ground wires should connect to a single common point on the terminal block, not daisy-chained through components. Use **14–16 AWG** for the main ground bus wire.
 
 ---
 
-## 12. Complete Pin Reference Tables
+## 10. Complete Pin Reference Tables
 
 ### Raspberry Pi 4B — All Used GPIO Pins
 
-| BCM GPIO | Physical Pin | Function | Wire Colour | Connects To | Gauge |
-|----------|-------------|----------|-------------|-------------|-------|
+| BCM GPIO | Physical Pin | Function | Wire Colour | Connects To | Wire Gauge |
+|----------|-------------|----------|-------------|-------------|------------|
 | GPIO 2 | 3 | I2C1 SDA | 🟣 Purple | IMU SDA + INA219 SDA | 22 AWG |
 | GPIO 3 | 5 | I2C1 SCL | 🔵 Blue | IMU SCL + INA219 SCL | 22 AWG |
 | GPIO 8 | 24 | SPI0 CE0 | 🟡 Yellow | FPGA Pin 27 (CS) | 22 AWG |
+| GPIO 9 | 21 | SPI0 MISO | 🟢 Green | FPGA (reserved, NC) | — |
 | GPIO 10 | 19 | SPI0 MOSI | 🟢 Green | FPGA Pin 26 (MOSI) | 22 AWG |
 | GPIO 11 | 23 | SPI0 SCLK | 🔵 Blue | FPGA Pin 25 (SCLK) | 22 AWG |
-| GPIO 17 | 11 | RGB Red | 🔴 Red | 220Ω → LED Red | 24 AWG |
-| GPIO 18 | 12 | Buzzer PWM | 🟠 Orange | Active buzzer + | 24 AWG |
-| GPIO 22 | 15 | RGB Blue | 🔵 Blue | 220Ω → LED Blue | 24 AWG |
-| GPIO 27 | 13 | RGB Green | 🟢 Green | 220Ω → LED Green | 24 AWG |
-| 3.3V | 1, 17 | Power out | 🔴 Red | IMU/INA VCC, LS LV | 22 AWG |
-| 5V | 2, 4 | Power in | 🔴 Red | From LM2596 USB-C | — |
+| GPIO 17 | 11 | RGB Red | 🔴 Red | 220Ω → LED Red anode | 24 AWG |
+| GPIO 18 | 12 | Buzzer PWM | 🟠 Orange | Active buzzer + pin | 24 AWG |
+| GPIO 22 | 15 | RGB Blue | 🔵 Blue | 220Ω → LED Blue anode | 24 AWG |
+| GPIO 27 | 13 | RGB Green | 🟢 Green | 220Ω → LED Green anode | 24 AWG |
+| 3.3V | 1, 17 | Power out | 🔴 Red | IMU VCC, INA219 VCC, LS LV | 22 AWG |
+| 5V | 2, 4 | Power in | 🔴 Red | From LM2596 via USB-C | — |
 | GND | 6,9,14,20,25 | Ground | ⚫ Black | Common ground bus | 16 AWG |
 
 ### Tang Nano 9K — All Used Pins
 
-| FPGA Pin | Signal | Dir | Connects To | Wire Colour |
-|----------|--------|-----|-------------|-------------|
-| 52 | clk_27m | In | On-board oscillator | — (internal) |
-| 3 | btn_rst_n | In | On-board S1 button | — (internal) |
-| 25 | spi_sclk | In | RPi GPIO 11 | 🔵 Blue |
-| 26 | spi_mosi | In | RPi GPIO 10 | 🟢 Green |
-| 27 | spi_cs_n | In | RPi GPIO 8 | 🟡 Yellow |
-| 28 | pwm_out[0] | Out | LS1 LV1 → FL Hip | 🟢 Green |
-| 29 | pwm_out[1] | Out | LS1 LV2 → FL Thigh | 🟢 Green |
-| 30 | pwm_out[2] | Out | LS1 LV3 → FL Knee | 🟢 Green |
-| 31 | pwm_out[3] | Out | LS1 LV4 → FR Hip | 🟢 Green |
-| 32 | pwm_out[4] | Out | LS2 LV1 → FR Thigh | 🟢 Green |
-| 33 | pwm_out[5] | Out | LS2 LV2 → FR Knee | 🟢 Green |
-| 34 | pwm_out[6] | Out | LS2 LV3 → RL Hip | 🟢 Green |
-| 35 | pwm_out[7] | Out | LS2 LV4 → RL Thigh | 🟢 Green |
-| 40 | pwm_out[8] | Out | LS3 LV1 → RL Knee | 🟢 Green |
-| 41 | pwm_out[9] | Out | LS3 LV2 → RR Hip | 🟢 Green |
-| 42 | pwm_out[10] | Out | LS3 LV3 → RR Thigh | 🟢 Green |
-| 48 | pwm_out[11] | Out | LS3 LV4 → RR Knee | 🟢 Green |
-| 10–16 | led[0:5] | Out | On-board LEDs | — (internal) |
+| FPGA Pin | Signal Name | Direction | Connects To |
+|----------|-------------|-----------|-------------|
+| 52 | clk_27m | Input | On-board oscillator (internal) |
+| 3 | btn_rst_n | Input | On-board S1 button (internal) |
+| 25 | spi_sclk | Input | RPi GPIO 11 |
+| 26 | spi_mosi | Input | RPi GPIO 10 |
+| 27 | spi_cs_n | Input | RPi GPIO 8 |
+| 28 | pwm_out[0] | Output | LS1 LV1 (FL Hip) |
+| 29 | pwm_out[1] | Output | LS1 LV2 (FL Thigh) |
+| 30 | pwm_out[2] | Output | LS1 LV3 (FL Knee) |
+| 31 | pwm_out[3] | Output | LS1 LV4 (FR Hip) |
+| 32 | pwm_out[4] | Output | LS2 LV1 (FR Thigh) |
+| 33 | pwm_out[5] | Output | LS2 LV2 (FR Knee) |
+| 34 | pwm_out[6] | Output | LS2 LV3 (RL Hip) |
+| 35 | pwm_out[7] | Output | LS2 LV4 (RL Thigh) |
+| 40 | pwm_out[8] | Output | LS3 LV1 (RL Knee) |
+| 41 | pwm_out[9] | Output | LS3 LV2 (RR Hip) |
+| 42 | pwm_out[10] | Output | LS3 LV3 (RR Thigh) |
+| 48 | pwm_out[11] | Output | LS3 LV4 (RR Knee) |
+| 10–16 | led[0:5] | Output | On-board LEDs (heartbeat + SPI) |
 
 ---
 
@@ -727,16 +857,16 @@ graph TB
 - [ ] Mount 1N5822 diodes on terminal block outputs
 - [ ] Wire XL4015 buck — **adjust trimpot to 6.8V before connecting servos!**
 - [ ] Wire LM2596 buck — **adjust trimpot to 5.0V before connecting RPi!**
-- [ ] Connect all GND wires to star ground point (⚫ 14–16 AWG)
-- [ ] Wire 3× level shifters: LV=3.3V, HV=5V
-- [ ] Connect 12× FPGA PWM → level shifter LV inputs (🟢 22 AWG)
-- [ ] Connect 12× level shifter HV → servo signal wires (🟠 22 AWG)
-- [ ] Connect 12× servo red wire to 6.8V rail (🔴 18 AWG pairs)
-- [ ] Connect 12× servo brown wire to GND bus (⚫ 18 AWG)
+- [ ] Connect all ⚫ GND wires to star ground point on terminal block (14–16 AWG)
+- [ ] Wire 3× level shifters: LV=3.3V from FPGA, HV=5V from LM2596
+- [ ] Connect 12× FPGA PWM pins → level shifter LV inputs (🟢 22 AWG)
+- [ ] Connect 12× level shifter HV outputs → servo signal wires (🟠 22 AWG)
+- [ ] Connect 12× servo power 🔴 red wire to XL4015 6.8V rail (18 AWG pairs)
+- [ ] Connect 12× servo ⚫ brown wire to common ground bus
 - [ ] Wire SPI: GPIO 8/10/11 → FPGA 25/26/27 (🔵🟢🟡 22 AWG, keep short!)
 - [ ] Wire I2C: GPIO 2/3 → IMU + INA219 SDA/SCL (🟣🔵 22 AWG)
-- [ ] Place INA219 shunt in series on +6.8V servo rail
-- [ ] Wire buzzer: GPIO 18 → buzzer +, buzzer - → GND (🟠 24 AWG)
-- [ ] Wire RGB: GPIO 17/27/22 → 220Ω → R/G/B, cathode → GND (24 AWG)
-- [ ] Apply heat shrink (1cm, 2cm) to ALL solder joints
+- [ ] Place INA219 shunt resistor in series on +6.8V servo rail
+- [ ] Wire buzzer: GPIO 18 → buzzer + pin, buzzer − → GND (🟠 24 AWG)
+- [ ] Wire RGB LED: GPIO 17/27/22 → 220Ω → R/G/B anodes, cathode → GND (24 AWG)
+- [ ] Apply heat shrink (1cm, 2cm) to **ALL** solder joints
 - [ ] **Verify all voltages with multimeter BEFORE powering on RPi/FPGA**
