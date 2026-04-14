@@ -398,7 +398,9 @@ graph LR
 
 ---
 
-## 5. PWM Outputs — FPGA → Level Shifters → Servos (All 12 Channels)
+## 5. PWM Outputs — FPGA → Level Shifters → Servos
+
+### 5.1 All 12 Channels — Overview
 
 ```mermaid
 graph LR
@@ -534,6 +536,168 @@ graph LR
     style RR_LEG fill:#7c2d12,stroke:#f97316,color:#fdba74
 ```
 
+### 5.2 Level Shifter 1 → Front Left + FR Hip
+
+```mermaid
+graph LR
+    classDef fpgaPin fill:#86efac,stroke:#22c55e,color:#14532d
+    classDef lsPin fill:#5eead4,stroke:#14b8a6,color:#134e4a
+    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
+    classDef vcc fill:#22c55e,stroke:#15803d,color:#fff
+    classDef gnd fill:#475569,stroke:#334155,color:#fff
+
+    subgraph FPGA_C03["🟢 FPGA — Channels 0-3"]
+        FA0["Pin 28 · pwm 0"]:::fpgaPin
+        FA1["Pin 29 · pwm 1"]:::fpgaPin
+        FA2["Pin 30 · pwm 2"]:::fpgaPin
+        FA3["Pin 31 · pwm 3"]:::fpgaPin
+    end
+
+    subgraph LS1_D["🔀 LEVEL SHIFTER 1"]
+        LS1D_LV["LV: 3.3V"]:::vcc
+        LS1D_HV["HV: 5V"]:::vcc
+        LS1D_GND["GND"]:::gnd
+        LS1D_A1["LV1 → HV1"]:::lsPin
+        LS1D_A2["LV2 → HV2"]:::lsPin
+        LS1D_A3["LV3 → HV3"]:::lsPin
+        LS1D_A4["LV4 → HV4"]:::lsPin
+    end
+
+    subgraph SRV1["🦿 SERVOS"]
+        SA0["DS3218 #0 · FL Hip"]:::servoPin
+        SA1["DS3218 #1 · FL Thigh"]:::servoPin
+        SA2["DS3218 #2 · FL Knee"]:::servoPin
+        SA3["DS3218 #3 · FR Hip"]:::servoPin
+    end
+
+    %% FPGA → LS1 (links 0-3)
+    FA0 -->|"3.3V PWM"| LS1D_A1
+    FA1 -->|"3.3V PWM"| LS1D_A2
+    FA2 -->|"3.3V PWM"| LS1D_A3
+    FA3 -->|"3.3V PWM"| LS1D_A4
+
+    %% LS1 → Servos (links 4-7)
+    LS1D_A1 ==>|"5V Signal"| SA0
+    LS1D_A2 ==>|"5V Signal"| SA1
+    LS1D_A3 ==>|"5V Signal"| SA2
+    LS1D_A4 ==>|"5V Signal"| SA3
+
+    linkStyle 0,1,2,3 stroke:#22c55e,stroke-width:2px
+    linkStyle 4,5,6,7 stroke:#f97316,stroke-width:3px
+
+    style FPGA_C03 fill:#14532d,stroke:#22c55e,color:#86efac
+    style LS1_D fill:#134e4a,stroke:#14b8a6,color:#5eead4
+    style SRV1 fill:#7c2d12,stroke:#f97316,color:#fdba74
+```
+
+### 5.3 Level Shifter 2 → FR Thigh/Knee + RL Hip/Thigh
+
+```mermaid
+graph LR
+    classDef fpgaPin fill:#86efac,stroke:#22c55e,color:#14532d
+    classDef lsPin fill:#5eead4,stroke:#14b8a6,color:#134e4a
+    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
+    classDef vcc fill:#22c55e,stroke:#15803d,color:#fff
+    classDef gnd fill:#475569,stroke:#334155,color:#fff
+
+    subgraph FPGA_C47["🟢 FPGA — Channels 4-7"]
+        FB4["Pin 32 · pwm 4"]:::fpgaPin
+        FB5["Pin 33 · pwm 5"]:::fpgaPin
+        FB6["Pin 34 · pwm 6"]:::fpgaPin
+        FB7["Pin 35 · pwm 7"]:::fpgaPin
+    end
+
+    subgraph LS2_D["🔀 LEVEL SHIFTER 2"]
+        LS2D_LV["LV: 3.3V"]:::vcc
+        LS2D_HV["HV: 5V"]:::vcc
+        LS2D_GND["GND"]:::gnd
+        LS2D_A1["LV1 → HV1"]:::lsPin
+        LS2D_A2["LV2 → HV2"]:::lsPin
+        LS2D_A3["LV3 → HV3"]:::lsPin
+        LS2D_A4["LV4 → HV4"]:::lsPin
+    end
+
+    subgraph SRV2["🦿 SERVOS"]
+        SB4["DS3218 #4 · FR Thigh"]:::servoPin
+        SB5["DS3218 #5 · FR Knee"]:::servoPin
+        SB6["DS3218 #6 · RL Hip"]:::servoPin
+        SB7["DS3218 #7 · RL Thigh"]:::servoPin
+    end
+
+    %% FPGA → LS2 (links 0-3)
+    FB4 -->|"3.3V PWM"| LS2D_A1
+    FB5 -->|"3.3V PWM"| LS2D_A2
+    FB6 -->|"3.3V PWM"| LS2D_A3
+    FB7 -->|"3.3V PWM"| LS2D_A4
+
+    %% LS2 → Servos (links 4-7)
+    LS2D_A1 ==>|"5V Signal"| SB4
+    LS2D_A2 ==>|"5V Signal"| SB5
+    LS2D_A3 ==>|"5V Signal"| SB6
+    LS2D_A4 ==>|"5V Signal"| SB7
+
+    linkStyle 0,1,2,3 stroke:#22c55e,stroke-width:2px
+    linkStyle 4,5,6,7 stroke:#f97316,stroke-width:3px
+
+    style FPGA_C47 fill:#14532d,stroke:#22c55e,color:#86efac
+    style LS2_D fill:#134e4a,stroke:#14b8a6,color:#5eead4
+    style SRV2 fill:#7c2d12,stroke:#f97316,color:#fdba74
+```
+
+### 5.4 Level Shifter 3 → RL Knee + RR Leg
+
+```mermaid
+graph LR
+    classDef fpgaPin fill:#86efac,stroke:#22c55e,color:#14532d
+    classDef lsPin fill:#5eead4,stroke:#14b8a6,color:#134e4a
+    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
+    classDef vcc fill:#22c55e,stroke:#15803d,color:#fff
+    classDef gnd fill:#475569,stroke:#334155,color:#fff
+
+    subgraph FPGA_C811["🟢 FPGA — Channels 8-11"]
+        FC8["Pin 40 · pwm 8"]:::fpgaPin
+        FC9["Pin 41 · pwm 9"]:::fpgaPin
+        FC10["Pin 42 · pwm 10"]:::fpgaPin
+        FC11["Pin 48 · pwm 11"]:::fpgaPin
+    end
+
+    subgraph LS3_D["🔀 LEVEL SHIFTER 3"]
+        LS3D_LV["LV: 3.3V"]:::vcc
+        LS3D_HV["HV: 5V"]:::vcc
+        LS3D_GND["GND"]:::gnd
+        LS3D_A1["LV1 → HV1"]:::lsPin
+        LS3D_A2["LV2 → HV2"]:::lsPin
+        LS3D_A3["LV3 → HV3"]:::lsPin
+        LS3D_A4["LV4 → HV4"]:::lsPin
+    end
+
+    subgraph SRV3["🦿 SERVOS"]
+        SC8["DS3218 #8 · RL Knee"]:::servoPin
+        SC9["DS3218 #9 · RR Hip"]:::servoPin
+        SC10["DS3218 #10 · RR Thigh"]:::servoPin
+        SC11["DS3218 #11 · RR Knee"]:::servoPin
+    end
+
+    %% FPGA → LS3 (links 0-3)
+    FC8 -->|"3.3V PWM"| LS3D_A1
+    FC9 -->|"3.3V PWM"| LS3D_A2
+    FC10 -->|"3.3V PWM"| LS3D_A3
+    FC11 -->|"3.3V PWM"| LS3D_A4
+
+    %% LS3 → Servos (links 4-7)
+    LS3D_A1 ==>|"5V Signal"| SC8
+    LS3D_A2 ==>|"5V Signal"| SC9
+    LS3D_A3 ==>|"5V Signal"| SC10
+    LS3D_A4 ==>|"5V Signal"| SC11
+
+    linkStyle 0,1,2,3 stroke:#22c55e,stroke-width:2px
+    linkStyle 4,5,6,7 stroke:#f97316,stroke-width:3px
+
+    style FPGA_C811 fill:#14532d,stroke:#22c55e,color:#86efac
+    style LS3_D fill:#134e4a,stroke:#14b8a6,color:#5eead4
+    style SRV3 fill:#7c2d12,stroke:#f97316,color:#fdba74
+```
+
 ---
 
 ## 6. GPIO — Buzzer + RGB LED (Pin-Level)
@@ -601,101 +765,172 @@ graph LR
 
 ## 7. Servo Power Wiring — All 12 DS3218 (3 Wires Each)
 
+### 7.1 Front Left Leg — Power + GND
+
 ```mermaid
-graph TD
+graph TB
     classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
     classDef power fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
-    classDef gnd fill:#475569,stroke:#334155,color:#fff
+    classDef gnd fill:#475569,stroke:#334155,color:#fff,font-weight:bold
 
-    subgraph SERVO_RAIL["⚡ XL4015 OUTPUT — 6.8V SERVO POWER RAIL"]
-        RAIL_POS["+ 6.8V Rail"]:::power
-        RAIL_GND["- GND Rail"]:::gnd
+    subgraph RAIL_FL["⚡ XL4015 → 6.8V"]
+        RP1["+6.8V Rail"]:::power
+        RG1["GND Rail"]:::gnd
     end
 
-    subgraph FRONT_LEFT["🦿 FRONT LEFT"]
-        FLH_PWR["FL Hip: 🔴 Red → +6.8V"]:::servoPin
-        FLH_GND["FL Hip: ⚫ Brown → GND"]:::servoPin
-        FLH_SIG["FL Hip: 🟠 Orange → LS1 HV1"]:::servoPin
-        FLT_PWR["FL Thigh: 🔴 Red → +6.8V"]:::servoPin
-        FLT_GND["FL Thigh: ⚫ Brown → GND"]:::servoPin
-        FLT_SIG["FL Thigh: 🟠 Orange → LS1 HV2"]:::servoPin
-        FLK_PWR["FL Knee: 🔴 Red → +6.8V"]:::servoPin
-        FLK_GND["FL Knee: ⚫ Brown → GND"]:::servoPin
-        FLK_SIG["FL Knee: 🟠 Orange → LS1 HV3"]:::servoPin
+    subgraph FL_PWR["🦿 FRONT LEFT — DS3218 #0 / #1 / #2"]
+        FLH_P["FL Hip: 🔴 Red → +6.8V"]:::servoPin
+        FLH_G["FL Hip: ⚫ Brown → GND"]:::servoPin
+        FLH_S["FL Hip: 🟠 Orange → LS1 HV1"]:::servoPin
+        FLT_P["FL Thigh: 🔴 Red → +6.8V"]:::servoPin
+        FLT_G["FL Thigh: ⚫ Brown → GND"]:::servoPin
+        FLT_S["FL Thigh: 🟠 Orange → LS1 HV2"]:::servoPin
+        FLK_P["FL Knee: 🔴 Red → +6.8V"]:::servoPin
+        FLK_G["FL Knee: ⚫ Brown → GND"]:::servoPin
+        FLK_S["FL Knee: 🟠 Orange → LS1 HV3"]:::servoPin
     end
 
-    subgraph FRONT_RIGHT["🦿 FRONT RIGHT"]
-        FRH_PWR["FR Hip: 🔴 Red → +6.8V"]:::servoPin
-        FRH_GND["FR Hip: ⚫ Brown → GND"]:::servoPin
-        FRH_SIG["FR Hip: 🟠 Orange → LS1 HV4"]:::servoPin
-        FRT_PWR["FR Thigh: 🔴 Red → +6.8V"]:::servoPin
-        FRT_GND["FR Thigh: ⚫ Brown → GND"]:::servoPin
-        FRT_SIG["FR Thigh: 🟠 Orange → LS2 HV1"]:::servoPin
-        FRK_PWR["FR Knee: 🔴 Red → +6.8V"]:::servoPin
-        FRK_GND["FR Knee: ⚫ Brown → GND"]:::servoPin
-        FRK_SIG["FR Knee: 🟠 Orange → LS2 HV2"]:::servoPin
+    %% Power (links 0-2)
+    RP1 ==> FLH_P
+    RP1 ==> FLT_P
+    RP1 ==> FLK_P
+
+    %% GND (links 3-5)
+    RG1 ==> FLH_G
+    RG1 ==> FLT_G
+    RG1 ==> FLK_G
+
+    linkStyle 0,1,2 stroke:#ef4444,stroke-width:2px
+    linkStyle 3,4,5 stroke:#475569,stroke-width:2px
+
+    style RAIL_FL fill:#7f1d1d,stroke:#ef4444,color:#fca5a5
+    style FL_PWR fill:#7c2d12,stroke:#f97316,color:#fdba74
+```
+
+### 7.2 Front Right Leg — Power + GND
+
+```mermaid
+graph TB
+    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
+    classDef power fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
+    classDef gnd fill:#475569,stroke:#334155,color:#fff,font-weight:bold
+
+    subgraph RAIL_FR["⚡ XL4015 → 6.8V"]
+        RP2["+6.8V Rail"]:::power
+        RG2["GND Rail"]:::gnd
     end
 
-    subgraph REAR_LEFT["🦿 REAR LEFT"]
-        RLH_PWR["RL Hip: 🔴 Red → +6.8V"]:::servoPin
-        RLH_GND["RL Hip: ⚫ Brown → GND"]:::servoPin
-        RLH_SIG["RL Hip: 🟠 Orange → LS2 HV3"]:::servoPin
-        RLT_PWR["RL Thigh: 🔴 Red → +6.8V"]:::servoPin
-        RLT_GND["RL Thigh: ⚫ Brown → GND"]:::servoPin
-        RLT_SIG["RL Thigh: 🟠 Orange → LS2 HV4"]:::servoPin
-        RLK_PWR["RL Knee: 🔴 Red → +6.8V"]:::servoPin
-        RLK_GND["RL Knee: ⚫ Brown → GND"]:::servoPin
-        RLK_SIG["RL Knee: 🟠 Orange → LS3 HV1"]:::servoPin
+    subgraph FR_PWR["🦿 FRONT RIGHT — DS3218 #3 / #4 / #5"]
+        FRH_P["FR Hip: 🔴 Red → +6.8V"]:::servoPin
+        FRH_G["FR Hip: ⚫ Brown → GND"]:::servoPin
+        FRH_S["FR Hip: 🟠 Orange → LS1 HV4"]:::servoPin
+        FRT_P["FR Thigh: 🔴 Red → +6.8V"]:::servoPin
+        FRT_G["FR Thigh: ⚫ Brown → GND"]:::servoPin
+        FRT_S["FR Thigh: 🟠 Orange → LS2 HV1"]:::servoPin
+        FRK_P["FR Knee: 🔴 Red → +6.8V"]:::servoPin
+        FRK_G["FR Knee: ⚫ Brown → GND"]:::servoPin
+        FRK_S["FR Knee: 🟠 Orange → LS2 HV2"]:::servoPin
     end
 
-    subgraph REAR_RIGHT["🦿 REAR RIGHT"]
-        RRH_PWR["RR Hip: 🔴 Red → +6.8V"]:::servoPin
-        RRH_GND["RR Hip: ⚫ Brown → GND"]:::servoPin
-        RRH_SIG["RR Hip: 🟠 Orange → LS3 HV2"]:::servoPin
-        RRT_PWR["RR Thigh: 🔴 Red → +6.8V"]:::servoPin
-        RRT_GND["RR Thigh: ⚫ Brown → GND"]:::servoPin
-        RRT_SIG["RR Thigh: 🟠 Orange → LS3 HV3"]:::servoPin
-        RRK_PWR["RR Knee: 🔴 Red → +6.8V"]:::servoPin
-        RRK_GND["RR Knee: ⚫ Brown → GND"]:::servoPin
-        RRK_SIG["RR Knee: 🟠 Orange → LS3 HV4"]:::servoPin
+    %% Power (links 0-2)
+    RP2 ==> FRH_P
+    RP2 ==> FRT_P
+    RP2 ==> FRK_P
+
+    %% GND (links 3-5)
+    RG2 ==> FRH_G
+    RG2 ==> FRT_G
+    RG2 ==> FRK_G
+
+    linkStyle 0,1,2 stroke:#ef4444,stroke-width:2px
+    linkStyle 3,4,5 stroke:#475569,stroke-width:2px
+
+    style RAIL_FR fill:#7f1d1d,stroke:#ef4444,color:#fca5a5
+    style FR_PWR fill:#7c2d12,stroke:#f97316,color:#fdba74
+```
+
+### 7.3 Rear Left Leg — Power + GND
+
+```mermaid
+graph TB
+    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
+    classDef power fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
+    classDef gnd fill:#475569,stroke:#334155,color:#fff,font-weight:bold
+
+    subgraph RAIL_RL["⚡ XL4015 → 6.8V"]
+        RP3["+6.8V Rail"]:::power
+        RG3["GND Rail"]:::gnd
     end
 
-    %% VCC connections (links 0-11)
-    RAIL_POS ==> FLH_PWR
-    RAIL_POS ==> FLT_PWR
-    RAIL_POS ==> FLK_PWR
-    RAIL_POS ==> FRH_PWR
-    RAIL_POS ==> FRT_PWR
-    RAIL_POS ==> FRK_PWR
-    RAIL_POS ==> RLH_PWR
-    RAIL_POS ==> RLT_PWR
-    RAIL_POS ==> RLK_PWR
-    RAIL_POS ==> RRH_PWR
-    RAIL_POS ==> RRT_PWR
-    RAIL_POS ==> RRK_PWR
+    subgraph RL_PWR["🦿 REAR LEFT — DS3218 #6 / #7 / #8"]
+        RLH_P["RL Hip: 🔴 Red → +6.8V"]:::servoPin
+        RLH_G["RL Hip: ⚫ Brown → GND"]:::servoPin
+        RLH_S["RL Hip: 🟠 Orange → LS2 HV3"]:::servoPin
+        RLT_P["RL Thigh: 🔴 Red → +6.8V"]:::servoPin
+        RLT_G["RL Thigh: ⚫ Brown → GND"]:::servoPin
+        RLT_S["RL Thigh: 🟠 Orange → LS2 HV4"]:::servoPin
+        RLK_P["RL Knee: 🔴 Red → +6.8V"]:::servoPin
+        RLK_G["RL Knee: ⚫ Brown → GND"]:::servoPin
+        RLK_S["RL Knee: 🟠 Orange → LS3 HV1"]:::servoPin
+    end
 
-    %% GND connections (links 12-23)
-    RAIL_GND ==> FLH_GND
-    RAIL_GND ==> FLT_GND
-    RAIL_GND ==> FLK_GND
-    RAIL_GND ==> FRH_GND
-    RAIL_GND ==> FRT_GND
-    RAIL_GND ==> FRK_GND
-    RAIL_GND ==> RLH_GND
-    RAIL_GND ==> RLT_GND
-    RAIL_GND ==> RLK_GND
-    RAIL_GND ==> RRH_GND
-    RAIL_GND ==> RRT_GND
-    RAIL_GND ==> RRK_GND
+    %% Power (links 0-2)
+    RP3 ==> RLH_P
+    RP3 ==> RLT_P
+    RP3 ==> RLK_P
 
-    linkStyle 0,1,2,3,4,5,6,7,8,9,10,11 stroke:#ef4444,stroke-width:2px
-    linkStyle 12,13,14,15,16,17,18,19,20,21,22,23 stroke:#475569,stroke-width:2px
+    %% GND (links 3-5)
+    RG3 ==> RLH_G
+    RG3 ==> RLT_G
+    RG3 ==> RLK_G
 
-    style SERVO_RAIL fill:#7f1d1d,stroke:#ef4444,color:#fca5a5
-    style FRONT_LEFT fill:#7c2d12,stroke:#f97316,color:#fdba74
-    style FRONT_RIGHT fill:#7c2d12,stroke:#f97316,color:#fdba74
-    style REAR_LEFT fill:#7c2d12,stroke:#f97316,color:#fdba74
-    style REAR_RIGHT fill:#7c2d12,stroke:#f97316,color:#fdba74
+    linkStyle 0,1,2 stroke:#ef4444,stroke-width:2px
+    linkStyle 3,4,5 stroke:#475569,stroke-width:2px
+
+    style RAIL_RL fill:#7f1d1d,stroke:#ef4444,color:#fca5a5
+    style RL_PWR fill:#7c2d12,stroke:#f97316,color:#fdba74
+```
+
+### 7.4 Rear Right Leg — Power + GND
+
+```mermaid
+graph TB
+    classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
+    classDef power fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
+    classDef gnd fill:#475569,stroke:#334155,color:#fff,font-weight:bold
+
+    subgraph RAIL_RR["⚡ XL4015 → 6.8V"]
+        RP4["+6.8V Rail"]:::power
+        RG4["GND Rail"]:::gnd
+    end
+
+    subgraph RR_PWR["🦿 REAR RIGHT — DS3218 #9 / #10 / #11"]
+        RRH_P["RR Hip: 🔴 Red → +6.8V"]:::servoPin
+        RRH_G["RR Hip: ⚫ Brown → GND"]:::servoPin
+        RRH_S["RR Hip: 🟠 Orange → LS3 HV2"]:::servoPin
+        RRT_P["RR Thigh: 🔴 Red → +6.8V"]:::servoPin
+        RRT_G["RR Thigh: ⚫ Brown → GND"]:::servoPin
+        RRT_S["RR Thigh: 🟠 Orange → LS3 HV3"]:::servoPin
+        RRK_P["RR Knee: 🔴 Red → +6.8V"]:::servoPin
+        RRK_G["RR Knee: ⚫ Brown → GND"]:::servoPin
+        RRK_S["RR Knee: 🟠 Orange → LS3 HV4"]:::servoPin
+    end
+
+    %% Power (links 0-2)
+    RP4 ==> RRH_P
+    RP4 ==> RRT_P
+    RP4 ==> RRK_P
+
+    %% GND (links 3-5)
+    RG4 ==> RRH_G
+    RG4 ==> RRT_G
+    RG4 ==> RRK_G
+
+    linkStyle 0,1,2 stroke:#ef4444,stroke-width:2px
+    linkStyle 3,4,5 stroke:#475569,stroke-width:2px
+
+    style RAIL_RR fill:#7f1d1d,stroke:#ef4444,color:#fca5a5
+    style RR_PWR fill:#7c2d12,stroke:#f97316,color:#fdba74
 ```
 
 ---
