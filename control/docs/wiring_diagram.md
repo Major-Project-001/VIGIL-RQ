@@ -602,7 +602,7 @@ graph LR
 ## 7. Servo Power Wiring — All 12 DS3218 (3 Wires Each)
 
 ```mermaid
-graph TB
+graph TD
     classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
     classDef power fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
     classDef gnd fill:#475569,stroke:#334155,color:#fff
