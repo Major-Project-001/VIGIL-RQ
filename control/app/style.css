@@ -1,0 +1,498 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   VIGIL-RQ Controller — Mobile Web App Stylesheet
+   Premium dark theme with glassmorphism, cyber-blue accents, and
+   responsive touch-friendly layout.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── CSS Variables ── */
+:root {
+    /* Palette */
+    --bg-primary:    #0a0e1a;
+    --bg-secondary:  #111827;
+    --bg-card:       rgba(17, 24, 39, 0.7);
+    --bg-glass:      rgba(30, 41, 59, 0.45);
+
+    --accent:        #38bdf8;
+    --accent-glow:   rgba(56, 189, 248, 0.25);
+    --accent-dim:    #1e3a5f;
+
+    --green:         #4ade80;
+    --green-glow:    rgba(74, 222, 128, 0.3);
+    --yellow:        #fbbf24;
+    --yellow-glow:   rgba(251, 191, 36, 0.3);
+    --red:           #f87171;
+    --red-glow:      rgba(248, 113, 113, 0.4);
+    --purple:        #a78bfa;
+
+    --text-primary:  #f1f5f9;
+    --text-secondary:#94a3b8;
+    --text-dim:      #475569;
+
+    --border:        rgba(148, 163, 184, 0.12);
+    --shadow:        0 4px 24px rgba(0, 0, 0, 0.4);
+
+    /* Typography */
+    --font-main:     'Outfit', system-ui, -apple-system, sans-serif;
+    --font-mono:     'JetBrains Mono', 'Fira Code', monospace;
+
+    /* Spacing */
+    --gap:           12px;
+    --radius:        14px;
+    --radius-sm:     8px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    font-size: 16px;
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+    padding-bottom: 100px; /* Room for E-STOP */
+}
+
+/* ── Header ── */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(10, 14, 26, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-left h1 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--purple) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ── Connection Status Dot ── */
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 8px var(--red-glow);
+    transition: all 0.3s ease;
+}
+
+.status-dot.connected {
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green-glow);
+    animation: pulse-green 2s ease-in-out infinite;
+}
+
+@keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 4px var(--green-glow); }
+    50%      { box-shadow: 0 0 12px var(--green-glow); }
+}
+
+.connection-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    letter-spacing: 0.5px;
+}
+
+.battery-badge {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--bg-glass);
+    border: 1px solid var(--border);
+    color: var(--green);
+}
+
+.battery-badge.warning { color: var(--yellow); }
+.battery-badge.critical { color: var(--red); }
+
+/* ── Alert Banner ── */
+.alert-banner {
+    margin: var(--gap) 16px 0;
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    animation: slideDown 0.3s ease-out;
+}
+
+.alert-banner.warning {
+    background: rgba(251, 191, 36, 0.12);
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    color: var(--yellow);
+}
+
+.alert-banner.critical {
+    background: rgba(248, 113, 113, 0.12);
+    border: 1px solid rgba(248, 113, 113, 0.3);
+    color: var(--red);
+    animation: slideDown 0.3s ease-out, flash-red 0.8s ease-in-out infinite;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes flash-red {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.6; }
+}
+
+/* ── Main Content ── */
+main {
+    padding: 0 16px;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.section-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+/* ── Preset Buttons ── */
+.presets-section {
+    margin-top: var(--gap);
+}
+
+.preset-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+
+.preset-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 14px 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--text-secondary);
+    font-family: var(--font-main);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.preset-btn:active {
+    transform: scale(0.94);
+}
+
+.preset-btn.active {
+    border-color: var(--accent);
+    background: var(--accent-glow);
+    color: var(--accent);
+    box-shadow: 0 0 20px var(--accent-glow), inset 0 0 20px rgba(56, 189, 248, 0.08);
+}
+
+.btn-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.btn-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* ── Control Section: Joystick + Speed ── */
+.control-section {
+    margin-top: var(--gap);
+}
+
+.control-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.joystick-container {
+    flex: 1;
+}
+
+#joystickCanvas {
+    display: block;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(30, 41, 59, 0.6) 0%, rgba(10, 14, 26, 0.8) 100%);
+    border: 1px solid var(--border);
+    touch-action: none;
+}
+
+.speed-container {
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.speed-slider-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    height: 200px;
+}
+
+/* Vertical range slider */
+.speed-slider {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 200px;
+    height: 40px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.speed-slider::-webkit-slider-runnable-track {
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to top, var(--accent-dim), var(--accent));
+    border-radius: 3px;
+}
+
+.speed-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg-primary);
+    box-shadow: 0 0 8px var(--accent-glow);
+    cursor: grab;
+}
+
+.speed-value {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+/* ── Telemetry Cards ── */
+.telemetry-section {
+    margin-top: var(--gap);
+}
+
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.telemetry-card {
+    padding: 12px 8px;
+    border-radius: var(--radius);
+    background: var(--bg-glass);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+.card-label {
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+}
+
+.card-value {
+    font-family: var(--font-mono);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.card-unit {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.card-sub {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* Battery bar */
+.battery-bar-container {
+    margin-top: 6px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.battery-bar {
+    height: 100%;
+    width: 75%;
+    background: linear-gradient(to right, var(--green), var(--accent));
+    border-radius: 2px;
+    transition: width 0.5s ease, background 0.5s ease;
+}
+
+.battery-bar.warning {
+    background: linear-gradient(to right, var(--yellow), #f59e0b);
+}
+
+.battery-bar.critical {
+    background: var(--red);
+    animation: flash-red 0.8s ease-in-out infinite;
+}
+
+/* ── E-STOP Button ── */
+.estop-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 40px;
+    border: 2px solid var(--red);
+    border-radius: 60px;
+    background: rgba(248, 113, 113, 0.12);
+    color: var(--red);
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 0 30px rgba(248, 113, 113, 0.15);
+    -webkit-tap-highlight-color: transparent;
+}
+
+.estop-btn:hover {
+    background: rgba(248, 113, 113, 0.25);
+    box-shadow: 0 0 40px rgba(248, 113, 113, 0.3);
+}
+
+.estop-btn:active {
+    transform: translateX(-50%) scale(0.95);
+    background: rgba(248, 113, 113, 0.4);
+}
+
+.estop-btn.active {
+    background: var(--red);
+    color: white;
+    animation: estop-pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes estop-pulse {
+    0%, 100% { box-shadow: 0 0 30px rgba(248, 113, 113, 0.4); }
+    50%      { box-shadow: 0 0 50px rgba(248, 113, 113, 0.7); }
+}
+
+.estop-icon {
+    font-size: 1.2rem;
+}
+
+.estop-label {
+    text-transform: uppercase;
+}
+
+/* ── Responsive ── */
+@media (max-width: 360px) {
+    .preset-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .telemetry-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-height: 700px) {
+    :root { --gap: 16px; }
+}
+
+/* ── Landscape mode ── */
+@media (orientation: landscape) and (max-height: 500px) {
+    main {
+        max-width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--gap);
+        padding: 8px 16px;
+    }
+
+    .presets-section {
+        grid-column: 1 / -1;
+    }
+
+    .preset-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+}

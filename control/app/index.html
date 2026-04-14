@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+    <meta name="description" content="VIGIL-RQ Quadruped Robot Remote Control">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>VIGIL-RQ Controller</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ── Header ── -->
+    <header id="header">
+        <div class="header-left">
+            <div class="status-dot" id="statusDot"></div>
+            <h1>VIGIL-RQ</h1>
+        </div>
+        <div class="header-right">
+            <span class="connection-label" id="connectionLabel">Disconnected</span>
+            <span class="battery-badge" id="batteryBadge">--V</span>
+        </div>
+    </header>
+
+    <!-- ── Main Content ── -->
+    <main id="mainContent">
+
+        <!-- Alert Banner -->
+        <div class="alert-banner" id="alertBanner" style="display: none;">
+            <span class="alert-icon" id="alertIcon">⚠️</span>
+            <span class="alert-text" id="alertText">Alert</span>
+        </div>
+
+        <!-- Gait Preset Buttons -->
+        <section class="presets-section" id="presetsSection">
+            <div class="section-label">GAIT MODE</div>
+            <div class="preset-grid">
+                <button class="preset-btn" id="btnStand" data-action="stand">
+                    <span class="btn-icon">🧍</span>
+                    <span class="btn-label">Stand</span>
+                </button>
+                <button class="preset-btn" id="btnWalk" data-action="walk">
+                    <span class="btn-icon">🚶</span>
+                    <span class="btn-label">Walk</span>
+                </button>
+                <button class="preset-btn" id="btnRun" data-action="run">
+                    <span class="btn-icon">🏃</span>
+                    <span class="btn-label">Run</span>
+                </button>
+                <button class="preset-btn" id="btnSit" data-action="sit">
+                    <span class="btn-icon">🪑</span>
+                    <span class="btn-label">Sit</span>
+                </button>
+                <button class="preset-btn" id="btnRest" data-action="rest">
+                    <span class="btn-icon">😴</span>
+                    <span class="btn-label">Rest</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Joystick + Speed Control -->
+        <section class="control-section" id="controlSection">
+            <div class="control-row">
+                <div class="joystick-container">
+                    <div class="section-label">DIRECTION</div>
+                    <canvas id="joystickCanvas" width="200" height="200"></canvas>
+                </div>
+                <div class="speed-container">
+                    <div class="section-label">SPEED</div>
+                    <div class="speed-slider-wrapper">
+                        <input type="range" id="speedSlider" min="0" max="200"
+                               value="100" orient="vertical" class="speed-slider">
+                        <span class="speed-value" id="speedValue">1.0x</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Telemetry Cards -->
+        <section class="telemetry-section" id="telemetrySection">
+            <div class="section-label">TELEMETRY</div>
+            <div class="telemetry-grid">
+                <div class="telemetry-card" id="cardBattery">
+                    <div class="card-label">BATTERY</div>
+                    <div class="card-value" id="telBatteryV">--</div>
+                    <div class="card-unit">V</div>
+                    <div class="card-sub" id="telBatteryA">-- A</div>
+                    <div class="battery-bar-container">
+                        <div class="battery-bar" id="batteryBar"></div>
+                    </div>
+                </div>
+                <div class="telemetry-card" id="cardRoll">
+                    <div class="card-label">ROLL</div>
+                    <div class="card-value" id="telRoll">0.0</div>
+                    <div class="card-unit">°</div>
+                </div>
+                <div class="telemetry-card" id="cardPitch">
+                    <div class="card-label">PITCH</div>
+                    <div class="card-value" id="telPitch">0.0</div>
+                    <div class="card-unit">°</div>
+                </div>
+                <div class="telemetry-card" id="cardYaw">
+                    <div class="card-label">YAW</div>
+                    <div class="card-value" id="telYaw">0.0</div>
+                    <div class="card-unit">°</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- E-STOP Button (always visible, floating) -->
+    <button class="estop-btn" id="btnEstop">
+        <span class="estop-icon">⛔</span>
+        <span class="estop-label">E-STOP</span>
+    </button>
+
+    <script src="joystick.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
