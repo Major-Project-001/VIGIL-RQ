@@ -170,3 +170,76 @@ graph TB
 - [ ] Wire RGB LED: GPIO 17/27/22 → 220Ω → R/G/B anodes, cathode → GND (24 AWG)
 - [ ] Apply heat shrink (1cm, 2cm) to **ALL** solder joints
 - [ ] **Verify all voltages with multimeter BEFORE powering on RPi/FPGA**
+
+---
+
+## Wire Gauge Quick Reference
+
+| AWG | Diameter | Max Current | Used For |
+|-----|----------|-------------|----------|
+| 14 AWG | 1.63mm | 15A | Battery → BMS → fuse → terminal |
+| 16 AWG | 1.29mm | 10A | Terminal → buck converters, main GND bus |
+| 18 AWG | 1.02mm | 5A | Buck output → servo power (per leg pair) |
+| 22 AWG | 0.64mm | 0.9A | SPI, I2C, PWM signal, level shifter |
+| 24 AWG | 0.51mm | 0.6A | Buzzer, RGB LED, low-current signals |
+
+> [!NOTE]
+> Use **stranded** wire for all connections inside the robot chassis — it's more flexible and survives vibration better than solid core. Use **silicone-insulated** wire if possible (heat resistant, flexible).
+
+---
+
+## Required Tools
+
+| Tool | Purpose |
+|------|---------|
+| Digital multimeter | Measure voltage, continuity, current |
+| Soldering iron (30-60W) | Solder all permanent connections |
+| Wire strippers | Strip 14-24 AWG wire |
+| Heat shrink tubing | Insulate solder joints (1mm, 2mm, 3mm) |
+| Heat gun / lighter | Shrink tubing |
+| Small Phillips screwdriver | Terminal block screws |
+| Oscilloscope (optional) | Verify PWM signals, debug SPI |
+| USB-C cables × 2 | Power RPi and FPGA from LM2596 |
+| DuPont jumper wires | Prototyping (replace with solder for production) |
+
+---
+
+## System Debugging Flowchart
+
+Use this when things don't work during assembly:
+
+```
+START: Nothing works
+  │
+  ├─ Check battery voltage → < 9V? → Charge/replace battery
+  │
+  ├─ Check fuse → Blown? → Replace (15A blade)
+  │
+  ├─ Measure XL4015 output → Not 6.8V? → Adjust trimpot
+  │
+  ├─ Measure LM2596 output → Not 5.0V? → Adjust trimpot
+  │
+  ├─ RPi boots? → No → Check USB-C power connection
+  │                └─ Yes ↓
+  │
+  ├─ FPGA heartbeat LED blinks? → No → Re-flash bitstream
+  │                                └─ Yes ↓
+  │
+  ├─ i2cdetect shows 0x68 + 0x40? → No → Check I2C wiring
+  │                                  └─ Yes ↓
+  │
+  ├─ SPI test works? → No → Check SCLK/MOSI/CS wiring
+  │                    └─ Yes ↓
+  │
+  ├─ Servos move? → No → Check level shifters + servo power
+  │                 └─ Yes ↓
+  │
+  ├─ App connects? → No → Check WiFi AP + WebSocket
+  │                  └─ Yes ↓
+  │
+  └─ ✅ SYSTEM OPERATIONAL
+```
+
+> [!TIP]
+> Always debug **power first, then communication, then actuators**. Most issues are just bad connections or wrong voltage levels.
+

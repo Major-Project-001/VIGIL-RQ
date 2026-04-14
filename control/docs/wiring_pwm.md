@@ -4,6 +4,72 @@
 
 ---
 
+## Leg Orientation — Top View
+
+Use this diagram to identify which leg is **FR, FL, RL, RR** when looking down at the robot from above:
+
+```mermaid
+graph TB
+    classDef body fill:#1e293b,stroke:#475569,color:#e2e8f0,font-weight:bold
+    classDef front fill:#3b82f6,stroke:#1d4ed8,color:#fff,font-weight:bold
+    classDef rear fill:#475569,stroke:#334155,color:#fff,font-weight:bold
+    classDef legFL fill:#22c55e,stroke:#15803d,color:#fff,font-weight:bold
+    classDef legFR fill:#f97316,stroke:#c2410c,color:#fff,font-weight:bold
+    classDef legRL fill:#a855f7,stroke:#7c3aed,color:#fff,font-weight:bold
+    classDef legRR fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
+    classDef dir fill:#0f172a,stroke:#334155,color:#94a3b8,font-size:11px
+
+    FRONT["⬆ FRONT"]:::front
+
+    FL["🟢 FL<br/>Front Left<br/>Ch 0,1,2"]:::legFL
+    FR["🟠 FR<br/>Front Right<br/>Ch 3,4,5"]:::legFR
+
+    BODY["🐕 VIGIL-RQ<br/>Top View"]:::body
+
+    RL["🟣 RL<br/>Rear Left<br/>Ch 6,7,8"]:::legRL
+    RR["🔴 RR<br/>Rear Right<br/>Ch 9,10,11"]:::legRR
+
+    REAR["⬇ REAR"]:::rear
+
+    FRONT --- FL
+    FRONT --- FR
+    FL --- BODY
+    FR --- BODY
+    BODY --- RL
+    BODY --- RR
+    RL --- REAR
+    RR --- REAR
+
+    linkStyle 0,2 stroke:#22c55e,stroke-width:2px
+    linkStyle 1,3 stroke:#f97316,stroke-width:2px
+    linkStyle 4,6 stroke:#a855f7,stroke-width:2px
+    linkStyle 5,7 stroke:#ef4444,stroke-width:2px
+```
+
+### Joint Naming Convention (per leg)
+
+Each leg has **3 joints**, numbered from body outward:
+
+| Joint | Position | Range of Motion | Neutral (µs) |
+|-------|----------|-----------------|---------------|
+| **Hip** | Shoulder pivot (left/right swing) | ±30° | 1500 |
+| **Thigh** | Upper leg (forward/back) | ±60° | 1500 |
+| **Knee** | Lower leg (bend) | ±90° | 1500 |
+
+### DS3218 PWM Specifications
+
+| Parameter | Value |
+|-----------|-------|
+| PWM Frequency | 50 Hz (20 ms period) |
+| Minimum pulse | 500 µs (full CW) |
+| Neutral pulse | 1500 µs (center position) |
+| Maximum pulse | 2500 µs (full CCW) |
+| Operating voltage | 6.0–7.4V (we use 6.8V) |
+| Stall torque @ 6.8V | ~20 kg·cm |
+| Signal logic | 5V (via level shifter from 3.3V FPGA) |
+
+---
+
 ## All 12 Channels — Overview
 
 ```mermaid
