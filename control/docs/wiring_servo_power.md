@@ -6,14 +6,33 @@
 
 ## DS3218 Connector Pinout
 
-Each DS3218 servo has a **3-pin JST connector** with this wire order (looking at the plug):
+Each DS3218 servo has a **3-pin JST connector**. Wire order looking at the plug face:
 
-```
-┌───────────────┐
-│  🟠    🔴    ⚫  │
-│ Signal  VCC  GND │
-│ Orange  Red  Brown│
-└───────────────┘
+```mermaid
+graph LR
+    classDef orange fill:#f97316,stroke:#c2410c,color:#fff,font-weight:bold
+    classDef red fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
+    classDef brown fill:#78716c,stroke:#57534e,color:#fff,font-weight:bold
+    classDef plug fill:#1e293b,stroke:#475569,color:#e2e8f0,font-weight:bold
+
+    subgraph PLUG["🔌 DS3218 JST CONNECTOR — Face View"]
+        P1["🟠 Pin 1<br/>SIGNAL<br/>Orange wire"]:::orange
+        P2["🔴 Pin 2<br/>VCC +6.8V<br/>Red wire"]:::red
+        P3["⚫ Pin 3<br/>GND<br/>Brown wire"]:::brown
+    end
+
+    P1 -->|"22 AWG"| LS_HV["Level Shifter<br/>HV Output"]
+    P2 -->|"18 AWG"| RAIL["XL4015<br/>6.8V Rail"]
+    P3 -->|"18 AWG"| GND["Common<br/>GND Bus"]
+
+    linkStyle 0 stroke:#f97316,stroke-width:3px
+    linkStyle 1 stroke:#ef4444,stroke-width:3px
+    linkStyle 2 stroke:#78716c,stroke-width:3px
+
+    style PLUG fill:#0f172a,stroke:#475569,color:#94a3b8
+    style LS_HV fill:#134e4a,stroke:#14b8a6,color:#5eead4
+    style RAIL fill:#7f1d1d,stroke:#ef4444,color:#fca5a5
+    style GND fill:#1e293b,stroke:#475569,color:#e2e8f0
 ```
 
 | Wire | Colour | Function | Connects To | Gauge |

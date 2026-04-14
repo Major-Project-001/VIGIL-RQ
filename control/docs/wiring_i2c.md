@@ -113,24 +113,60 @@ graph LR
 
 The MPU6050/9250 must be mounted with the correct axis alignment for the gait engine to work properly:
 
-```
-    FRONT of robot
-         ↑
-         +X axis
-         |
-  +Y ←───┼──→ -Y
-  (Left)  |   (Right)
-         +Z axis (UP from board)
+```mermaid
+graph TB
+    classDef front fill:#3b82f6,stroke:#1d4ed8,color:#fff,font-weight:bold
+    classDef rear fill:#475569,stroke:#334155,color:#fff,font-weight:bold
+    classDef body fill:#1e293b,stroke:#475569,color:#e2e8f0,font-weight:bold
+    classDef axisX fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
+    classDef axisY fill:#22c55e,stroke:#15803d,color:#fff,font-weight:bold
+    classDef axisZ fill:#3b82f6,stroke:#1d4ed8,color:#fff,font-weight:bold
+    classDef imu fill:#a855f7,stroke:#7c3aed,color:#fff,font-weight:bold
+    classDef gyro fill:#f59e0b,stroke:#d97706,color:#fff
+
+    FRONT["⬆ FRONT"]:::front
+    X_POS["+X Forward"]:::axisX
+
+    Y_POS["+Y Left"]:::axisY
+    IMU["🟣 MPU6050<br/>IMU Chip"]:::imu
+    Y_NEG["-Y Right"]:::axisY
+
+    Z_UP["+Z Up<br/>Away from ground"]:::axisZ
+
+    REAR["⬇ REAR"]:::rear
+    X_NEG["-X Backward"]:::axisX
+
+    ROLL["Gyro X = Roll"]:::gyro
+    PITCH["Gyro Y = Pitch"]:::gyro
+    YAW["Gyro Z = Yaw"]:::gyro
+
+    FRONT --- X_POS
+    X_POS --- IMU
+    Y_POS --- IMU
+    IMU --- Y_NEG
+    IMU --- Z_UP
+    IMU --- X_NEG
+    X_NEG --- REAR
+
+    IMU -.- ROLL
+    IMU -.- PITCH
+    IMU -.- YAW
+
+    linkStyle 0,1 stroke:#ef4444,stroke-width:2px
+    linkStyle 2,3 stroke:#22c55e,stroke-width:2px
+    linkStyle 4 stroke:#3b82f6,stroke-width:2px
+    linkStyle 5,6 stroke:#ef4444,stroke-width:2px
+    linkStyle 7,8,9 stroke:#f59e0b,stroke-width:1px,stroke-dasharray:5
 ```
 
 | IMU Axis | Robot Direction | Notes |
 |----------|-----------------|-------|
-| +X | Forward | Towards the head |
-| +Y | Left | Towards FL/RL legs |
-| +Z | Up | Away from the ground |
-| Gyro X | Roll | Body tilt left/right |
-| Gyro Y | Pitch | Body tilt forward/back |
-| Gyro Z | Yaw | Body rotation |
+| **+X** (Red) | Forward | Towards the head |
+| **+Y** (Green) | Left | Towards FL/RL legs |
+| **+Z** (Blue) | Up | Away from the ground |
+| **Gyro X** | Roll | Body tilt left/right |
+| **Gyro Y** | Pitch | Body tilt forward/back |
+| **Gyro Z** | Yaw | Body rotation |
 
 > [!IMPORTANT]
 > Mount the IMU **flat on the body center plate**, aligned with the long axis of the robot. Secure with double-sided foam tape to dampen servo vibration. Do **not** mount near servos or power wires.
