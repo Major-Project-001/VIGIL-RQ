@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIGIL-RQ Servo Calibrator</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-title">
+                <span class="logo">🎯</span>
+                <h1>Servo Calibrator</h1>
+                <span class="badge">VIGIL-RQ</span>
+            </div>
+            <div class="connection-status" id="connectionStatus">
+                <span class="status-dot"></span>
+                <span class="status-text">Disconnected</span>
+            </div>
+        </header>
+
+        <!-- Servo Selector -->
+        <section class="card selector-card">
+            <label class="card-label">Select Servo</label>
+            <div class="selector-row">
+                <button class="btn btn-sm" id="btnPrev" title="Previous servo">◀</button>
+                <select id="servoSelect" class="servo-select">
+                    <option value="0">Ch 0 — FL Hip</option>
+                    <option value="1">Ch 1 — FL Thigh</option>
+                    <option value="2">Ch 2 — FL Knee</option>
+                    <option value="3">Ch 3 — FR Hip</option>
+                    <option value="4">Ch 4 — FR Thigh</option>
+                    <option value="5">Ch 5 — FR Knee</option>
+                    <option value="6">Ch 6 — RL Hip</option>
+                    <option value="7">Ch 7 — RL Thigh</option>
+                    <option value="8">Ch 8 — RL Knee</option>
+                    <option value="9">Ch 9 — RR Hip</option>
+                    <option value="10">Ch 10 — RR Thigh</option>
+                    <option value="11">Ch 11 — RR Knee</option>
+                </select>
+                <button class="btn btn-sm" id="btnNext" title="Next servo">▶</button>
+            </div>
+        </section>
+
+        <!-- Angle Slider -->
+        <section class="card slider-card">
+            <div class="slider-header">
+                <span class="angle-label" id="angleLabel">0.0°</span>
+                <span class="pulse-label" id="pulseLabel">1500 µs</span>
+            </div>
+            <div class="slider-container">
+                <span class="slider-min">-135°</span>
+                <input type="range" id="angleSlider" class="angle-slider"
+                       min="-135" max="135" value="0" step="0.5">
+                <span class="slider-max">+135°</span>
+            </div>
+            <div class="slider-ticks">
+                <span>-135°</span>
+                <span>-90°</span>
+                <span>-45°</span>
+                <span class="tick-center">0°</span>
+                <span>+45°</span>
+                <span>+90°</span>
+                <span>+135°</span>
+            </div>
+        </section>
+
+        <!-- Info Display -->
+        <section class="card info-card">
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Channel</span>
+                    <span class="info-value" id="infoChannel">0</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Joint</span>
+                    <span class="info-value" id="infoJoint">FL Hip</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Angle</span>
+                    <span class="info-value" id="infoAngle">0.0°</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pulse</span>
+                    <span class="info-value mono" id="infoPulse">1500 µs</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Offset</span>
+                    <span class="info-value mono" id="infoOffset">±0 µs</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Status</span>
+                    <span class="info-value" id="infoStatus">Ready</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Action Buttons -->
+        <section class="card actions-card">
+            <div class="actions-row">
+                <button class="btn btn-center" id="btnCenter">
+                    <span>⊙</span> Center This
+                </button>
+                <button class="btn btn-center-all" id="btnCenterAll">
+                    <span>⊙</span> Center All
+                </button>
+            </div>
+            <div class="actions-row">
+                <button class="btn btn-save" id="btnSave">
+                    💾 Save Offsets
+                </button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>VIGIL-RQ Quadruped · Servo Calibration Tool</p>
+            <p class="footer-hint">Move slider to find mechanical center → lock servo horn → next servo</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
