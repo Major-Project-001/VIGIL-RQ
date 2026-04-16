@@ -161,41 +161,60 @@ async def main():
     print()
     print("  Open in browser:  http://<rpi-ip>:8080")
     print("  Or on same machine: http://localhost:8080")
+    print("  Press Ctrl+C to stop.")
     print()
 
-    async with websockets.serve(handle_client, "0.0.0.0", WS_PORT):
-        # Wait forever
-        stop = asyncio.Future()
-        
-        def handle_signal():
+    server = await websockets.serve(handle_client, "0.0.0.0", WS_PORT)
+
+    # Wait until Ctrl+C
+    stop = asyncio.get_event_loop().create_future()
+
+    def _stop():
+        if not stop.done():
             stop.set_result(None)
-        
-        loop = asyncio.get_event_loop()
-        for sig in (signal.SIGINT, signal.SIGTERM):
-            try:
-                loop.add_signal_handler(sig, handle_signal)
-            except NotImplementedError:
-                # Windows doesn't support add_signal_handler
-                pass
 
+    loop = asyncio.get_event_loop()
+    for sig in (signal.SIGINT, signal.SIGTERM):
         try:
-            await stop
-        except asyncio.CancelledError:
-            pass
+            loop.add_signal_handler(sig, _stop)
+        except NotImplementedError:
+            pass  # Windows
 
-    # Cleanup
-    print("\n[CALIB] Shutting down — centering all servos...")
+    try:
+        await stop
+    except asyncio.CancelledError:
+        pass
+
+    # Graceful shutdown
+    print("\n[CALIB] Shutting down...")
+    server.close()
+    await server.wait_closed()
+
+    print("[CALIB] Centering all servos...")
     driver.set_all_neutral()
     driver.close()
-    print("[CALIB] Done.")
+    print("[CALIB] Done. Bye!")
+
+
+def cleanup():
+    """Emergency cleanup if asyncio didn't finish."""
+    global driver
+    if driver:
+        try:
+            driver.set_all_neutral()
+            driver.close()
+        except Exception:
+            pass
+        driver = None
 
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-        print("\n[CALIB] Interrupted — centering all servos...")
-        if driver:
-            driver.set_all_neutral()
-            driver.close()
+        print("\n[CALIB] Force quit — cleaning up...")
+        cleanup()
         print("[CALIB] Done.")
+    finally:
+        sys.exit(0)
+
