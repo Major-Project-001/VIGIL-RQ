@@ -11,11 +11,11 @@
 | Raspberry Pi 4B (4GB) | The one you already have |
 | microSD card (16GB+) | Class 10 / U1 minimum, 32GB recommended |
 | microSD card reader | USB adapter for your PC |
-| USB-C power supply | 5V 3A (official RPi PSU recommended) for initial setup |
-| HDMI micro cable + monitor | For first boot only (can go headless after) |
-| USB keyboard + mouse | For first boot only |
-| Ethernet cable (optional) | Easier than WiFi for initial setup |
-| Your PC/laptop | To flash the SD card |
+| USB-C power supply | 5V 3A (official RPi PSU recommended) |
+| Your PC/laptop | To flash the SD card + SSH in |
+
+> [!TIP]
+> **No monitor, keyboard, or mouse needed!** We configure WiFi and SSH in the Raspberry Pi Imager *before* first boot, so the RPi connects to your WiFi automatically and you SSH in from your laptop. Fully headless from the start.
 
 ---
 
@@ -32,24 +32,27 @@
 1. Insert your microSD card into your PC
 2. Open **Raspberry Pi Imager**
 3. Click **"Choose Device"** → Select **Raspberry Pi 4**
-4. Click **"Choose OS"** → Select **Raspberry Pi OS (64-bit)**
-   - This is under "Raspberry Pi OS (other)" → **Raspberry Pi OS Lite (64-bit)**
-   - Lite = no desktop (we don't need it, saves resources)
-   - If you prefer a desktop for comfort, choose the full version instead
+4. Click **"Choose OS"**:
+   - Go to **Raspberry Pi OS (other)** → **Raspberry Pi OS Lite (64-bit)**
+   - **Use Lite** — we run everything headless via SSH. No desktop needed.
+   - Lite uses ~200MB RAM vs ~800MB for desktop → more room for our Python server
 5. Click **"Choose Storage"** → Select your microSD card
 6. Click the **⚙️ gear icon** (or "Edit Settings") before writing:
 
-### OS Customisation Settings (IMPORTANT):
+### OS Customisation Settings (CRITICAL for headless):
 
-| Setting | Value |
-|---------|-------|
-| Set hostname | `vigilrq` |
-| Enable SSH | ✅ **Use password authentication** |
-| Set username | `pi` |
-| Set password | Choose a strong password (remember this!) |
-| Configure WiFi | Your home WiFi SSID + password |
-| WiFi country | `IN` (India) |
-| Set locale | Timezone: `Asia/Kolkata`, Keyboard: `us` |
+| Setting | Value | Why |
+|---------|-------|-----|
+| Set hostname | `vigilrq` | So you can `ssh pi@vigilrq.local` |
+| Enable SSH | ✅ **Use password authentication** | **This is required — no monitor!** |
+| Set username | `pi` | Standard RPi username |
+| Set password | Choose a strong password (remember this!) | Your SSH login password |
+| Configure WiFi | Your home WiFi SSID + password | **This is required — no monitor!** |
+| WiFi country | `IN` (India) | Must match your region |
+| Set locale | Timezone: `Asia/Kolkata`, Keyboard: `us` | Optional but helpful |
+
+> [!CAUTION]
+> **You MUST set WiFi and SSH in this step.** Without a monitor, these are your only way to connect to the RPi after first boot. Double-check your WiFi password!
 
 7. Click **"Save"**
 8. Click **"Write"** → Confirm → Wait (takes 5-10 minutes)
@@ -57,57 +60,65 @@
 
 ---
 
-## Step 3: First Boot
+## Step 3: First Boot (Headless)
 
 1. Insert the microSD card into the RPi 4B
-2. Connect:
-   - HDMI cable to a monitor
-   - USB keyboard and mouse
-   - Ethernet cable (if available)
-   - USB-C power supply (**plug in last**)
-3. The RPi will boot — wait 1-2 minutes for first-time setup
-4. If using Lite (no desktop), you'll see a login prompt:
-   ```
-   vigilrq login: pi
-   Password: [your password]
-   ```
+2. Plug in the USB-C power supply — **that's it, nothing else to connect**
+3. Wait **60-90 seconds** — the RPi is:
+   - Expanding the filesystem
+   - Connecting to your WiFi
+   - Starting the SSH server
+4. The green activity LED on the RPi should flicker during boot, then calm down
 
 ---
 
-## Step 4: Find Your RPi's IP Address
+## Step 4: SSH into the RPi from Your Laptop
 
-### Option A: From the RPi terminal
-```bash
-hostname -I
-```
-You'll see something like `192.168.1.42` — write this down.
+Open **PowerShell** or **Windows Terminal** on your laptop:
 
-### Option B: From your PC (if RPi is on same network)
+### Option A: Using hostname (recommended)
 ```powershell
-# On your Windows PC:
-ping vigilrq.local
-```
-
----
-
-## Step 5: Enable SSH (if not already)
-
-```bash
-sudo raspi-config
-```
-Navigate: **Interface Options** → **SSH** → **Enable** → **Finish**
-
-Now you can unplug the monitor/keyboard and SSH from your PC:
-```powershell
-# From your Windows PC:
 ssh pi@vigilrq.local
-# Or:
+```
+Type `yes` when asked about the fingerprint, then enter your password.
+
+### Option B: If `.local` doesn't resolve
+Find the RPi IP from your **router's admin page** (usually `192.168.1.1`):
+- Look for a device named `vigilrq` in the connected devices list
+- Note its IP (e.g., `192.168.1.42`)
+
+```powershell
 ssh pi@192.168.1.42
 ```
 
+### Option C: Scan the network
+```powershell
+# Find all devices on your network
+arp -a
+```
+Look for new entries that appeared after plugging in the RPi.
+
+> [!TIP]
+> If SSH still doesn't work after 2 minutes:
+> - Make sure your laptop is on the **same WiFi** as the RPi
+> - Double-check the WiFi SSID and password you entered in Imager
+> - Try power-cycling the RPi (unplug and replug USB-C)
+> - As a last resort: re-flash the SD card and verify the WiFi settings
+
+### Once connected, verify:
+```bash
+# Check you're on the Pi
+hostname
+# Should output: vigilrq
+
+# Check WiFi connection
+hostname -I
+# Should show an IP like 192.168.1.42
+```
+
 ---
 
-## Step 6: Update the System
+## Step 5: Update the System
 
 ```bash
 sudo apt update && sudo apt upgrade -y
@@ -116,7 +127,7 @@ This can take 5-15 minutes. Let it finish.
 
 ---
 
-## Step 7: Enable SPI & I2C
+## Step 6: Enable SPI & I2C
 
 ```bash
 sudo raspi-config
@@ -152,7 +163,7 @@ Expected output:
 
 ---
 
-## Step 8: Install Python Dependencies
+## Step 7: Install Python Dependencies
 
 ```bash
 # Ensure pip is installed
@@ -174,7 +185,7 @@ All should print "OK".
 
 ---
 
-## Step 9: Clone the VIGIL-RQ Repository
+## Step 8: Clone the VIGIL-RQ Repository
 
 ```bash
 cd ~
@@ -194,7 +205,7 @@ app.js  calib_server.py  index.html  style.css
 
 ---
 
-## Step 10: Set Up WiFi Access Point (for Fieldwork)
+## Step 9: Set Up WiFi Access Point (for Fieldwork)
 
 When you're away from your home WiFi, the RPi creates its own WiFi network that your phone connects to.
 
@@ -221,7 +232,7 @@ sudo nmcli connection up Hotspot
 
 ---
 
-## Step 11: Test the Calibration Server (No Hardware)
+## Step 10: Test the Calibration Server (No Hardware)
 
 Even without the FPGA connected, you can test the server in simulation mode:
 
