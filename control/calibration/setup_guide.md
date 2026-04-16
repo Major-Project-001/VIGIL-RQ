@@ -36,7 +36,7 @@ You only need a **minimal** wiring setup for calibration — not the full robot:
 ### Wiring Diagram (Minimal)
 
 ```mermaid
-graph TD
+graph LR
     classDef rpi fill:#3b82f6,stroke:#1d4ed8,color:#fff,font-weight:bold
     classDef fpga fill:#22c55e,stroke:#15803d,color:#fff,font-weight:bold
     classDef ls fill:#14b8a6,stroke:#0f766e,color:#fff,font-weight:bold
@@ -45,103 +45,83 @@ graph TD
     classDef bat fill:#a855f7,stroke:#7e22ce,color:#fff,font-weight:bold
     classDef reg fill:#eab308,stroke:#ca8a04,color:#000,font-weight:bold
     classDef gnd fill:#475569,stroke:#334155,color:#fff,font-weight:bold
-    classDef usb fill:#ec4899,stroke:#be185d,color:#fff,font-weight:bold
 
-    %% ── Power Source ──
-    subgraph PWR_SRC["🔋 Power Source"]
-        BAT["3S Li-ion · 11.1V · 3000mAh"]:::bat
-    end
-
-    %% ── Voltage Regulators ──
-    subgraph REGULATORS["⚡ Voltage Regulators"]
-        XL_IN["XL4015 IN+ / IN-"]:::pwr
-        XL_OUT["XL4015 OUT+ / OUT-<br/>Tuned to 6.8V"]:::pwr
-        LM_IN["LM2596 IN+ / IN-"]:::reg
-        LM_OUT["LM2596 OUT+ / OUT-<br/>Tuned to 5.0V"]:::reg
-    end
-
-    %% ── RPi ──
     subgraph RPI_BENCH["🍓 RPi 4B"]
-        R_USB["USB-C · 5V 3A PSU"]:::usb
-        R_SCLK["GPIO 11 · Pin 23 · SCLK"]:::rpi
-        R_MOSI["GPIO 10 · Pin 19 · MOSI"]:::rpi
-        R_CE0["GPIO 8 · Pin 24 · CE0"]:::rpi
+        R_SCLK["GPIO 11 · SCLK"]:::rpi
+        R_MOSI["GPIO 10 · MOSI"]:::rpi
+        R_CE0["GPIO 8 · CE0"]:::rpi
         R_GND["GND · Pin 25"]:::gnd
     end
 
-    %% ── FPGA ──
     subgraph FPGA_BENCH["🟢 Tang Nano 9K"]
-        F_USB["USB-C · Power + JTAG"]:::usb
         F_SCLK["Pin 25 · SCLK"]:::fpga
         F_MOSI["Pin 26 · MOSI"]:::fpga
         F_CS["Pin 27 · CS"]:::fpga
         F_PWM0["Pin 28 · PWM Ch0"]:::fpga
-        F_3V3["3.3V Out"]:::fpga
+        F_3V3["3.3V"]:::fpga
         F_GND["GND"]:::gnd
     end
 
-    %% ── Level Shifter ──
-    subgraph LS_BENCH["🔀 Level Shifter · 4ch"]
-        LS_LV_REF["LV Ref · 3.3V"]:::ls
-        LS_HV_REF["HV Ref · 5.0V"]:::ls
-        LS_LV1["LV1 In · 3.3V signal"]:::ls
-        LS_HV1["HV1 Out · 5.0V signal"]:::ls
+    subgraph LS_BENCH["🔀 Level Shifter"]
+        LS_LV_REF["LV · 3.3V"]:::ls
+        LS_HV_REF["HV · 5.0V"]:::ls
+        LS_LV1["LV1 In"]:::ls
+        LS_HV1["HV1 Out · 5V"]:::ls
         LS_GND["GND"]:::gnd
     end
 
-    %% ── Servo ──
     subgraph SERVO_BENCH["🔧 DS3218 Under Test"]
-        S_SIG["🟠 Orange · Signal"]:::servo
-        S_VCC["🔴 Red · +6.8V"]:::servo
-        S_GND["⚫ Brown · GND"]:::servo
+        S_SIG["🟠 Signal"]:::servo
+        S_VCC["🔴 +6.8V"]:::servo
+        S_GND["⚫ GND"]:::servo
     end
 
-    %% ── Common GND Bus ──
-    GND_BUS["⏚ Common GND Bus"]:::gnd
+    subgraph PWR_BENCH["🔋 Power"]
+        BAT["3S Li-ion · 11.1V"]:::bat
+        XL["⚡ XL4015 · 6.8V"]:::pwr
+        LM["⚡ LM2596 · 5.0V"]:::reg
+    end
 
-    %% ── Battery → Regulators ──
-    BAT -->|"🔴 11.1V"| XL_IN
-    BAT -->|"🔴 11.1V"| LM_IN
-    XL_IN --> XL_OUT
-    LM_IN --> LM_OUT
+    COMMON_GND["⏚ Common GND"]:::gnd
 
-    %% ── SPI Connections ──
-    R_SCLK -->|"🔵 SCLK"| F_SCLK
-    R_MOSI -->|"🟢 MOSI"| F_MOSI
-    R_CE0 -->|"🟡 CS"| F_CS
+    %% SPI
+    R_SCLK -->|"🔵"| F_SCLK
+    R_MOSI -->|"🟢"| F_MOSI
+    R_CE0 -->|"🟡"| F_CS
+    R_GND -->|"⚫"| F_GND
 
-    %% ── Level Shifter Voltage Refs ──
+    %% Level shifter refs
     F_3V3 -->|"3.3V"| LS_LV_REF
-    LM_OUT -->|"5.0V"| LS_HV_REF
+    LM -->|"5.0V"| LS_HV_REF
 
-    %% ── Signal Path: FPGA → Level Shifter → Servo ──
-    F_PWM0 -->|"3.3V PWM"| LS_LV1
-    LS_HV1 -->|"5.0V PWM"| S_SIG
+    %% Signal path
+    F_PWM0 -->|"3.3V"| LS_LV1
+    LS_HV1 -->|"5V"| S_SIG
 
-    %% ── Servo Power ──
-    XL_OUT -->|"🔴 6.8V"| S_VCC
+    %% Power
+    BAT -->|"11.1V"| XL
+    BAT -->|"11.1V"| LM
+    XL -->|"🔴 6.8V"| S_VCC
 
-    %% ── GND Bus (all grounds tied together) ──
-    R_GND --- GND_BUS
-    F_GND --- GND_BUS
-    LS_GND --- GND_BUS
-    S_GND --- GND_BUS
-    BAT ---|"⚫ GND"| GND_BUS
+    %% GND bus
+    COMMON_GND --- S_GND
+    COMMON_GND --- F_GND
+    COMMON_GND --- LS_GND
+    COMMON_GND --- R_GND
+    BAT ---|"⚫ GND"| COMMON_GND
 
-    %% ── Link Styles ──
-    linkStyle 0 stroke:#ef4444,stroke-width:3px
-    linkStyle 1 stroke:#ef4444,stroke-width:3px
-    linkStyle 2 stroke:#ef4444,stroke-width:2px
-    linkStyle 3 stroke:#eab308,stroke-width:2px
-    linkStyle 4 stroke:#3b82f6,stroke-width:2px
-    linkStyle 5 stroke:#22c55e,stroke-width:2px
-    linkStyle 6 stroke:#eab308,stroke-width:2px
-    linkStyle 7 stroke:#22c55e,stroke-width:2px
-    linkStyle 8 stroke:#eab308,stroke-width:2px
-    linkStyle 9 stroke:#22c55e,stroke-width:2px
-    linkStyle 10 stroke:#f97316,stroke-width:3px
-    linkStyle 11 stroke:#ef4444,stroke-width:3px
-    linkStyle 12,13,14,15,16 stroke:#475569,stroke-width:2px
+    linkStyle 0 stroke:#3b82f6,stroke-width:2px
+    linkStyle 1 stroke:#22c55e,stroke-width:2px
+    linkStyle 2 stroke:#eab308,stroke-width:2px
+    linkStyle 3 stroke:#475569,stroke-width:2px
+    linkStyle 4 stroke:#22c55e,stroke-width:2px
+    linkStyle 5 stroke:#eab308,stroke-width:2px
+    linkStyle 6 stroke:#22c55e,stroke-width:2px
+    linkStyle 7 stroke:#f97316,stroke-width:3px
+    linkStyle 8 stroke:#ef4444,stroke-width:3px
+    linkStyle 9 stroke:#ef4444,stroke-width:3px
+    linkStyle 10 stroke:#ef4444,stroke-width:3px
+    linkStyle 11,12,13,14,15 stroke:#475569,stroke-width:2px
 ```
 
 ### Step-by-Step Wiring
