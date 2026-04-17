@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIGIL-RQ Servo Calibrator</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
+    <div id="vanta-bg"></div>
     <div class="container">
         <!-- Header -->
         <header class="header">
@@ -53,8 +58,7 @@
             </div>
             <div class="slider-container">
                 <span class="slider-min">-135°</span>
-                <input type="range" id="angleSlider" class="angle-slider"
-                       min="-135" max="135" value="0" step="0.5">
+                <input type="range" id="angleSlider" class="angle-slider" min="-135" max="135" value="0" step="0.5">
                 <span class="slider-max">+135°</span>
             </div>
             <div class="slider-ticks">
@@ -122,6 +126,33 @@
         </footer>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="../../public/vanta.globe.min.js"></script>
     <script src="app.js"></script>
+    <script>
+        // Initialize Vanta.js GLOBE background
+        window.addEventListener('DOMContentLoaded', function () {
+            if (typeof VANTA !== 'undefined') {
+                VANTA.GLOBE({
+                    el: '#vanta-bg',
+                    mouseControls: true,
+                    touchControls: true,
+                    gyroControls: false,
+                    minHeight: 200.00,
+                    minWidth: 200.00,
+                    scale: 1.00,
+                    scaleMobile: 1.00,
+                    color: 0xff6000,
+                    color2: 0xffffff,
+                    backgroundColor: 0x0,
+                    size: 1.00,
+                    points: 10.00,
+                    maxDistance: 23.00,
+                    spacing: 17.00
+                });
+            }
+        });
+    </script>
 </body>
+
 </html>
