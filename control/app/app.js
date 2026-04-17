@@ -19,6 +19,8 @@ let reconnectTimer = null;
 let joystickTimer = null;
 let lastJoystickX = 0;
 let lastJoystickY = 0;
+let lastJoystick2X = 0;
+let lastJoystick2Y = 0;
 
 // ── DOM Elements ──
 const statusDot = document.getElementById('statusDot');
@@ -122,11 +124,13 @@ function sendCommand(action) {
     });
 }
 
-function sendJoystick(x, y) {
+function sendJoystick(x, y, x2, y2) {
     send({
         type: 'joystick',
         x: x,
-        y: y
+        y: y,
+        x2: x2,
+        y2: y2
     });
 }
 
@@ -144,12 +148,17 @@ const joystick = new VirtualJoystick('joystickCanvas', (x, y) => {
     lastJoystickY = y;
 });
 
+const joystick2 = new VirtualJoystick('joystickCanvas2', (x, y) => {
+    lastJoystick2X = x;
+    lastJoystick2Y = y;
+});
+
 function startJoystickTimer() {
     if (joystickTimer) return;
     joystickTimer = setInterval(() => {
-        // Only send if not at center (or was recently not at center)
-        if (lastJoystickX !== 0 || lastJoystickY !== 0) {
-            sendJoystick(lastJoystickX, lastJoystickY);
+        // Only send if either joystick is not at center
+        if (lastJoystickX !== 0 || lastJoystickY !== 0 || lastJoystick2X !== 0 || lastJoystick2Y !== 0) {
+            sendJoystick(lastJoystickX, lastJoystickY, lastJoystick2X, lastJoystick2Y);
         }
     }, JOYSTICK_SEND_RATE_MS);
 }

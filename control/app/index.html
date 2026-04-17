@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
@@ -9,10 +10,14 @@
     <title>VIGIL-RQ Controller</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+    <div id="vanta-bg"></div>
     <!-- ── Header ── -->
     <header id="header">
         <div class="header-left">
@@ -61,20 +66,23 @@
             </div>
         </section>
 
-        <!-- Joystick + Speed Control -->
+        <!-- Dual Joysticks + Speed Control -->
         <section class="control-section" id="controlSection">
-            <div class="control-row">
+            <div class="joystick-row">
                 <div class="joystick-container">
-                    <div class="section-label">DIRECTION</div>
-                    <canvas id="joystickCanvas" width="200" height="200"></canvas>
+                    <div class="section-label">MOVE</div>
+                    <canvas id="joystickCanvas" class="joystick-canvas" width="200" height="200"></canvas>
                 </div>
-                <div class="speed-container">
-                    <div class="section-label">SPEED</div>
-                    <div class="speed-slider-wrapper">
-                        <input type="range" id="speedSlider" min="0" max="200"
-                               value="100" orient="vertical" class="speed-slider">
-                        <span class="speed-value" id="speedValue">1.0x</span>
-                    </div>
+                <div class="joystick-container">
+                    <div class="section-label">LOOK</div>
+                    <canvas id="joystickCanvas2" class="joystick-canvas" width="200" height="200"></canvas>
+                </div>
+            </div>
+            <div class="speed-section">
+                <div class="section-label">SPEED</div>
+                <div class="speed-slider-wrapper">
+                    <input type="range" id="speedSlider" min="0" max="300" value="100" class="speed-slider">
+                    <span class="speed-value" id="speedValue">1.0x</span>
                 </div>
             </div>
         </section>
@@ -118,7 +126,32 @@
         <span class="estop-label">E-STOP</span>
     </button>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="antigravity.js"></script>
     <script src="joystick.js"></script>
     <script src="app.js"></script>
+    <script>
+        // Initialize Antigravity background
+        window.addEventListener('DOMContentLoaded', function () {
+            new AntigravityEffect('#vanta-bg', {
+                count: 1000,
+                magnetRadius: 1,
+                ringRadius: 13,
+                waveSpeed: 0.5,
+                waveAmplitude: 1,
+                particleSize: 1,
+                lerpSpeed: 0.1,
+                color: '#FF6600',
+                autoAnimate: false,
+                particleVariance: 1,
+                rotationSpeed: 0,
+                depthFactor: 1,
+                pulseSpeed: 3,
+                particleShape: 'capsule',
+                fieldStrength: 10
+            });
+        });
+    </script>
 </body>
+
 </html>
