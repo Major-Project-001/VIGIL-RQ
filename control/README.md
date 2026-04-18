@@ -173,20 +173,18 @@ sudo python server.py
 | Raspberry Pi 4B (4GB) | 1 | WiFi AP + main controller |
 | Tang Nano 9K (GW1NR-9C) | 1 | PWM generation via FPGA |
 | DS3218 20kg servo | 12 | 3 per leg × 4 legs |
-| 18650 3S battery pack | 1 | 11.1V nominal |
-| 3S BMS (10-20A) | 1 | Battery protection |
+| Dragon 3S 3000mAh Li-ion pack | 3 | Wired in parallel, internal BMS per pack |
 | XL4015 buck converter | 1 | Adjusted to 6.8V for servos |
 | LM2596 buck converter | 1 | Adjusted to 5.0V for logic |
 | 4-ch level shifter (3.3V↔5V) | 3 | FPGA PWM → servo signal |
 | MPU6050/9250 IMU | 1 | Orientation sensing |
 | INA219 power monitor | 1 | Battery current/voltage |
-| 1N5822 Schottky diode | 2 | Reverse polarity protection |
 | 15A blade fuse | 1 | Overcurrent protection |
 | Active buzzer | 1 | Audio alerts |
 | RGB LED (common cathode) | 1 | Visual status |
 | 220Ω resistor | 3 | LED current limiting |
 | 0.1Ω shunt resistor | 1 | INA219 current sense |
-| Screw terminal block | 1 | Power distribution |
+| 6-pin screw terminal block | 2 | +V distribution + GND distribution |
 
 ---
 

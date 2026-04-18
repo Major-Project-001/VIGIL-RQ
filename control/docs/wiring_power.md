@@ -15,17 +15,12 @@ graph LR
     classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
     classDef posBlock fill:#fbbf24,stroke:#d97706,color:#7c2d12,font-weight:bold
     classDef gndBlock fill:#64748b,stroke:#475569,color:#fff,font-weight:bold
+    classDef bmsNote fill:#a78bfa,stroke:#7c3aed,color:#fff,font-weight:bold
 
-    subgraph BATTERY["🔋 3× 18650 3S PACKS — PARALLEL — 11.1V / 9000mAh"]
+    subgraph BATTERY["🔋 3× Dragon 3S PACKS — PARALLEL — 11.1V / 9000mAh"]
+        BAT_NOTE["🛡 Internal BMS per pack"]:::bmsNote
         BAT_POS["+ Positive (joined)"]:::powerPin
         BAT_NEG["- Negative (joined)"]:::powerPin
-    end
-
-    subgraph BMS_BLOCK["🛡 3S BMS"]
-        BMS_BIN["B+ In"]:::powerPin
-        BMS_BMIN["B- In"]:::powerPin
-        BMS_POUT["P+ Out"]:::powerPin
-        BMS_NOUT["P- Out"]:::powerPin
     end
 
     subgraph FUSE_BLOCK["⚡ 15A INLINE FUSE"]
@@ -48,7 +43,7 @@ graph LR
         GT3["3: → LM2596 GND"]:::gndBlock
         GT4["4: → RPi USB-C GND"]:::gndBlock
         GT5["5: → FPGA USB-C GND"]:::gndBlock
-        GT6["6: spare"]:::gndBlock
+        GT6["6: → buck GND returns"]:::gndBlock
     end
 
     subgraph BUCK_SERVO["⬇ XL4015 BUCK — 6.8V SERVO RAIL"]
@@ -72,13 +67,9 @@ graph LR
         SERVO_PWR["12× Servos — 6.8V Rail"]:::servoPin
     end
 
-    %% Battery → BMS
-    BAT_POS -->|"🔴 16AWG"| BMS_BIN
-    BAT_NEG -->|"⚫ 16AWG"| BMS_BMIN
-
-    %% BMS → Fuse / GND terminal
-    BMS_POUT -->|"🔴 16AWG"| FUSE_IN
-    BMS_NOUT -->|"⚫ 16AWG"| GT1
+    %% Battery → Fuse / GND terminal (no external BMS — internal per pack)
+    BAT_POS -->|"🔴 16AWG"| FUSE_IN
+    BAT_NEG -->|"⚫ 16AWG"| GT1
 
     %% Fuse → +V terminal
     FUSE_OUT -->|"🔴 16AWG"| PT1
@@ -110,15 +101,13 @@ graph LR
     linkStyle 0 stroke:#ef4444,stroke-width:3px
     linkStyle 1 stroke:#475569,stroke-width:3px
     linkStyle 2 stroke:#ef4444,stroke-width:3px
-    linkStyle 3 stroke:#475569,stroke-width:3px
-    linkStyle 4 stroke:#ef4444,stroke-width:3px
-    linkStyle 5,6 stroke:#ef4444,stroke-width:2px
+    linkStyle 3,4 stroke:#ef4444,stroke-width:2px
+    linkStyle 5,6 stroke:#475569,stroke-width:2px
     linkStyle 7,8 stroke:#475569,stroke-width:2px
-    linkStyle 9,10 stroke:#475569,stroke-width:2px
-    linkStyle 11 stroke:#ef4444,stroke-width:3px
-    linkStyle 12,13,14 stroke:#ef4444,stroke-width:2px
-    linkStyle 15,16 stroke:#fbbf24,stroke-width:2px,stroke-dasharray:5
-    linkStyle 17,18 stroke:#64748b,stroke-width:2px,stroke-dasharray:5
+    linkStyle 9 stroke:#ef4444,stroke-width:3px
+    linkStyle 10,11,12 stroke:#ef4444,stroke-width:2px
+    linkStyle 13,14 stroke:#fbbf24,stroke-width:2px,stroke-dasharray:5
+    linkStyle 15,16 stroke:#64748b,stroke-width:2px,stroke-dasharray:5
 ```
 
 ---
@@ -175,7 +164,7 @@ graph TD
 
     BUS["⚫ 16AWG BARE COPPER BUS BAR"]:::busbar
 
-    G1["Pos 1: GND IN\n← from BMS P-"]:::gndpos
+    G1["Pos 1: GND IN\n← from battery GND"]:::gndpos
     G2["Pos 2: GND OUT\n→ XL4015 GND"]:::gndpos
     G3["Pos 3: GND OUT\n→ LM2596 GND"]:::gndpos
     G4["Pos 4: GND OUT\n→ RPi USB-C black"]:::gndpos
@@ -213,17 +202,18 @@ graph TD
 
 ## 18650 Battery Pack Specifications
 
-Using **3× Dragon 3S 3000mAh packs wired in parallel**:
+Using **3× Dragon 3S 3000mAh packs wired in parallel**. Each pack has an **internal BMS** — no external BMS board needed.
 
 | Parameter | Value |
 |-----------|-------|
 | Chemistry | Li-ion (18650 cells) |
 | Configuration per pack | 3S1P (3 cells in series) |
+| Internal BMS per pack | ✅ Over-discharge, over-charge, short circuit |
 | Packs in parallel | 3 |
 | Effective configuration | 3S3P |
 | Nominal voltage | 11.1V (3.7V × 3) |
 | Fully charged | 12.6V (4.2V × 3) |
-| Low cutoff | 9.0V (3.0V × 3) — BMS disconnects |
+| Low cutoff | 9.0V (3.0V × 3) — internal BMS disconnects |
 | Combined capacity | 9000mAh (3 × 3000mAh) |
 | Max continuous discharge | ~15A (3 × ~5A per pack) |
 
