@@ -192,9 +192,15 @@ graph LR
     F_3V3 -.->|"LV Ref"| LS2_LV
     F_3V3 -.->|"LV Ref"| LS3_LV
 
+    %% Ground connections (links 27-30)
+    F_GND ---|"⚫ GND"| LS1_GND
+    F_GND ---|"⚫ GND"| LS2_GND
+    F_GND ---|"⚫ GND"| LS3_GND
+
     linkStyle 0,1,2,3,4,5,6,7,8,9,10,11 stroke:#22c55e,stroke-width:2px
     linkStyle 12,13,14,15,16,17,18,19,20,21,22,23 stroke:#f97316,stroke-width:3px
     linkStyle 24,25,26 stroke:#ef4444,stroke-width:1px
+    linkStyle 27,28,29 stroke:#475569,stroke-width:2px
 
     style FPGA_PWM fill:#14532d,stroke:#22c55e,color:#86efac
     style LS1 fill:#134e4a,stroke:#14b8a6,color:#5eead4
