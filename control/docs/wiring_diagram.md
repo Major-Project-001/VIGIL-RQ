@@ -42,7 +42,7 @@
 | Tang Nano 9K FPGA | `#22c55e` 🟩 | `#86efac` |
 | Level Shifters | `#14b8a6` 🟦 teal | `#5eead4` |
 | DS3218 Servos | `#f97316` 🟧 | `#fdba74` |
-| MPU6050 IMU | `#a855f7` 🟪 | `#d8b4fe` |
+| MPU9250 IMU | `#a855f7` 🟪 | `#d8b4fe` |
 | INA219 Power | `#eab308` 🟨 | `#fde047` |
 | Battery & Bucks | `#ef4444` 🟥 | `#fca5a5` |
 | Buzzer & RGB LED | `#ec4899` 🩷 | `#f9a8d4` |
@@ -88,7 +88,7 @@ graph TB
     end
 
     subgraph SENSE["📡 SENSORS"]
-        IMU_MAIN["🟣 MPU6050/9250<br/>IMU"]:::sensor
+        IMU_MAIN["🟣 MPU9250<br/>IMU"]:::sensor
         INA_MAIN["🟡 INA219<br/>Power Monitor"]:::inaC
     end
 

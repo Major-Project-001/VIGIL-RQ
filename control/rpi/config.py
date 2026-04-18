@@ -37,7 +37,7 @@ SPI_MODE = 0b00                     # CPOL=0, CPHA=0
 
 I2C_BUS = 1                         # RPi 4B default I2C bus
 
-# MPU6050 / MPU9250 IMU
+# MPU9250 IMU
 IMU_ADDRESS = 0x68                   # Default; use 0x69 if AD0 is HIGH
 IMU_SAMPLE_RATE_HZ = 50
 

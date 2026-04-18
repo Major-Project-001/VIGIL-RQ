@@ -65,7 +65,7 @@ control/
 │   ├── config.py                # Central configuration
 │   ├── spi_driver.py            # SPI master → FPGA comms
 │   ├── gait_engine.py           # Walk / trot / pose generation
-│   ├── imu_reader.py            # MPU6050/9250 I2C driver
+│   ├── imu_reader.py            # MPU9250 I2C driver
 │   ├── power_monitor.py         # INA219 battery monitor
 │   ├── alert_manager.py         # Buzzer + RGB LED manager
 │   ├── websocket_handler.py     # WebSocket server
@@ -178,7 +178,7 @@ sudo python server.py
 | LM2596 buck converter | 1 | Adjusted to 5.0V for logic |
 | 1N5822 Schottky diode | 1 | Reverse polarity protection on LM2596 input |
 | 4-ch level shifter (3.3V↔5V) | 3 | FPGA PWM → servo signal |
-| MPU6050/9250 IMU | 1 | Orientation sensing |
+| MPU9250 IMU | 1 | Orientation sensing (accel + gyro + magnetometer) |
 | INA219 power monitor | 1 | Battery current/voltage |
 | 15A blade fuse | 1 | Overcurrent protection |
 | Active buzzer | 1 | Audio alerts |

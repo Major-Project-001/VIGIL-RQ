@@ -1,5 +1,5 @@
 """
-imu_reader.py — MPU6050 / MPU9250 I2C driver for the VIGIL-RQ quadruped.
+imu_reader.py — MPU9250 I2C driver for the VIGIL-RQ quadruped.
 
 Reads accelerometer and gyroscope data from the IMU and computes
 roll, pitch, yaw using a complementary filter.
@@ -24,7 +24,7 @@ except ImportError:
     print("[IMU] smbus2 not available — running in simulation mode")
 
 
-# ── MPU6050/9250 Register addresses ──
+# ── MPU9250 Register addresses ──
 PWR_MGMT_1 = 0x6B
 ACCEL_XOUT_H = 0x3B
 GYRO_XOUT_H = 0x43
@@ -37,7 +37,7 @@ GYRO_SCALE = 131.0          # ±250°/s mode (default)
 
 class ImuReader:
     """
-    Reads orientation data from MPU6050/MPU9250 over I2C.
+    Reads orientation data from MPU9250 over I2C.
 
     Uses a complementary filter to fuse accelerometer and gyroscope
     data into stable roll, pitch, yaw estimates.
@@ -67,7 +67,7 @@ class ImuReader:
             print("[IMU] Running in simulation mode (no hardware)")
 
     def _init_sensor(self):
-        """Wake up the MPU6050/9250 and configure default settings."""
+        """Wake up the MPU9250 and configure default settings."""
         # Wake up (clear sleep bit)
         self._bus.write_byte_data(self._address, PWR_MGMT_1, 0x00)
         time.sleep(0.1)
@@ -75,7 +75,7 @@ class ImuReader:
         # Read WHO_AM_I for identification
         who = self._bus.read_byte_data(self._address, WHO_AM_I)
         if who == 0x68:
-            print("[IMU] Detected MPU6050")
+            print("[IMU] Unexpected WHO_AM_I: 0x68 (MPU6050?)")
         elif who == 0x71:
             print("[IMU] Detected MPU9250")
         else:

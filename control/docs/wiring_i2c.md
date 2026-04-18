@@ -19,7 +19,7 @@ graph LR
         RPI_GND_I2C["GND · Pin 9"]:::gnd
     end
 
-    subgraph IMU_BLOCK["🟣 MPU6050 / MPU9250 — 0x68"]
+    subgraph IMU_BLOCK["🟣 MPU9250 — 0x68"]
         IMU_SDA["SDA"]:::imuPin
         IMU_SCL["SCL"]:::imuPin
         IMU_VCC["VCC"]:::imuPin
@@ -89,7 +89,7 @@ graph LR
 
 | Device | Address | Config | Pins Tied |
 |--------|---------|--------|-----------|
-| MPU6050/9250 | `0x68` | AD0 → GND | AD0 to GND |
+| MPU9250 | `0x68` | AD0 → GND | AD0 to GND |
 | INA219 | `0x40` | A0,A1 → GND | A0, A1 both to GND |
 
 ## I2C Pin Mapping
@@ -111,7 +111,7 @@ graph LR
 
 ## IMU Mounting Orientation
 
-The MPU6050/9250 must be mounted with the correct axis alignment for the gait engine to work properly:
+The MPU9250 must be mounted with the correct axis alignment for the gait engine to work properly:
 
 ```mermaid
 graph TB
@@ -128,7 +128,7 @@ graph TB
     X_POS["+X Forward"]:::axisX
 
     Y_POS["+Y Left"]:::axisY
-    IMU["🟣 MPU6050<br/>IMU Chip"]:::imu
+    IMU["🟣 MPU9250<br/>IMU Chip"]:::imu
     Y_NEG["-Y Right"]:::axisY
 
     Z_UP["+Z Up<br/>Away from ground"]:::axisZ
@@ -223,6 +223,6 @@ sudo i2cdetect -y 1
 
 # Read IMU WHO_AM_I register
 sudo i2cget -y 1 0x68 0x75
-# Should return 0x68 (MPU6050) or 0x71 (MPU9250)
+# Should return 0x71 (MPU9250)
 ```
 

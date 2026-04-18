@@ -70,7 +70,7 @@ graph TB
     LS1_G["Level Shifter 1 GND"]:::lsPin
     LS2_G["Level Shifter 2 GND"]:::lsPin
     LS3_G["Level Shifter 3 GND"]:::lsPin
-    IMU_G["MPU6050 GND"]:::imuPin
+    IMU_G["MPU9250 GND"]:::imuPin
     INA_G["INA219 GND"]:::inaPin
     BUZ_G["Buzzer GND"]:::alertPin
     RGB_G["RGB LED Cathode"]:::alertPin
