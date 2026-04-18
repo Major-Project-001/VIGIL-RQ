@@ -141,7 +141,7 @@ POSE_SIT = {
 POSE_REST = {
     **{f"{l}_hip": 0.0 for l in LEGS},
     **{f"{l}_thigh": 0.8 for l in LEGS},
-    **{f"{l}_knee": -1.8 for l in LEGS},
+    **{f"{l}_knee": -1.5 for l in LEGS},      # -85.9° (within ±90° servo range)
 }
 
 
