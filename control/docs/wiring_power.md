@@ -13,10 +13,12 @@ graph LR
     classDef rpiPin fill:#93c5fd,stroke:#3b82f6,color:#1e3a5f
     classDef lsPin fill:#5eead4,stroke:#14b8a6,color:#134e4a
     classDef servoPin fill:#fdba74,stroke:#f97316,color:#7c2d12
+    classDef posBlock fill:#fbbf24,stroke:#d97706,color:#7c2d12,font-weight:bold
+    classDef gndBlock fill:#64748b,stroke:#475569,color:#fff,font-weight:bold
 
-    subgraph BATTERY["🔋 18650 3S PACK — 11.1V"]
-        BAT_POS["+ Positive"]:::powerPin
-        BAT_NEG["- Negative"]:::powerPin
+    subgraph BATTERY["🔋 3× 18650 3S PACKS — PARALLEL — 11.1V / 9000mAh"]
+        BAT_POS["+ Positive (joined)"]:::powerPin
+        BAT_NEG["- Negative (joined)"]:::powerPin
     end
 
     subgraph BMS_BLOCK["🛡 3S BMS"]
@@ -31,20 +33,22 @@ graph LR
         FUSE_OUT["Fuse Out"]:::powerPin
     end
 
-    subgraph TERMINAL["📦 SCREW TERMINAL BLOCK"]
-        T_VIN["+V In"]:::powerPin
-        T_GND["GND In"]:::powerPin
-        T_OUT1["+V Out 1"]:::powerPin
-        T_OUT2["+V Out 2"]:::powerPin
-        T_GND1["GND Out 1"]:::powerPin
-        T_GND2["GND Out 2"]:::powerPin
+    subgraph POS_TERMINAL["🔴 +V TERMINAL BLOCK (6-pin)"]
+        PT1["1: +V IN"]:::posBlock
+        PT2["2: → XL4015 VIN"]:::posBlock
+        PT3["3: → LM2596 VIN"]:::posBlock
+        PT4["4: spare"]:::posBlock
+        PT5["5: spare"]:::posBlock
+        PT6["6: spare"]:::posBlock
     end
 
-    subgraph DIODES["🔒 SCHOTTKY DIODES"]
-        D1_A["1N5822 #1 Anode"]:::powerPin
-        D1_K["1N5822 #1 Cathode"]:::powerPin
-        D2_A["1N5822 #2 Anode"]:::powerPin
-        D2_K["1N5822 #2 Cathode"]:::powerPin
+    subgraph GND_TERMINAL["⚫ GND TERMINAL BLOCK (6-pin)"]
+        GT1["1: GND IN"]:::gndBlock
+        GT2["2: → XL4015 GND"]:::gndBlock
+        GT3["3: → LM2596 GND"]:::gndBlock
+        GT4["4: → RPi USB-C GND"]:::gndBlock
+        GT5["5: → FPGA USB-C GND"]:::gndBlock
+        GT6["6: spare"]:::gndBlock
     end
 
     subgraph BUCK_SERVO["⬇ XL4015 BUCK — 6.8V SERVO RAIL"]
@@ -61,10 +65,6 @@ graph LR
         BL_GNDO["GND OUT"]:::gnd
     end
 
-    subgraph COMMON_BUS["🔗 COMMON GROUND BUS"]
-        GND_BUS["⏚ COMMON GND"]:::gnd
-    end
-
     subgraph LOADS["📤 POWER OUTPUTS"]
         RPI_5V["RPi 4B — USB-C 5V"]:::rpiPin
         FPGA_5V["Tang Nano 9K — USB-C 5V"]:::rpiPin
@@ -72,48 +72,128 @@ graph LR
         SERVO_PWR["12× Servos — 6.8V Rail"]:::servoPin
     end
 
-    %% Battery → BMS (links 0-1)
-    BAT_POS -->|"🔴 14AWG"| BMS_BIN
-    BAT_NEG -->|"⚫ 14AWG"| BMS_BMIN
+    %% Battery → BMS
+    BAT_POS -->|"🔴 16AWG"| BMS_BIN
+    BAT_NEG -->|"⚫ 16AWG"| BMS_BMIN
 
-    %% BMS → Fuse/GND (links 2-3)
-    BMS_POUT -->|"🔴 14AWG"| FUSE_IN
-    BMS_NOUT -->|"⚫ 14AWG"| GND_BUS
+    %% BMS → Fuse / GND terminal
+    BMS_POUT -->|"🔴 16AWG"| FUSE_IN
+    BMS_NOUT -->|"⚫ 16AWG"| GT1
 
-    %% Fuse → Terminal (links 4-5)
-    FUSE_OUT -->|"🔴 14AWG"| T_VIN
-    GND_BUS -->|"⚫ 14AWG"| T_GND
+    %% Fuse → +V terminal
+    FUSE_OUT -->|"🔴 16AWG"| PT1
 
-    %% Terminal → Diodes → Bucks (links 6-11)
-    T_OUT1 -->|"🔴 16AWG"| D1_A
-    D1_K -->|"🔴 16AWG"| BS_VIN
-    T_OUT2 -->|"🔴 16AWG"| D2_A
-    D2_K -->|"🔴 16AWG"| BL_VIN
-    T_GND1 -->|"⚫ 16AWG"| BS_GND
-    T_GND2 -->|"⚫ 16AWG"| BL_GND
+    %% +V terminal → bucks
+    PT2 -->|"🔴 16AWG"| BS_VIN
+    PT3 -->|"🔴 16AWG"| BL_VIN
 
-    %% Buck GND → common (links 12-13)
-    BS_GNDO --> GND_BUS
-    BL_GNDO --> GND_BUS
+    %% GND terminal → bucks
+    GT2 -->|"⚫ 16AWG"| BS_GND
+    GT3 -->|"⚫ 16AWG"| BL_GND
 
-    %% Buck outputs → loads (links 14-17)
-    BS_VOUT ==>|"🔴 18AWG × 6 pairs"| SERVO_PWR
+    %% Buck GND returns → GND terminal
+    BS_GNDO -->|"⚫"| GT6
+    BL_GNDO -->|"⚫"| GT6
+
+    %% Buck outputs → loads
+    BS_VOUT ==>|"🔴 16AWG"| SERVO_PWR
     BL_VOUT -->|"🔴 USB-C"| RPI_5V
     BL_VOUT -->|"🔴 USB-C"| FPGA_5V
     BL_VOUT -->|"🔴 22AWG"| LS_HV
+
+    %% Bus bars (internal jumpers)
+    PT1 ---|"bus bar"| PT2
+    PT2 ---|"bus bar"| PT3
+    GT1 ---|"bus bar"| GT2
+    GT2 ---|"bus bar"| GT3
 
     linkStyle 0 stroke:#ef4444,stroke-width:3px
     linkStyle 1 stroke:#475569,stroke-width:3px
     linkStyle 2 stroke:#ef4444,stroke-width:3px
     linkStyle 3 stroke:#475569,stroke-width:3px
     linkStyle 4 stroke:#ef4444,stroke-width:3px
-    linkStyle 5 stroke:#475569,stroke-width:3px
-    linkStyle 6,7,8,9 stroke:#ef4444,stroke-width:2px
-    linkStyle 10,11 stroke:#475569,stroke-width:2px
-    linkStyle 12,13 stroke:#475569,stroke-width:2px
-    linkStyle 14 stroke:#ef4444,stroke-width:3px
-    linkStyle 15,16,17 stroke:#ef4444,stroke-width:2px
+    linkStyle 5,6 stroke:#ef4444,stroke-width:2px
+    linkStyle 7,8 stroke:#475569,stroke-width:2px
+    linkStyle 9,10 stroke:#475569,stroke-width:2px
+    linkStyle 11 stroke:#ef4444,stroke-width:3px
+    linkStyle 12,13,14 stroke:#ef4444,stroke-width:2px
+    linkStyle 15,16 stroke:#fbbf24,stroke-width:2px,stroke-dasharray:5
+    linkStyle 17,18 stroke:#64748b,stroke-width:2px,stroke-dasharray:5
 ```
+
+---
+
+## Screw Terminal Block Wiring (2× 6-pin)
+
+Use two separate 6-pin terminal blocks — one for **+V distribution**, one for **GND distribution**.
+
+### How to Make a Bus Bar
+
+Each position on a screw terminal is **electrically isolated by default**. To make all positions share the same voltage, create a **bus bar**:
+
+1. Cut a ~10 cm piece of **16 AWG wire**
+2. Strip the **entire insulation** off — you want bare copper
+3. Bend it so it runs under all 6 screw positions
+4. Tighten each screw down onto the bare wire
+5. Now all 6 positions are connected — you can add/remove wires from any position freely
+
+Do this for **both** terminal blocks.
+
+### +V Block Layout
+
+```mermaid
+graph TD
+    classDef pos fill:#fbbf24,stroke:#d97706,color:#7c2d12,font-weight:bold
+    classDef busbar fill:#ef4444,stroke:#b91c1c,color:#fff,font-weight:bold
+    classDef wire fill:#fca5a5,stroke:#ef4444,color:#7f1d1d
+
+    BUS["🔴 16AWG BARE COPPER BUS BAR"]:::busbar
+
+    P1["Pos 1: +V IN\n← from fuse"]:::pos
+    P2["Pos 2: +V OUT\n→ XL4015 VIN"]:::pos
+    P3["Pos 3: +V OUT\n→ LM2596 VIN"]:::pos
+    P4["Pos 4: spare"]:::pos
+    P5["Pos 5: spare"]:::pos
+    P6["Pos 6: spare"]:::pos
+
+    BUS --- P1
+    BUS --- P2
+    BUS --- P3
+    BUS --- P4
+    BUS --- P5
+    BUS --- P6
+
+    linkStyle 0,1,2,3,4,5 stroke:#ef4444,stroke-width:3px
+```
+
+### GND Block Layout
+
+```mermaid
+graph TD
+    classDef gndpos fill:#64748b,stroke:#475569,color:#fff,font-weight:bold
+    classDef busbar fill:#475569,stroke:#334155,color:#fff,font-weight:bold
+
+    BUS["⚫ 16AWG BARE COPPER BUS BAR"]:::busbar
+
+    G1["Pos 1: GND IN\n← from BMS P-"]:::gndpos
+    G2["Pos 2: GND OUT\n→ XL4015 GND"]:::gndpos
+    G3["Pos 3: GND OUT\n→ LM2596 GND"]:::gndpos
+    G4["Pos 4: GND OUT\n→ RPi USB-C black"]:::gndpos
+    G5["Pos 5: GND OUT\n→ FPGA USB-C black"]:::gndpos
+    G6["Pos 6: GND OUT\n→ buck GND returns"]:::gndpos
+
+    BUS --- G1
+    BUS --- G2
+    BUS --- G3
+    BUS --- G4
+    BUS --- G5
+    BUS --- G6
+
+    linkStyle 0,1,2,3,4,5 stroke:#475569,stroke-width:3px
+```
+
+> [!TIP]
+> Two wires fit in one terminal position. If a position needs two connections (e.g. GND pos 6 gets both buck converter GND returns), insert both stripped wire ends side-by-side and tighten. Tug-test both wires after.
 
 ---
 
@@ -121,7 +201,7 @@ graph LR
 
 | Rail | Source | Voltage | Current | Wire Gauge | Feeds |
 |------|--------|---------|---------|------------|-------|
-| Servo | XL4015 | 6.8V | ~15A peak | 18 AWG | 12× DS3218 servos |
+| Servo | XL4015 | 6.8V | ~15A peak | 16 AWG | 12× DS3218 servos |
 | Logic | LM2596 | 5.0V | ~2A | USB-C | RPi 4B, Tang Nano 9K |
 | LV Ref | FPGA 3.3V | 3.3V | <50mA | 22 AWG | 3× level shifters (LV side) |
 | I2C | RPi 3.3V | 3.3V | <20mA | 22 AWG | IMU, INA219 |
@@ -133,18 +213,22 @@ graph LR
 
 ## 18650 Battery Pack Specifications
 
+Using **3× Dragon 3S 3000mAh packs wired in parallel**:
+
 | Parameter | Value |
 |-----------|-------|
 | Chemistry | Li-ion (18650 cells) |
-| Configuration | 3S1P (3 cells in series) |
+| Configuration per pack | 3S1P (3 cells in series) |
+| Packs in parallel | 3 |
+| Effective configuration | 3S3P |
 | Nominal voltage | 11.1V (3.7V × 3) |
 | Fully charged | 12.6V (4.2V × 3) |
 | Low cutoff | 9.0V (3.0V × 3) — BMS disconnects |
-| Capacity (typical) | 2500–3500 mAh per cell |
-| Max continuous discharge | Depends on cell rating (use 10A+ cells) |
+| Combined capacity | 9000mAh (3 × 3000mAh) |
+| Max continuous discharge | ~15A (3 × ~5A per pack) |
 
-> [!TIP]
-> Use high-drain cells like **Samsung 25R** (20A) or **Sony VTC6** (15A) for reliable servo power. Standard laptop-pull 18650s may sag under load and trip the BMS.
+> [!CAUTION]
+> **Before connecting packs in parallel:** Charge all 3 packs fully and verify they are within **0.1V** of each other using a multimeter. Connecting packs at different voltages causes a dangerous current surge between them.
 
 ---
 
