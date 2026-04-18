@@ -323,7 +323,7 @@ SERVO_OFFSETS = {
 | Servo jitters | Add GND wire between RPi and FPGA; check for ground loops |
 | Server shows "spidev not available" | Run with `sudo`; check SPI is enabled in `raspi-config` |
 | "Address already in use" error | Kill old process: `sudo fuser -k 8080/tcp 8765/tcp` |
-| Servo makes grinding noise at extremes | Don't push past physical limits; stay within ±120° |
+| Servo makes grinding noise at extremes | Don't push past physical limits; stay within ±90° |
 
 ---
 

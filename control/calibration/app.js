@@ -7,8 +7,8 @@ const WS_PORT = 8765;
 const PULSE_MIN = 500;
 const PULSE_MAX = 2500;
 const PULSE_NEUTRAL = 1500;
-const ANGLE_MIN = -135;
-const ANGLE_MAX = 135;
+const ANGLE_MIN = -90;
+const ANGLE_MAX = 90;
 
 // ── Joint name lookup ──
 const JOINT_NAMES = [
@@ -46,7 +46,7 @@ let reconnectTimer = null;
 
 // ── Conversion Helpers ──
 function angleToPulse(angleDeg) {
-    // Linear: -135° → 500µs, 0° → 1500µs, +135° → 2500µs
+    // Linear: -90° → 500µs, 0° → 1500µs, +90° → 2500µs
     const normalized = (angleDeg - ANGLE_MIN) / (ANGLE_MAX - ANGLE_MIN);
     return Math.round(PULSE_MIN + normalized * (PULSE_MAX - PULSE_MIN));
 }
@@ -77,7 +77,7 @@ function updateDisplay() {
     infoOffset.textContent = `${offsetSign}${offset} µs`;
     infoOffset.style.color = offset === 0
         ? "var(--green)"
-        : Math.abs(offset) > 500
+        : Math.abs(offset) > 200
             ? "var(--red)"
             : "var(--orange)";
 
@@ -85,9 +85,9 @@ function updateDisplay() {
     const absAngle = Math.abs(angle);
     if (absAngle < 5) {
         angleLabel.style.color = "var(--green)";
-    } else if (absAngle < 45) {
+    } else if (absAngle < 30) {
         angleLabel.style.color = "var(--accent-bright)";
-    } else if (absAngle < 90) {
+    } else if (absAngle < 60) {
         angleLabel.style.color = "var(--orange)";
     } else {
         angleLabel.style.color = "var(--red)";
@@ -123,6 +123,7 @@ function connect() {
         infoStatus.textContent = "Connected";
         infoStatus.style.color = "var(--green)";
         if (reconnectTimer) clearTimeout(reconnectTimer);
+        startKeepalive();
         console.log("[WS] Connected to", url);
     };
 
@@ -131,6 +132,7 @@ function connect() {
         statusText.textContent = "Disconnected";
         infoStatus.textContent = "Disconnected";
         infoStatus.style.color = "var(--red)";
+        stopKeepalive();
         console.log("[WS] Disconnected — reconnecting in 2s");
         reconnectTimer = setTimeout(connect, 2000);
     };
@@ -258,6 +260,27 @@ function showToast(message) {
     toast.textContent = message;
     toast.classList.add("show");
     setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+// ── Keepalive ──
+// The FPGA has a 500ms watchdog that resets all servos to neutral
+// if no SPI command is received. We resend the current position
+// every 200ms to keep the servo at the slider position.
+let keepaliveTimer = null;
+
+function startKeepalive() {
+    if (keepaliveTimer) return;
+    keepaliveTimer = setInterval(() => {
+        const pulse = servoPositions[currentChannel];
+        send({ cmd: "servo", ch: currentChannel, us: pulse });
+    }, 200);
+}
+
+function stopKeepalive() {
+    if (keepaliveTimer) {
+        clearInterval(keepaliveTimer);
+        keepaliveTimer = null;
+    }
 }
 
 // ── Init ──

@@ -80,10 +80,10 @@ SERVO_PULSE_MAX_US = 2500            # Maximum pulse width (µs)
 SERVO_PULSE_NEUTRAL_US = 1500        # Neutral / center (µs)
 SERVO_FREQ_HZ = 50                   # PWM frequency (Hz)
 
-# Angle range: the DS3218 covers 270° over 500–2500 µs
-SERVO_ANGLE_RANGE_DEG = 270.0        # Total rotation range in degrees
-SERVO_ANGLE_MIN_RAD = -2.356         # -135° in radians
-SERVO_ANGLE_MAX_RAD = 2.356          # +135° in radians
+# Angle range: the DS3218 covers 180° over 500–2500 µs
+SERVO_ANGLE_RANGE_DEG = 180.0        # Total rotation range in degrees
+SERVO_ANGLE_MIN_RAD = -1.5708        # -90° in radians
+SERVO_ANGLE_MAX_RAD = 1.5708         # +90° in radians
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -94,7 +94,7 @@ SERVO_ANGLE_MAX_RAD = 2.356          # +135° in radians
 JOINT_LIMITS = {
     "hip":   (-0.78, 0.78),          # ±45°
     "thigh": (-1.57, 1.57),          # ±90°
-    "knee":  (-2.70, 0.50),          # Asymmetric: more bend than extension
+    "knee":  (-1.57, 0.50),          # -90° to +28.6° (within ±90° servo range)
 }
 
 # Per-servo neutral offset (µs) — calibrate each servo individually
