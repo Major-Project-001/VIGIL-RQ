@@ -16,6 +16,7 @@ graph LR
     classDef posBlock fill:#fbbf24,stroke:#d97706,color:#7c2d12,font-weight:bold
     classDef gndBlock fill:#64748b,stroke:#475569,color:#fff,font-weight:bold
     classDef bmsNote fill:#a78bfa,stroke:#7c3aed,color:#fff,font-weight:bold
+    classDef diode fill:#f472b6,stroke:#db2777,color:#fff,font-weight:bold
 
     subgraph BATTERY["🔋 3× Dragon 3S PACKS — PARALLEL — 11.1V / 9000mAh"]
         BAT_NOTE["🛡 Internal BMS per pack"]:::bmsNote
@@ -31,7 +32,7 @@ graph LR
     subgraph POS_TERMINAL["🔴 +V TERMINAL BLOCK (6-pin)"]
         PT1["1: +V IN"]:::posBlock
         PT2["2: → XL4015 VIN"]:::posBlock
-        PT3["3: → LM2596 VIN"]:::posBlock
+        PT3["3: → LM2596 diode"]:::posBlock
         PT4["4: spare"]:::posBlock
         PT5["5: spare"]:::posBlock
         PT6["6: spare"]:::posBlock
@@ -44,6 +45,11 @@ graph LR
         GT4["4: → RPi USB-C GND"]:::gndBlock
         GT5["5: → FPGA USB-C GND"]:::gndBlock
         GT6["6: → buck GND returns"]:::gndBlock
+    end
+
+    subgraph DIODE_BLOCK["🔒 1N5822 SCHOTTKY DIODE"]
+        D1_A["Anode ←"]:::diode
+        D1_K["→ Cathode"]:::diode
     end
 
     subgraph BUCK_SERVO["⬇ XL4015 BUCK — 6.8V SERVO RAIL"]
@@ -74,9 +80,12 @@ graph LR
     %% Fuse → +V terminal
     FUSE_OUT -->|"🔴 16AWG"| PT1
 
-    %% +V terminal → bucks
+    %% +V terminal → XL4015 (direct — no diode, 15A too high for 1N5822)
     PT2 -->|"🔴 16AWG"| BS_VIN
-    PT3 -->|"🔴 16AWG"| BL_VIN
+
+    %% +V terminal → diode → LM2596 (reverse polarity protection)
+    PT3 -->|"🔴"| D1_A
+    D1_K -->|"🔴"| BL_VIN
 
     %% GND terminal → bucks
     GT2 -->|"⚫ 16AWG"| BS_GND
@@ -107,13 +116,14 @@ graph LR
     linkStyle 0 stroke:#ef4444,stroke-width:3px
     linkStyle 1 stroke:#475569,stroke-width:3px
     linkStyle 2 stroke:#ef4444,stroke-width:3px
-    linkStyle 3,4 stroke:#ef4444,stroke-width:2px
-    linkStyle 5,6 stroke:#475569,stroke-width:2px
-    linkStyle 7,8 stroke:#475569,stroke-width:2px
-    linkStyle 9 stroke:#ef4444,stroke-width:3px
-    linkStyle 10,11,12 stroke:#ef4444,stroke-width:2px
-    linkStyle 13,14,15,16,17 stroke:#fbbf24,stroke-width:2px,stroke-dasharray:5
-    linkStyle 18,19,20,21,22 stroke:#64748b,stroke-width:2px,stroke-dasharray:5
+    linkStyle 3 stroke:#ef4444,stroke-width:2px
+    linkStyle 4,5 stroke:#f472b6,stroke-width:2px
+    linkStyle 6,7 stroke:#475569,stroke-width:2px
+    linkStyle 8,9 stroke:#475569,stroke-width:2px
+    linkStyle 10 stroke:#ef4444,stroke-width:3px
+    linkStyle 11,12,13 stroke:#ef4444,stroke-width:2px
+    linkStyle 14,15,16,17,18 stroke:#fbbf24,stroke-width:2px,stroke-dasharray:5
+    linkStyle 19,20,21,22,23 stroke:#64748b,stroke-width:2px,stroke-dasharray:5
 ```
 
 ---

@@ -176,6 +176,7 @@ sudo python server.py
 | Dragon 3S 3000mAh Li-ion pack | 3 | Wired in parallel, internal BMS per pack |
 | XL4015 buck converter | 1 | Adjusted to 6.8V for servos |
 | LM2596 buck converter | 1 | Adjusted to 5.0V for logic |
+| 1N5822 Schottky diode | 1 | Reverse polarity protection on LM2596 input |
 | 4-ch level shifter (3.3V↔5V) | 3 | FPGA PWM → servo signal |
 | MPU6050/9250 IMU | 1 | Orientation sensing |
 | INA219 power monitor | 1 | Battery current/voltage |
