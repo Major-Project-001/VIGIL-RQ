@@ -186,6 +186,60 @@ Add decoupling capacitors to stabilize voltage under servo load transients:
 
 ---
 
+## Making USB-C Power Cables (LM2596 → RPi & FPGA)
+
+The LM2596's 5V output powers the RPi and Tang Nano 9K via USB-C. You'll make two simple cables by cutting cheap USB-C charging cables.
+
+### What You Need
+
+| Item | Qty | Notes |
+|------|-----|-------|
+| USB-C charging cable | 2 | Cheap ones are fine — you only need the power wires |
+| Wire strippers | 1 | For exposing the internal wires |
+| Soldering iron + solder | 1 | For secure connections |
+| Heat shrink tubing | — | To insulate exposed joints |
+| Multimeter | 1 | To verify voltage before plugging in |
+
+### Step-by-Step
+
+1. **Cut the cable** — keep the **USB-C end** (the end that plugs into the Pi / FPGA), discard the other end
+2. **Strip the outer jacket** — expose ~3 cm of the internal wires
+3. **Identify the power wires:**
+
+   | Wire Color | Purpose | Connect To |
+   |-----------|---------|------------|
+   | 🔴 **Red** | +5V | LM2596 **VOUT** |
+   | ⚫ **Black** | GND | Common **GND bus** |
+   | 🟢 Green / 🔵 Blue / ⚪ White | Data (D+, D-) | **Cut short & insulate** — not needed |
+
+4. **Solder or crimp** the red and black wires:
+   - Both cables' **red wires** → LM2596 **VOUT** terminal
+   - Both cables' **black wires** → **common GND bus**
+5. **Heat shrink** all exposed joints
+6. **Verify before plugging in:**
+   - Set multimeter to DC voltage
+   - Touch probes to the USB-C connector's power pins (or just the red/black wires)
+   - Confirm **5.0V ± 0.05V**
+7. **Plug in** — USB-C into RPi, second USB-C into Tang Nano 9K
+
+### Final Wiring
+
+```
+LM2596 VOUT (+5V) ──┬── 🔴 red wire ── USB-C ──→ 🍓 RPi 4B
+                     └── 🔴 red wire ── USB-C ──→ 🟢 Tang Nano 9K
+
+LM2596 GND OUT ─────┬── ⚫ black wire ─── (from RPi cable)    ──→ ⏚ Common GND
+                     └── ⚫ black wire ─── (from FPGA cable)   ──→ ⏚ Common GND
+```
+
+> [!TIP]
+> **Why USB-C instead of GPIO header pins?** Powering via USB-C uses the Pi's built-in protection circuitry (polyfuse + ESD diode). Feeding 5V directly to GPIO pins 2/4 works but bypasses this protection — a wiring mistake could fry the Pi.
+
+> [!WARNING]
+> Some ultra-cheap USB-C cables have non-standard wire colors. If in doubt, use a multimeter in continuity mode: touch one probe to the **metal shell** of the USB-C plug (that's GND) and check which internal wire beeps.
+
+---
+
 ## Total System Current Budget
 
 | Subsystem | Voltage | Idle | Typical | Peak |
