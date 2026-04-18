@@ -92,11 +92,17 @@ graph LR
     BL_VOUT -->|"🔴 USB-C"| FPGA_5V
     BL_VOUT -->|"🔴 22AWG"| LS_HV
 
-    %% Bus bars (internal jumpers)
+    %% Bus bars (bare copper wire through all 6 positions)
     PT1 ---|"bus bar"| PT2
     PT2 ---|"bus bar"| PT3
+    PT3 ---|"bus bar"| PT4
+    PT4 ---|"bus bar"| PT5
+    PT5 ---|"bus bar"| PT6
     GT1 ---|"bus bar"| GT2
     GT2 ---|"bus bar"| GT3
+    GT3 ---|"bus bar"| GT4
+    GT4 ---|"bus bar"| GT5
+    GT5 ---|"bus bar"| GT6
 
     linkStyle 0 stroke:#ef4444,stroke-width:3px
     linkStyle 1 stroke:#475569,stroke-width:3px
@@ -106,8 +112,8 @@ graph LR
     linkStyle 7,8 stroke:#475569,stroke-width:2px
     linkStyle 9 stroke:#ef4444,stroke-width:3px
     linkStyle 10,11,12 stroke:#ef4444,stroke-width:2px
-    linkStyle 13,14 stroke:#fbbf24,stroke-width:2px,stroke-dasharray:5
-    linkStyle 15,16 stroke:#64748b,stroke-width:2px,stroke-dasharray:5
+    linkStyle 13,14,15,16,17 stroke:#fbbf24,stroke-width:2px,stroke-dasharray:5
+    linkStyle 18,19,20,21,22 stroke:#64748b,stroke-width:2px,stroke-dasharray:5
 ```
 
 ---
