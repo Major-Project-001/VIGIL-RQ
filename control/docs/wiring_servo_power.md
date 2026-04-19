@@ -59,9 +59,9 @@ graph TD
     subgraph SOURCES_FL["⚡ POWER SOURCES"]
         RP1["+6.8V Rail"]:::rail
         RG1["GND Bus"]:::brown
-        LS1_HV1["LS1 HV1"]:::ls
-        LS1_HV2["LS1 HV2"]:::ls
-        LS1_HV3["LS1 HV3"]:::ls
+        LS1_HV1["LS1 8-ch HV1"]:::ls
+        LS1_HV2["LS1 8-ch HV2"]:::ls
+        LS2_HV1["LS2 4-ch HV1"]:::ls
     end
 
     subgraph S0["DS3218 #0 — FL HIP"]
@@ -87,7 +87,7 @@ graph TD
     RP1 ==>|"18AWG"| S2_R
     LS1_HV1 -->|"22AWG"| S0_O
     LS1_HV2 -->|"22AWG"| S1_O
-    LS1_HV3 -->|"22AWG"| S2_O
+    LS2_HV1 -->|"22AWG"| S2_O
     RG1 ==>|"18AWG"| S0_B
     RG1 ==>|"18AWG"| S1_B
     RG1 ==>|"18AWG"| S2_B
@@ -117,9 +117,9 @@ graph TD
     subgraph SOURCES_FR["⚡ POWER SOURCES"]
         RP2["+6.8V Rail"]:::rail
         RG2["GND Bus"]:::brown
-        LS1_HV4["LS1 HV4"]:::ls
-        LS2_HV1["LS2 HV1"]:::ls
-        LS2_HV2["LS2 HV2"]:::ls
+        LS1_HV3["LS1 8-ch HV3"]:::ls
+        LS1_HV4["LS1 8-ch HV4"]:::ls
+        LS2_HV2["LS2 4-ch HV2"]:::ls
     end
 
     subgraph S3["DS3218 #3 — FR HIP"]
@@ -143,8 +143,8 @@ graph TD
     RP2 ==>|"18AWG"| S3_R
     RP2 ==>|"18AWG"| S4_R
     RP2 ==>|"18AWG"| S5_R
-    LS1_HV4 -->|"22AWG"| S3_O
-    LS2_HV1 -->|"22AWG"| S4_O
+    LS1_HV3 -->|"22AWG"| S3_O
+    LS1_HV4 -->|"22AWG"| S4_O
     LS2_HV2 -->|"22AWG"| S5_O
     RG2 ==>|"18AWG"| S3_B
     RG2 ==>|"18AWG"| S4_B
@@ -175,9 +175,9 @@ graph TD
     subgraph SOURCES_RL["⚡ POWER SOURCES"]
         RP3["+6.8V Rail"]:::rail
         RG3["GND Bus"]:::brown
-        LS2_HV3["LS2 HV3"]:::ls
-        LS2_HV4["LS2 HV4"]:::ls
-        LS3_HV1["LS3 HV1"]:::ls
+        LS1_HV5["LS1 8-ch HV5"]:::ls
+        LS1_HV6["LS1 8-ch HV6"]:::ls
+        LS2_HV3["LS2 4-ch HV3"]:::ls
     end
 
     subgraph S6["DS3218 #6 — RL HIP"]
@@ -201,9 +201,9 @@ graph TD
     RP3 ==>|"18AWG"| S6_R
     RP3 ==>|"18AWG"| S7_R
     RP3 ==>|"18AWG"| S8_R
-    LS2_HV3 -->|"22AWG"| S6_O
-    LS2_HV4 -->|"22AWG"| S7_O
-    LS3_HV1 -->|"22AWG"| S8_O
+    LS1_HV5 -->|"22AWG"| S6_O
+    LS1_HV6 -->|"22AWG"| S7_O
+    LS2_HV3 -->|"22AWG"| S8_O
     RG3 ==>|"18AWG"| S6_B
     RG3 ==>|"18AWG"| S7_B
     RG3 ==>|"18AWG"| S8_B
@@ -233,9 +233,9 @@ graph TD
     subgraph SOURCES_RR["⚡ POWER SOURCES"]
         RP4["+6.8V Rail"]:::rail
         RG4["GND Bus"]:::brown
-        LS3_HV2["LS3 HV2"]:::ls
-        LS3_HV3["LS3 HV3"]:::ls
-        LS3_HV4["LS3 HV4"]:::ls
+        LS1_HV7["LS1 8-ch HV7"]:::ls
+        LS1_HV8["LS1 8-ch HV8"]:::ls
+        LS2_HV4["LS2 4-ch HV4"]:::ls
     end
 
     subgraph S9["DS3218 #9 — RR HIP"]
@@ -259,9 +259,9 @@ graph TD
     RP4 ==>|"18AWG"| S9_R
     RP4 ==>|"18AWG"| S10_R
     RP4 ==>|"18AWG"| S11_R
-    LS3_HV2 -->|"22AWG"| S9_O
-    LS3_HV3 -->|"22AWG"| S10_O
-    LS3_HV4 -->|"22AWG"| S11_O
+    LS1_HV7 -->|"22AWG"| S9_O
+    LS1_HV8 -->|"22AWG"| S10_O
+    LS2_HV4 -->|"22AWG"| S11_O
     RG4 ==>|"18AWG"| S9_B
     RG4 ==>|"18AWG"| S10_B
     RG4 ==>|"18AWG"| S11_B
@@ -282,18 +282,18 @@ graph TD
 
 | Servo # | Joint | 🔴 Red (+6.8V) | 🟠 Orange (Signal) | ⚫ Brown (GND) |
 |---------|-------|----------------|---------------------|----------------|
-| 0 | FL Hip | XL4015 rail | LS1 HV1 (from FPGA Pin 28) | GND bus |
-| 1 | FL Thigh | XL4015 rail | LS1 HV2 (from FPGA Pin 29) | GND bus |
-| 2 | FL Knee | XL4015 rail | LS1 HV3 (from FPGA Pin 30) | GND bus |
-| 3 | FR Hip | XL4015 rail | LS1 HV4 (from FPGA Pin 31) | GND bus |
-| 4 | FR Thigh | XL4015 rail | LS2 HV1 (from FPGA Pin 32) | GND bus |
-| 5 | FR Knee | XL4015 rail | LS2 HV2 (from FPGA Pin 33) | GND bus |
-| 6 | RL Hip | XL4015 rail | LS2 HV3 (from FPGA Pin 34) | GND bus |
-| 7 | RL Thigh | XL4015 rail | LS2 HV4 (from FPGA Pin 35) | GND bus |
-| 8 | RL Knee | XL4015 rail | LS3 HV1 (from FPGA Pin 40) | GND bus |
-| 9 | RR Hip | XL4015 rail | LS3 HV2 (from FPGA Pin 41) | GND bus |
-| 10 | RR Thigh | XL4015 rail | LS3 HV3 (from FPGA Pin 42) | GND bus |
-| 11 | RR Knee | XL4015 rail | LS3 HV4 (from FPGA Pin 48) | GND bus |
+| 0 | FL Hip | XL4015 rail | LS1 8-ch HV1 (from FPGA Pin 28) | GND bus |
+| 1 | FL Thigh | XL4015 rail | LS1 8-ch HV2 (from FPGA Pin 29) | GND bus |
+| 2 | FL Knee | XL4015 rail | LS2 4-ch HV1 (from FPGA Pin 30) | GND bus |
+| 3 | FR Hip | XL4015 rail | LS1 8-ch HV3 (from FPGA Pin 31) | GND bus |
+| 4 | FR Thigh | XL4015 rail | LS1 8-ch HV4 (from FPGA Pin 32) | GND bus |
+| 5 | FR Knee | XL4015 rail | LS2 4-ch HV2 (from FPGA Pin 33) | GND bus |
+| 6 | RL Hip | XL4015 rail | LS1 8-ch HV5 (from FPGA Pin 34) | GND bus |
+| 7 | RL Thigh | XL4015 rail | LS1 8-ch HV6 (from FPGA Pin 35) | GND bus |
+| 8 | RL Knee | XL4015 rail | LS2 4-ch HV3 (from FPGA Pin 40) | GND bus |
+| 9 | RR Hip | XL4015 rail | LS1 8-ch HV7 (from FPGA Pin 41) | GND bus |
+| 10 | RR Thigh | XL4015 rail | LS1 8-ch HV8 (from FPGA Pin 42) | GND bus |
+| 11 | RR Knee | XL4015 rail | LS2 4-ch HV4 (from FPGA Pin 48) | GND bus |
 
 ## Current Budget
 

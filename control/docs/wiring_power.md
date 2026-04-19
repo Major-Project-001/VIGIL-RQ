@@ -208,7 +208,7 @@ graph TD
 |------|--------|---------|---------|------------|-------|
 | Servo | XL4015 | 6.8V | ~15A peak | 16 AWG | 12× DS3218 servos |
 | Logic | LM2596 | 5.0V | ~2A | USB-C | RPi 4B, Tang Nano 9K |
-| LV Ref | FPGA 3.3V | 3.3V | <50mA | 22 AWG | 3× level shifters (LV side) |
+| LV Ref | FPGA 3.3V | 3.3V | <50mA | 22 AWG | 2× level shifters (LV side) |
 | I2C | RPi 3.3V | 3.3V | <20mA | 22 AWG | IMU, INA219 |
 
 > [!WARNING]
@@ -337,7 +337,7 @@ LM2596 GND OUT ─────┬── ⚫ black wire ─── (from RPi cable
 | 12× DS3218 servos | 6.8V | 1.8A | 6A | 30A |
 | Raspberry Pi 4B | 5.0V | 0.6A | 1.0A | 1.2A |
 | Tang Nano 9K | 5.0V | 0.05A | 0.1A | 0.15A |
-| 3× Level shifters | 5.0V/3.3V | <0.01A | <0.01A | <0.02A |
+| 2× Level shifters | 5.0V/3.3V | <0.01A | <0.01A | <0.02A |
 | IMU + INA219 | 3.3V | <0.01A | <0.01A | <0.01A |
 | Buzzer + RGB LED | 3.3V | 0A | 0.03A | 0.05A |
 | **Total from battery** | **11.1V** | **~1.5A** | **~4.5A** | **~18A** |

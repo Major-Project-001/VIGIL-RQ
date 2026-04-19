@@ -67,9 +67,8 @@ graph TB
     BUCKL_G["LM2596 GND"]:::powerPin
     RPI_G["RPi 4B GND<br/>Pin 6/9/14/20/25/30/34/39"]:::rpiPin
     FPGA_G["Tang Nano 9K GND<br/>Header GND"]:::fpgaPin
-    LS1_G["Level Shifter 1 GND"]:::lsPin
-    LS2_G["Level Shifter 2 GND"]:::lsPin
-    LS3_G["Level Shifter 3 GND"]:::lsPin
+    LS1_G["LS1 8-ch GND"]:::lsPin
+    LS2_G["LS2 4-ch GND"]:::lsPin
     IMU_G["MPU9250 GND"]:::imuPin
     INA_G["INA219 GND"]:::inaPin
     BUZ_G["Buzzer GND"]:::alertPin
@@ -83,7 +82,6 @@ graph TB
     GND_STAR --- FPGA_G
     GND_STAR --- LS1_G
     GND_STAR --- LS2_G
-    GND_STAR --- LS3_G
     GND_STAR --- IMU_G
     GND_STAR --- INA_G
     GND_STAR --- BUZ_G
@@ -93,11 +91,11 @@ graph TB
     linkStyle 0,1,2 stroke:#475569,stroke-width:3px
     linkStyle 3 stroke:#3b82f6,stroke-width:2px
     linkStyle 4 stroke:#22c55e,stroke-width:2px
-    linkStyle 5,6,7 stroke:#14b8a6,stroke-width:2px
-    linkStyle 8 stroke:#a855f7,stroke-width:2px
-    linkStyle 9 stroke:#eab308,stroke-width:2px
-    linkStyle 10,11 stroke:#ec4899,stroke-width:2px
-    linkStyle 12 stroke:#f97316,stroke-width:3px
+    linkStyle 5,6 stroke:#14b8a6,stroke-width:2px
+    linkStyle 7 stroke:#a855f7,stroke-width:2px
+    linkStyle 8 stroke:#eab308,stroke-width:2px
+    linkStyle 9,10 stroke:#ec4899,stroke-width:2px
+    linkStyle 11 stroke:#f97316,stroke-width:3px
 
     style GND_STAR fill:#1e293b,stroke:#94a3b8,color:#e2e8f0,stroke-width:3px
 ```
@@ -134,34 +132,36 @@ graph TB
 | 25 | spi_sclk | Input | RPi GPIO 11 |
 | 26 | spi_mosi | Input | RPi GPIO 10 |
 | 27 | spi_cs_n | Input | RPi GPIO 8 |
-| 28 | pwm_out[0] | Output | LS1 LV1 (FL Hip) |
-| 29 | pwm_out[1] | Output | LS1 LV2 (FL Thigh) |
-| 30 | pwm_out[2] | Output | LS1 LV3 (FL Knee) |
-| 31 | pwm_out[3] | Output | LS1 LV4 (FR Hip) |
-| 32 | pwm_out[4] | Output | LS2 LV1 (FR Thigh) |
-| 33 | pwm_out[5] | Output | LS2 LV2 (FR Knee) |
-| 34 | pwm_out[6] | Output | LS2 LV3 (RL Hip) |
-| 35 | pwm_out[7] | Output | LS2 LV4 (RL Thigh) |
-| 40 | pwm_out[8] | Output | LS3 LV1 (RL Knee) |
-| 41 | pwm_out[9] | Output | LS3 LV2 (RR Hip) |
-| 42 | pwm_out[10] | Output | LS3 LV3 (RR Thigh) |
-| 48 | pwm_out[11] | Output | LS3 LV4 (RR Knee) |
+| 28 | pwm_out[0] | Output | LS1 8-ch (FL Hip) |
+| 29 | pwm_out[1] | Output | LS1 8-ch (FL Thigh) |
+| 30 | pwm_out[2] | Output | LS2 4-ch (FL Knee) |
+| 31 | pwm_out[3] | Output | LS1 8-ch (FR Hip) |
+| 32 | pwm_out[4] | Output | LS1 8-ch (FR Thigh) |
+| 33 | pwm_out[5] | Output | LS2 4-ch (FR Knee) |
+| 34 | pwm_out[6] | Output | LS1 8-ch (RL Hip) |
+| 35 | pwm_out[7] | Output | LS1 8-ch (RL Thigh) |
+| 40 | pwm_out[8] | Output | LS2 4-ch (RL Knee) |
+| 41 | pwm_out[9] | Output | LS1 8-ch (RR Hip) |
+| 42 | pwm_out[10] | Output | LS1 8-ch (RR Thigh) |
+| 48 | pwm_out[11] | Output | LS2 4-ch (RR Knee) |
 | 10–16 | led[0:5] | Output | On-board LEDs (heartbeat + SPI) |
 
 ---
 
 ## 🔧 Assembly Checklist
 
-- [ ] Solder battery tabs to 18650 3S pack
-- [ ] Connect battery → BMS → fuse → terminal block (🔴 14 AWG)
-- [ ] Mount 1N5822 diodes on terminal block outputs
+- [ ] Connect 3× Dragon battery packs in parallel (verify within 0.1V first!)
+- [ ] Connect battery → fuse → terminal blocks (🔴 16 AWG)
+- [ ] Mount 1N5822 diode on LM2596 input (reverse polarity protection)
 - [ ] Wire XL4015 buck — **adjust trimpot to 6.8V before connecting servos!**
 - [ ] Wire LM2596 buck — **adjust trimpot to 5.0V before connecting RPi!**
-- [ ] Connect all ⚫ GND wires to star ground point on terminal block (14–16 AWG)
-- [ ] Wire 3× level shifters: LV=3.3V from FPGA, HV=5V from LM2596
-- [ ] Connect 12× FPGA PWM pins → level shifter LV inputs (🟢 22 AWG)
+- [ ] Connect all ⚫ GND wires to star ground point on terminal block (16 AWG)
+- [ ] Wire 8-ch level shifter (LS1): LV=3.3V from FPGA, HV=5V from LM2596, GND
+- [ ] Wire 4-ch level shifter (LS2): LV=3.3V from FPGA, HV=5V from LM2596, GND
+- [ ] Connect 8× FPGA PWM pins → LS1 (hips + thighs) (🟢 22 AWG)
+- [ ] Connect 4× FPGA PWM pins → LS2 (knees) (🟢 22 AWG)
 - [ ] Connect 12× level shifter HV outputs → servo signal wires (🟠 22 AWG)
-- [ ] Connect 12× servo power 🔴 red wire to XL4015 6.8V rail (18 AWG pairs)
+- [ ] Connect 12× servo power 🔴 red wire to XL4015 6.8V rail
 - [ ] Connect 12× servo ⚫ brown wire to common ground bus
 - [ ] Wire SPI: GPIO 8/10/11 → FPGA 25/26/27 (🔵🟢🟡 22 AWG, keep short!)
 - [ ] Wire I2C: GPIO 2/3 → IMU + INA219 SDA/SCL (🟣🔵 22 AWG)
@@ -177,7 +177,7 @@ graph TB
 
 | AWG | Diameter | Max Current | Used For |
 |-----|----------|-------------|----------|
-| 14 AWG | 1.63mm | 15A | Battery → BMS → fuse → terminal |
+| 16 AWG | 1.29mm | 10A | Battery → fuse → terminal, main GND bus |
 | 16 AWG | 1.29mm | 10A | Terminal → buck converters, main GND bus |
 | 18 AWG | 1.02mm | 5A | Buck output → servo power (per leg pair) |
 | 22 AWG | 0.64mm | 0.9A | SPI, I2C, PWM signal, level shifter |
