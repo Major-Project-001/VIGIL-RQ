@@ -111,17 +111,17 @@ graph LR
     end
 
     subgraph LS1["🔀 8-CH LEVEL SHIFTER — Hips + Thighs"]
-        LS1_LV["LV: 3.3V"]:::ls8
-        LS1_HV["HV: 5V"]:::ls8
+        LS1_LV["VA: 3.3V"]:::ls8
+        LS1_HV["VB: 5V"]:::ls8
         LS1_GND["GND"]:::gnd
-        LS1_1["LV1 → HV1"]:::ls8
-        LS1_2["LV2 → HV2"]:::ls8
-        LS1_3["LV3 → HV3"]:::ls8
-        LS1_4["LV4 → HV4"]:::ls8
-        LS1_5["LV5 → HV5"]:::ls8
-        LS1_6["LV6 → HV6"]:::ls8
-        LS1_7["LV7 → HV7"]:::ls8
-        LS1_8["LV8 → HV8"]:::ls8
+        LS1_1["A0 → B0"]:::ls8
+        LS1_2["A1 → B1"]:::ls8
+        LS1_3["A2 → B2"]:::ls8
+        LS1_4["A3 → B3"]:::ls8
+        LS1_5["A4 → B4"]:::ls8
+        LS1_6["A5 → B5"]:::ls8
+        LS1_7["A6 → B6"]:::ls8
+        LS1_8["A7 → B7"]:::ls8
     end
 
     subgraph LS2["🔀 4-CH LEVEL SHIFTER — All Knees"]
@@ -191,7 +191,7 @@ graph LR
     LS2_4 ==>|"5V"| RR_K
 
     %% LV power — links 24-25
-    F_3V3 -.->|"LV Ref"| LS1_LV
+    F_3V3 -.->|"VA Ref"| LS1_LV
     F_3V3 -.->|"LV Ref"| LS2_LV
 
     %% GND — links 26-27
@@ -238,17 +238,17 @@ graph LR
     end
 
     subgraph LS1_D["🔀 8-CH LEVEL SHIFTER"]
-        LS1D_LV["LV: 3.3V"]:::vcc
-        LS1D_HV["HV: 5V"]:::vcc
+        LS1D_LV["VA: 3.3V"]:::vcc
+        LS1D_HV["VB: 5V"]:::vcc
         LS1D_GND["GND"]:::gnd
-        LS1D_1["LV1 → HV1"]:::ls8
-        LS1D_2["LV2 → HV2"]:::ls8
-        LS1D_3["LV3 → HV3"]:::ls8
-        LS1D_4["LV4 → HV4"]:::ls8
-        LS1D_5["LV5 → HV5"]:::ls8
-        LS1D_6["LV6 → HV6"]:::ls8
-        LS1D_7["LV7 → HV7"]:::ls8
-        LS1D_8["LV8 → HV8"]:::ls8
+        LS1D_1["A0 → B0"]:::ls8
+        LS1D_2["A1 → B1"]:::ls8
+        LS1D_3["A2 → B2"]:::ls8
+        LS1D_4["A3 → B3"]:::ls8
+        LS1D_5["A4 → B4"]:::ls8
+        LS1D_6["A5 → B5"]:::ls8
+        LS1D_7["A6 → B6"]:::ls8
+        LS1D_8["A7 → B7"]:::ls8
     end
 
     subgraph SRV_HT["🦿 SERVOS — Hips + Thighs"]
@@ -348,22 +348,22 @@ graph LR
 
 | Channel | FPGA Pin | Level Shifter | LS Channel | Servo | Joint |
 |---------|----------|---------------|------------|-------|-------|
-| 0 | 28 | LS1 (8-ch) | LV1→HV1 | DS3218 #0 | FL Hip |
-| 1 | 29 | LS1 (8-ch) | LV2→HV2 | DS3218 #1 | FL Thigh |
+| 0 | 28 | LS1 (8-ch) | A0→B0 | DS3218 #0 | FL Hip |
+| 1 | 29 | LS1 (8-ch) | A1→B1 | DS3218 #1 | FL Thigh |
 | 2 | 30 | LS2 (4-ch) | LV1→HV1 | DS3218 #2 | FL Knee |
-| 3 | 31 | LS1 (8-ch) | LV3→HV3 | DS3218 #3 | FR Hip |
-| 4 | 32 | LS1 (8-ch) | LV4→HV4 | DS3218 #4 | FR Thigh |
+| 3 | 31 | LS1 (8-ch) | A2→B2 | DS3218 #3 | FR Hip |
+| 4 | 32 | LS1 (8-ch) | A3→B3 | DS3218 #4 | FR Thigh |
 | 5 | 33 | LS2 (4-ch) | LV2→HV2 | DS3218 #5 | FR Knee |
-| 6 | 34 | LS1 (8-ch) | LV5→HV5 | DS3218 #6 | RL Hip |
-| 7 | 35 | LS1 (8-ch) | LV6→HV6 | DS3218 #7 | RL Thigh |
+| 6 | 34 | LS1 (8-ch) | A4→B4 | DS3218 #6 | RL Hip |
+| 7 | 35 | LS1 (8-ch) | A5→B5 | DS3218 #7 | RL Thigh |
 | 8 | 40 | LS2 (4-ch) | LV3→HV3 | DS3218 #8 | RL Knee |
-| 9 | 41 | LS1 (8-ch) | LV7→HV7 | DS3218 #9 | RR Hip |
-| 10 | 42 | LS1 (8-ch) | LV8→HV8 | DS3218 #10 | RR Thigh |
+| 9 | 41 | LS1 (8-ch) | A6→B6 | DS3218 #9 | RR Hip |
+| 10 | 42 | LS1 (8-ch) | A7→B7 | DS3218 #10 | RR Thigh |
 | 11 | 48 | LS2 (4-ch) | LV4→HV4 | DS3218 #11 | RR Knee |
 
 ## Level Shifter Power Connections
 
 | Level Shifter | LV Pin | HV Pin | GND |
 |---------------|--------|--------|-----|
-| LS1 (8-ch) | 3.3V from FPGA | 5V from LM2596 | Common GND |
-| LS2 (4-ch) | 3.3V from FPGA | 5V from LM2596 | Common GND |
+| LS1 (8-ch) | **VA** = 3.3V from FPGA | **VB** = 5V from LM2596 | Common GND |
+| LS2 (4-ch) | **LV** = 3.3V from FPGA | **HV** = 5V from LM2596 | Common GND |
