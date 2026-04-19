@@ -177,7 +177,8 @@ sudo python server.py
 | XL4015 buck converter | 1 | Adjusted to 6.8V for servos |
 | LM2596 buck converter | 1 | Adjusted to 5.0V for logic |
 | 1N5822 Schottky diode | 1 | Reverse polarity protection on LM2596 input |
-| 4-ch level shifter (3.3V↔5V) | 3 | FPGA PWM → servo signal |
+| 8-ch level shifter (3.3V↔5V) | 1 | Hips + thighs PWM signal |
+| 4-ch level shifter (3.3V↔5V) | 1 | All knees PWM signal |
 | MPU9250 IMU | 1 | Orientation sensing (accel + gyro + magnetometer) |
 | INA219 power monitor | 1 | Battery current/voltage |
 | 15A blade fuse | 1 | Overcurrent protection |
