@@ -106,10 +106,15 @@ class SpiServoDriver:
         for name, angle in angles.items():
             if name not in SERVO_CHANNELS:
                 continue
+
+            # SAFETY: hip servos locked at neutral — do not move
+            joint_type = name.split("_")[-1]
+            if joint_type == "hip":
+                continue
+
             channel = SERVO_CHANNELS[name]
 
-            # Determine joint type for limit clamping
-            joint_type = name.split("_")[-1]  # "hip", "thigh", or "knee"
+            # Limit clamping
             lo, hi = JOINT_LIMITS.get(joint_type, (-math.pi, math.pi))
             angle = max(lo, min(hi, angle))
 
