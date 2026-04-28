@@ -126,12 +126,15 @@ class AlertManager:
             self._state = STATE_ESTOP
 
     def _set_rgb(self, r: float, g: float, b: float):
-        """Set RGB LED colour (0.0–100.0 duty cycle for each channel)."""
+        """Set RGB LED colour (0.0–100.0 for each channel).
+        
+        Inverted for common-anode LED: 100% duty = OFF, 0% duty = full ON.
+        """
         if not GPIO_AVAILABLE:
             return
-        self._pwm_red.ChangeDutyCycle(r)
-        self._pwm_green.ChangeDutyCycle(g)
-        self._pwm_blue.ChangeDutyCycle(b)
+        self._pwm_red.ChangeDutyCycle(100 - r)
+        self._pwm_green.ChangeDutyCycle(100 - g)
+        self._pwm_blue.ChangeDutyCycle(100 - b)
 
     def _set_buzzer(self, duty: float):
         """Set buzzer duty cycle (0 = off, 50 = full volume)."""
