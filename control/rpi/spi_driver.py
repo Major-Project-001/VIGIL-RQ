@@ -23,7 +23,7 @@ from config import (
     SERVO_CHANNELS, SERVO_PULSE_MIN_US, SERVO_PULSE_MAX_US,
     SERVO_PULSE_NEUTRAL_US, SERVO_ANGLE_RANGE_DEG,
     SERVO_ANGLE_MIN_RAD, SERVO_ANGLE_MAX_RAD, SERVO_OFFSETS,
-    JOINT_LIMITS,
+    SERVO_DIRECTION, JOINT_LIMITS,
 )
 
 # Try to import spidev (only available on RPi)
@@ -146,6 +146,10 @@ class SpiServoDriver:
         angle_range = SERVO_ANGLE_MAX_RAD - SERVO_ANGLE_MIN_RAD
         pulse_range = SERVO_PULSE_MAX_US - SERVO_PULSE_MIN_US
         scale = pulse_range / angle_range  # µs per radian
+
+        # Apply servo direction (mirror-mounted servos)
+        direction = SERVO_DIRECTION.get(joint_name, 1)
+        angle_rad = angle_rad * direction
 
         pulse_us = int(SERVO_PULSE_NEUTRAL_US + angle_rad * scale)
 

@@ -101,6 +101,15 @@ JOINT_LIMITS = {
 # Add/subtract from 1500 µs to correct for mechanical misalignment
 SERVO_OFFSETS = {name: 0 for name in SERVO_CHANNELS}
 
+# Per-servo direction: +1 = normal, -1 = inverted (mirror-mounted)
+# Right side (FR, RR) thigh and knee are physically mirrored
+SERVO_DIRECTION = {
+    "fl_hip": 1, "fl_thigh": 1, "fl_knee": 1,
+    "fr_hip": 1, "fr_thigh": -1, "fr_knee": -1,
+    "rl_hip": 1, "rl_thigh": 1, "rl_knee": 1,
+    "rr_hip": 1, "rr_thigh": -1, "rr_knee": -1,
+}
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GAIT PARAMETERS
