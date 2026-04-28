@@ -54,9 +54,15 @@ class PowerMonitor:
         self._alert = "none"
 
         if I2C_AVAILABLE:
-            self._bus = smbus2.SMBus(I2C_BUS)
-            self._init_sensor()
-            print(f"[POWER] INA219 initialised at 0x{self._address:02X}")
+            try:
+                self._bus = smbus2.SMBus(I2C_BUS)
+                self._init_sensor()
+                print(f"[POWER] INA219 initialised at 0x{self._address:02X}")
+            except Exception as e:
+                print(f"[POWER] INA219 init failed ({e}) — running without power monitor")
+                self._bus = None
+                self._current_lsb = 0
+                self._power_lsb = 0
         else:
             print("[POWER] Running in simulation mode (no hardware)")
 
@@ -88,9 +94,14 @@ class PowerMonitor:
         """Read a 16-bit value from an INA219 register."""
         if not self._bus:
             return 0
-        data = self._bus.read_i2c_block_data(self._address, reg, 2)
-        value = (data[0] << 8) | data[1]
-        return value
+        try:
+            data = self._bus.read_i2c_block_data(self._address, reg, 2)
+            value = (data[0] << 8) | data[1]
+            return value
+        except OSError:
+            self._bus = None
+            print("[POWER] I2C error — disabling power monitor")
+            return 0
 
     def read(self) -> dict:
         """

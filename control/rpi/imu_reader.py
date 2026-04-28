@@ -60,9 +60,13 @@ class ImuReader:
         self._yaw = 0.0
 
         if I2C_AVAILABLE:
-            self._bus = smbus2.SMBus(I2C_BUS)
-            self._init_sensor()
-            print(f"[IMU] Initialised at address 0x{self._address:02X}")
+            try:
+                self._bus = smbus2.SMBus(I2C_BUS)
+                self._init_sensor()
+                print(f"[IMU] Initialised at address 0x{self._address:02X}")
+            except Exception as e:
+                print(f"[IMU] Init failed ({e}) — running without IMU")
+                self._bus = None
         else:
             print("[IMU] Running in simulation mode (no hardware)")
 
@@ -85,12 +89,18 @@ class ImuReader:
         """Read a 16-bit signed value from two consecutive registers."""
         if not self._bus:
             return 0
-        high = self._bus.read_byte_data(self._address, reg)
-        low = self._bus.read_byte_data(self._address, reg + 1)
-        value = (high << 8) | low
-        if value >= 0x8000:
-            value -= 0x10000
-        return value
+        try:
+            high = self._bus.read_byte_data(self._address, reg)
+            low = self._bus.read_byte_data(self._address, reg + 1)
+            value = (high << 8) | low
+            if value >= 0x8000:
+                value -= 0x10000
+            return value
+        except OSError:
+            # I2C read failed — IMU disconnected or bus error
+            self._bus = None
+            print("[IMU] I2C error — disabling IMU reads")
+            return 0
 
     def read(self) -> dict:
         """
