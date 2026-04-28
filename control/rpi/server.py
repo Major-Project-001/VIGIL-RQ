@@ -62,6 +62,7 @@ class VIGILServer:
             on_command=self._handle_command,
             on_joystick=self._handle_joystick,
             on_estop=self._handle_estop,
+            on_connect=lambda: self.alerts.beep_connect(),
         )
 
         # State

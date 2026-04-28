@@ -38,16 +38,18 @@ class WebSocketHandler:
     broadcasts telemetry to all connected clients.
     """
 
-    def __init__(self, on_command=None, on_joystick=None, on_estop=None):
+    def __init__(self, on_command=None, on_joystick=None, on_estop=None, on_connect=None):
         """
         Args:
             on_command:  Callback(action: str, speed: float, direction: float)
             on_joystick: Callback(x: float, y: float)
             on_estop:    Callback()
+            on_connect:  Callback() — called when a client connects
         """
         self._on_command = on_command
         self._on_joystick = on_joystick
         self._on_estop = on_estop
+        self._on_connect = on_connect
         self._clients = set()
         self._server = None
         self._last_message_time = time.time()
@@ -115,6 +117,8 @@ class WebSocketHandler:
         self._clients.add(websocket)
         remote = websocket.remote_address
         print(f"[WS] Client connected: {remote} (total: {len(self._clients)})")
+        if self._on_connect:
+            self._on_connect()
 
         try:
             async for message in websocket:

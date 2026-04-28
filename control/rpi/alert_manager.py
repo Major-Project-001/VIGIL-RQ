@@ -125,6 +125,20 @@ class AlertManager:
         with self._lock:
             self._state = STATE_ESTOP
 
+    def beep_connect(self):
+        """Play a short double-beep to signal client connected."""
+        if not GPIO_AVAILABLE:
+            return
+        def _beep():
+            self._set_buzzer(30)
+            time.sleep(0.08)
+            self._set_buzzer(0)
+            time.sleep(0.06)
+            self._set_buzzer(30)
+            time.sleep(0.08)
+            self._set_buzzer(0)
+        threading.Thread(target=_beep, daemon=True).start()
+
     def _set_rgb(self, r: float, g: float, b: float):
         """Set RGB LED colour (0.0–100.0 for each channel).
         
