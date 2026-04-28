@@ -17,6 +17,7 @@ Usage:
 
 import threading
 import math
+import time
 from config import (
     SPI_BUS, SPI_DEVICE, SPI_SPEED_HZ, SPI_MODE,
     SERVO_CHANNELS, SERVO_PULSE_MIN_US, SERVO_PULSE_MAX_US,
@@ -77,6 +78,11 @@ class SpiServoDriver:
         with self._lock:
             if self._spi:
                 self._spi.xfer2(frame)
+                # Inter-frame gap: give FPGA time to process CS rising edge
+                # before the next frame. Without this, rapid slider updates
+                # can cause garbled frames → jitter on other channels.
+                time.sleep(0.0001)  # 100 µs
+
 
     def set_all_servos(self, pulse_widths: list):
         """
