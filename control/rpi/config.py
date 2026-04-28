@@ -143,7 +143,7 @@ POSE_STAND = {f"{leg}_{jt}": 0.0 for leg in LEGS for jt in JOINTS}
 
 POSE_SIT = {
     **{f"{l}_hip": 0.0 for l in LEGS},
-    **{f"{l}_thigh": 0.5 for l in LEGS},
+    **{f"{l}_thigh": 0.0 for l in LEGS},
     **{f"{l}_knee": -1.2 for l in LEGS},
 }
 
