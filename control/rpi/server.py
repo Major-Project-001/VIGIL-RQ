@@ -69,6 +69,7 @@ class VIGILServer:
         self._running = True
         self._estop_active = False
         self._watchdog_triggered = False
+        self._power_alert_triggered = False
         self._mode = "stand"  # Track current mode for joystick auto-walk
 
         print("[INIT] All subsystems ready")
@@ -183,15 +184,22 @@ class VIGILServer:
             imu_data = self.imu.read()
             power_data = self.power.read()
 
-            # Check power alerts
+            # Check power alerts (skip 0V — sensor not wired / I2C error)
             power_alert = power_data.get("alert", "none")
-            if power_alert == "critical_battery":
-                if not self._estop_active:
+            voltage = power_data.get("voltage", 0)
+            if voltage > 1.0 and power_alert == "critical_battery":
+                if not self._estop_active and not self._power_alert_triggered:
                     print("[POWER] Critical battery! Auto-rest + servo disable")
                     self.gait.set_mode("rest")
                     self.alerts.set_critical()
-            elif power_alert == "low_battery":
-                self.alerts.set_warning()
+                    self._power_alert_triggered = True
+            elif voltage > 1.0 and power_alert == "low_battery":
+                if not self._power_alert_triggered:
+                    print("[POWER] Low battery warning")
+                    self.alerts.set_warning()
+                    self._power_alert_triggered = True
+            else:
+                self._power_alert_triggered = False
 
             # Build telemetry message
             telemetry = {
