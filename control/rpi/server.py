@@ -69,6 +69,7 @@ class VIGILServer:
         self._running = True
         self._estop_active = False
         self._watchdog_triggered = False
+        self._mode = "stand"  # Track current mode for joystick auto-walk
 
         print("[INIT] All subsystems ready")
         print()
@@ -84,6 +85,7 @@ class VIGILServer:
             self._estop_active = False
 
         self.gait.set_mode(action, speed=speed, direction=direction)
+        self._mode = action
         self._watchdog_triggered = False  # Reset watchdog on any command
 
         # Update LED state
@@ -92,12 +94,33 @@ class VIGILServer:
         else:
             self.alerts.set_idle()
 
-    def _handle_joystick(self, x: float, y: float):
-        """Handle joystick input from the mobile app."""
+    def _handle_joystick(self, x: float, y: float, x2: float = 0.0, y2: float = 0.0):
+        """Handle joystick input from the mobile app.
+        
+        Left stick (x, y): movement direction + speed
+        Right stick (x2): yaw/turning
+        """
         if self._estop_active:
             return
-        self.gait.update_joystick(x, y)
-        self._watchdog_triggered = False  # Reset watchdog on joystick input
+
+        magnitude = (x * x + y * y) ** 0.5
+        DEADZONE = 0.1
+
+        if magnitude > DEADZONE:
+            # Joystick pushed → auto-walk
+            if self._mode != "walk" and self._mode != "run":
+                self._mode = "walk"
+                self.gait.set_mode("walk")
+                self.alerts.set_normal()
+            self.gait.update_joystick(x, y, yaw=x2)
+        else:
+            # Joystick released → auto-stand
+            if self._mode == "walk":
+                self._mode = "stand"
+                self.gait.set_mode("stand")
+                self.alerts.set_idle()
+
+        self._watchdog_triggered = False
 
     def _handle_estop(self):
         """Handle emergency stop."""

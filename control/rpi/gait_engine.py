@@ -100,15 +100,16 @@ class GaitEngine:
             self._gait_time = 0.0  # Reset gait phase
             self._transitioning = False
 
-    def update_joystick(self, x: float, y: float):
+    def update_joystick(self, x: float, y: float, yaw: float = 0.0):
         """
         Update direction and speed from joystick input.
 
         Args:
             x: Left/right (-1.0 to +1.0)
             y: Forward/backward (-1.0 to +1.0, positive = forward)
+            yaw: Turn rate from right stick (-1.0 to +1.0)
         """
-        self._direction = max(-1.0, min(1.0, x))
+        self._direction = max(-1.0, min(1.0, x + yaw))
         magnitude = math.sqrt(x * x + y * y)
         self._speed = max(0.0, min(2.0, magnitude))
 

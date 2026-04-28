@@ -151,8 +151,10 @@ class WebSocketHandler:
         elif msg_type == "joystick":
             x = float(msg.get("x", 0.0))
             y = float(msg.get("y", 0.0))
+            x2 = float(msg.get("x2", 0.0))
+            y2 = float(msg.get("y2", 0.0))
             if self._on_joystick:
-                self._on_joystick(x, y)
+                self._on_joystick(x, y, x2, y2)
 
         elif msg_type == "estop":
             if self._on_estop:
