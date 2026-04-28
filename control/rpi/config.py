@@ -138,11 +138,7 @@ POSE_SIT = {
     **{f"{l}_knee": -1.2 for l in LEGS},
 }
 
-POSE_REST = {
-    **{f"{l}_hip": 0.0 for l in LEGS},
-    **{f"{l}_thigh": 0.8 for l in LEGS},
-    **{f"{l}_knee": -1.5 for l in LEGS},      # -85.9° (within ±90° servo range)
-}
+POSE_REST = {f"{leg}_{jt}": 0.0 for leg in LEGS for jt in JOINTS}
 
 
 # ══════════════════════════════════════════════════════════════════════════════
