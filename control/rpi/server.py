@@ -67,6 +67,7 @@ class VIGILServer:
         # State
         self._running = True
         self._estop_active = False
+        self._watchdog_triggered = False
 
         print("[INIT] All subsystems ready")
         print()
@@ -82,6 +83,7 @@ class VIGILServer:
             self._estop_active = False
 
         self.gait.set_mode(action, speed=speed, direction=direction)
+        self._watchdog_triggered = False  # Reset watchdog on any command
 
         # Update LED state
         if action in ("walk", "run"):
@@ -94,6 +96,7 @@ class VIGILServer:
         if self._estop_active:
             return
         self.gait.update_joystick(x, y)
+        self._watchdog_triggered = False  # Reset watchdog on joystick input
 
     def _handle_estop(self):
         """Handle emergency stop."""
@@ -118,11 +121,12 @@ class VIGILServer:
             loop_start = time.time()
 
             if not self._estop_active:
-                # Watchdog check
-                if self.ws.watchdog_expired and self.ws.is_connected:
+                # Watchdog check (fire only once)
+                if self.ws.watchdog_expired and self.ws.is_connected and not self._watchdog_triggered:
                     print("[WATCHDOG] No commands for 10s — auto-rest")
                     self.gait.set_mode("rest")
                     self.alerts.set_disconnected()
+                    self._watchdog_triggered = True
 
                 # Connection status
                 if not self.ws.is_connected:
