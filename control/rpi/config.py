@@ -121,7 +121,7 @@ GAIT_UPDATE_RATE_HZ = 50             # How often gait engine ticks
 
 # Walk gait
 WALK_FREQ_HZ = 1.0                   # Step frequency
-WALK_HIP_AMP = 0.15                  # Hip sway amplitude (rad)
+WALK_HIP_AMP = 0.0                   # Hip locked at neutral for now
 WALK_THIGH_AMP = 0.2                 # Thigh swing amplitude (rad)
 WALK_THIGH_OFFSET = 0.0              # Thigh neutral angle (rad)
 WALK_KNEE_AMP = 0.3                  # Knee lift amplitude (rad)
@@ -129,7 +129,7 @@ WALK_KNEE_OFFSET = -0.3              # Knee neutral angle (rad)
 
 # Run gait (faster, larger amplitudes)
 RUN_FREQ_HZ = 2.0
-RUN_HIP_AMP = 0.20
+RUN_HIP_AMP = 0.0
 RUN_THIGH_AMP = 0.52
 RUN_THIGH_OFFSET = 0.0
 RUN_KNEE_AMP = 0.65
